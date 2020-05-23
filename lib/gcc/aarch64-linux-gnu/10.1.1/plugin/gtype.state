@@ -4,7 +4,7 @@
 ;;; Don't parse this file wihout knowing GCC gengtype internals.
 ;;; This file should be parsed by the same gengtype which wrote it.
 
-(!version  "10.1.1 20200520")
+(!version  "10.1.1 20200523")
 (!srcdir  "../../gcc/gcc")
 (!languages 11 ada brig c cp d fortran go jit lto objc objcp)
 (!fileslist 220
@@ -33898,7 +33898,7 @@
   nil )
  (!pair  "va_list_type"
   (!type already_seen 23)
-  (!srcfileloc  "config/aarch64/aarch64.c" 15960)
+  (!srcfileloc  "config/aarch64/aarch64.c" 15962)
   nil )
  (!pair  "aarch64_previous_fndecl"
   (!type already_seen 23)
