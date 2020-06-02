@@ -4,7 +4,7 @@
 ;;; Don't parse this file wihout knowing GCC gengtype internals.
 ;;; This file should be parsed by the same gengtype which wrote it.
 
-(!version  "10.1.1 20200525")
+(!version  "10.1.1 20200602")
 (!srcdir  "../../gcc/gcc")
 (!languages 11 ada brig c cp d fortran go jit lto objc objcp)
 (!fileslist 220
@@ -26342,7 +26342,7 @@
    (!type already_seen 1863)
   )
   gc_pointed_to "tinst_level"
-  (!srcfileloc  "cp/pt.c" 9360)
+  (!srcfileloc  "cp/pt.c" 9369)
   (!fields 6 
    (!pair  "next"
     (!type already_seen 1864)
@@ -26612,7 +26612,7 @@
    (!type already_seen 1889)
   )
   gc_pointed_to "cp_parser"
-  (!srcfileloc  "cp/parser.c" 43496)
+  (!srcfileloc  "cp/parser.c" 43505)
   (!fields 37 
    (!pair  "lexer"
     (!type already_seen 1875)
@@ -26828,15 +26828,15 @@
    (!type already_seen 1904)
   )
   gc_pointed_to "hash_map<tree,int>"
-  (!srcfileloc  "cp/class.c" 3272)
+  (!srcfileloc  "cp/class.c" 3279)
   (!fields 2 
    (!pair  "int"
     (!type already_seen 378)
-    (!srcfileloc  "cp/class.c" 3272)
+    (!srcfileloc  "cp/class.c" 3279)
     nil )
    (!pair  "tree"
     (!type already_seen 23)
-    (!srcfileloc  "cp/class.c" 3272)
+    (!srcfileloc  "cp/class.c" 3279)
     nil )
   )
  )
@@ -27502,7 +27502,7 @@
   nil 0 nil nil )
  
  (!type undefined 2000 nil  gc_unused "class_to_loc_map_t::iterator"
-  (!srcfileloc  "cp/parser.c" 31451)
+  (!srcfileloc  "cp/parser.c" 31460)
  )
  
  (!type struct 2001 
@@ -27510,7 +27510,7 @@
    (!type already_seen 2001)
   )
   gc_pointed_to "pending_template"
-  (!srcfileloc  "cp/pt.c" 9369)
+  (!srcfileloc  "cp/pt.c" 9378)
   (!fields 2 
    (!pair  "next"
     (!type already_seen 2002)
@@ -27603,15 +27603,15 @@
    (!type already_seen 2015)
   )
   gc_pointed_to "hash_map<tree,tree_pair_p>"
-  (!srcfileloc  "cp/pt.c" 28642)
+  (!srcfileloc  "cp/pt.c" 28660)
   (!fields 2 
    (!pair  "tree_pair_p"
     (!type already_seen 540)
-    (!srcfileloc  "cp/pt.c" 28642)
+    (!srcfileloc  "cp/pt.c" 28660)
     nil )
    (!pair  "tree"
     (!type already_seen 23)
-    (!srcfileloc  "cp/pt.c" 28642)
+    (!srcfileloc  "cp/pt.c" 28660)
     nil )
   )
  )
@@ -27946,7 +27946,7 @@
   nil 0 nil nil )
  
  (!type struct 2062 nil  gc_used "module_hasher"
-  (!srcfileloc  "fortran/trans-decl.c" 5119)
+  (!srcfileloc  "fortran/trans-decl.c" 5124)
   (!fields 0 )
   nil 32 nil nil )
  
@@ -27955,11 +27955,11 @@
    (!type already_seen 2063)
   )
   gc_pointed_to "hash_table<module_hasher>"
-  (!srcfileloc  "fortran/trans-decl.c" 5119)
+  (!srcfileloc  "fortran/trans-decl.c" 5124)
   (!fields 1 
    (!pair  "module_hasher"
     (!type already_seen 2062)
-    (!srcfileloc  "fortran/trans-decl.c" 5119)
+    (!srcfileloc  "fortran/trans-decl.c" 5124)
     nil )
   )
  )
@@ -28735,11 +28735,11 @@
   nil )
  (!pair  "module_hasher"
   (!type already_seen 2062)
-  (!srcfileloc  "fortran/trans-decl.c" 5119)
+  (!srcfileloc  "fortran/trans-decl.c" 5124)
   nil )
  (!pair  "hash_table<module_hasher>"
   (!type already_seen 2063)
-  (!srcfileloc  "fortran/trans-decl.c" 5119)
+  (!srcfileloc  "fortran/trans-decl.c" 5124)
   nil )
  (!pair  "tree_frame_info"
   (!type already_seen 661)
@@ -28839,15 +28839,15 @@
   nil )
  (!pair  "hash_map<tree,tree_pair_p>"
   (!type already_seen 2015)
-  (!srcfileloc  "cp/pt.c" 28642)
+  (!srcfileloc  "cp/pt.c" 28660)
   nil )
  (!pair  "pending_template"
   (!type already_seen 2001)
-  (!srcfileloc  "cp/pt.c" 9369)
+  (!srcfileloc  "cp/pt.c" 9378)
   nil )
  (!pair  "tinst_level"
   (!type already_seen 1863)
-  (!srcfileloc  "cp/pt.c" 9360)
+  (!srcfileloc  "cp/pt.c" 9369)
   nil )
  (!pair  "spec_hasher"
   (!type already_seen 2004)
@@ -28863,15 +28863,15 @@
   nil )
  (!pair  "cp_parser"
   (!type already_seen 1889)
-  (!srcfileloc  "cp/parser.c" 43496)
+  (!srcfileloc  "cp/parser.c" 43505)
   nil )
  (!pair  "iter_t"
   (!type already_seen 2000)
-  (!srcfileloc  "cp/parser.c" 31451)
+  (!srcfileloc  "cp/parser.c" 31460)
   nil )
  (!pair  "class_to_loc_map_t::iterator"
   (!type already_seen 2000)
-  (!srcfileloc  "cp/parser.c" 31451)
+  (!srcfileloc  "cp/parser.c" 31460)
   nil )
  (!pair  "cp_parser_expression_stack"
   (!type array 2131 nil  gc_unused "NUM_PREC_VALUES" 
@@ -29005,7 +29005,7 @@
   nil )
  (!pair  "hash_map<tree,int>"
   (!type already_seen 1904)
-  (!srcfileloc  "cp/class.c" 3272)
+  (!srcfileloc  "cp/class.c" 3279)
   nil )
  (!pair  "subobject_offset_fn"
   (!type already_seen 2)
@@ -32718,7 +32718,7 @@
   nil )
  (!pair  "module_htab"
   (!type already_seen 2064)
-  (!srcfileloc  "fortran/trans-decl.c" 5119)
+  (!srcfileloc  "fortran/trans-decl.c" 5124)
   nil )
  (!pair  "saved_local_decls"
   (!type already_seen 23)
@@ -32790,37 +32790,37 @@
   (!type array 2158 nil  gc_used "(int) BT_LAST + 1" 
    (!type already_seen 23)
   )
-  (!srcfileloc  "d/d-builtins.cc" 991)
+  (!srcfileloc  "d/d-builtins.cc" 1001)
   nil )
  (!pair  "built_in_attributes"
   (!type array 2159 nil  gc_used "(int) ATTR_LAST" 
    (!type already_seen 23)
   )
-  (!srcfileloc  "d/d-builtins.cc" 895)
+  (!srcfileloc  "d/d-builtins.cc" 905)
   nil )
  (!pair  "signed_size_type_node"
   (!type already_seen 23)
-  (!srcfileloc  "d/d-builtins.cc" 754)
+  (!srcfileloc  "d/d-builtins.cc" 764)
   nil )
  (!pair  "uintmax_type_node"
   (!type already_seen 23)
-  (!srcfileloc  "d/d-builtins.cc" 753)
+  (!srcfileloc  "d/d-builtins.cc" 763)
   nil )
  (!pair  "intmax_type_node"
   (!type already_seen 23)
-  (!srcfileloc  "d/d-builtins.cc" 752)
+  (!srcfileloc  "d/d-builtins.cc" 762)
   nil )
  (!pair  "wint_type_node"
   (!type already_seen 23)
-  (!srcfileloc  "d/d-builtins.cc" 751)
+  (!srcfileloc  "d/d-builtins.cc" 761)
   nil )
  (!pair  "const_string_type_node"
   (!type already_seen 23)
-  (!srcfileloc  "d/d-builtins.cc" 750)
+  (!srcfileloc  "d/d-builtins.cc" 760)
   nil )
  (!pair  "string_type_node"
   (!type already_seen 23)
-  (!srcfileloc  "d/d-builtins.cc" 749)
+  (!srcfileloc  "d/d-builtins.cc" 759)
   nil )
  (!pair  "gcc_builtins_types"
   (!type already_seen 84)
@@ -32890,60 +32890,60 @@
   nil )
  (!pair  "dguide_cache"
   (!type already_seen 2016)
-  (!srcfileloc  "cp/pt.c" 28642)
+  (!srcfileloc  "cp/pt.c" 28660)
   (!options 
    (!option deletable string  "")
   )
  )
  (!pair  "explicit_specifier_map"
   (!type already_seen 940)
-  (!srcfileloc  "cp/pt.c" 13504)
+  (!srcfileloc  "cp/pt.c" 13513)
   (!options 
    (!option cache string  "")
   )
  )
  (!pair  "defarg_inst"
   (!type already_seen 940)
-  (!srcfileloc  "cp/pt.c" 13393)
+  (!srcfileloc  "cp/pt.c" 13402)
   (!options 
    (!option cache string  "")
   )
  )
  (!pair  "last_error_tinst_level"
   (!type already_seen 1864)
-  (!srcfileloc  "cp/pt.c" 10717)
+  (!srcfileloc  "cp/pt.c" 10726)
   nil )
  (!pair  "pending_template_freelist_head"
   (!type already_seen 2002)
-  (!srcfileloc  "cp/pt.c" 9369)
+  (!srcfileloc  "cp/pt.c" 9378)
   (!options 
    (!option deletable string  "")
   )
  )
  (!pair  "tinst_level_freelist_head"
   (!type already_seen 1864)
-  (!srcfileloc  "cp/pt.c" 9360)
+  (!srcfileloc  "cp/pt.c" 9369)
   (!options 
    (!option deletable string  "")
   )
  )
  (!pair  "tree_list_freelist_head"
   (!type already_seen 23)
-  (!srcfileloc  "cp/pt.c" 9351)
+  (!srcfileloc  "cp/pt.c" 9360)
   (!options 
    (!option deletable string  "")
   )
  )
  (!pair  "defaulted_ttp_cache"
   (!type already_seen 398)
-  (!srcfileloc  "cp/pt.c" 7664)
+  (!srcfileloc  "cp/pt.c" 7673)
   (!options 
    (!option deletable string  "")
   )
  )
  (!pair  "tparm_obj_values"
   (!type already_seen 398)
-  (!srcfileloc  "cp/pt.c" 7017)
+  (!srcfileloc  "cp/pt.c" 7026)
   nil )
  (!pair  "canonical_template_parms"
   (!type already_seen 84)
@@ -32979,11 +32979,11 @@
   nil )
  (!pair  "generic_parm_count"
   (!type already_seen 2)
-  (!srcfileloc  "cp/parser.c" 43986)
+  (!srcfileloc  "cp/parser.c" 43995)
   nil )
  (!pair  "the_parser"
   (!type already_seen 1890)
-  (!srcfileloc  "cp/parser.c" 43496)
+  (!srcfileloc  "cp/parser.c" 43505)
   nil )
  (!pair  "cp_parser_context_free_list"
   (!type already_seen 1882)
@@ -33135,11 +33135,11 @@
   nil )
  (!pair  "start_cleanup_cnt"
   (!type already_seen 2)
-  (!srcfileloc  "cp/decl.c" 8640)
+  (!srcfileloc  "cp/decl.c" 8645)
   nil )
  (!pair  "decomp_type_table"
   (!type already_seen 940)
-  (!srcfileloc  "cp/decl.c" 8124)
+  (!srcfileloc  "cp/decl.c" 8129)
   (!options 
    (!option cache string  "")
   )
@@ -33303,7 +33303,7 @@
  )
  (!pair  "cv_cache"
   (!type already_seen 398)
-  (!srcfileloc  "cp/constexpr.c" 6915)
+  (!srcfileloc  "cp/constexpr.c" 6931)
   (!options 
    (!option deletable string  "")
   )
@@ -33322,15 +33322,15 @@
   nil )
  (!pair  "dvirt_fn"
   (!type already_seen 23)
-  (!srcfileloc  "cp/class.c" 9568)
+  (!srcfileloc  "cp/class.c" 9575)
   nil )
  (!pair  "abort_fndecl_addr"
   (!type already_seen 23)
-  (!srcfileloc  "cp/class.c" 9567)
+  (!srcfileloc  "cp/class.c" 9574)
   nil )
  (!pair  "enum_to_min_precision"
   (!type already_seen 1905)
-  (!srcfileloc  "cp/class.c" 3272)
+  (!srcfileloc  "cp/class.c" 3279)
   (!options 
    (!option deletable string  "")
   )
@@ -33341,7 +33341,7 @@
   nil )
  (!pair  "default_arg_context"
   (!type already_seen 84)
-  (!srcfileloc  "cp/call.c" 8052)
+  (!srcfileloc  "cp/call.c" 8053)
   nil )
  (!pair  "unemitted_tinfo_decls"
   (!type already_seen 84)

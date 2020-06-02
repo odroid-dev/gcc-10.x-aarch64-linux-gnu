@@ -129,7 +129,7 @@
 .\" ========================================================================
 .\"
 .IX Title "GCC 1"
-.TH GCC 1 "2020-05-25" "gcc-10.1.1" "GNU"
+.TH GCC 1 "2020-06-02" "gcc-10.1.1" "GNU"
 .\" For nroff, turn off justification.  Always turn off hyphenation; it makes
 .\" way too many mistakes in technical documents.
 .if n .ad l
@@ -9411,7 +9411,7 @@ When enabled, interprocedural constant propagation performs function cloning
 when externally visible function can be called with constant arguments.
 Because this optimization can create multiple copies of functions,
 it may significantly increase code size
-(see \fB\-\-param ipcp\-unit\-growth=\fR\fIvalue\fR).
+(see \fB\-\-param ipa\-cp\-unit\-growth=\fR\fIvalue\fR).
 This flag is enabled by default at \fB\-O3\fR.
 It is also enabled by \fB\-fprofile\-use\fR and \fB\-fauto\-profile\fR.
 .IP "\fB\-fipa\-bit\-cp\fR" 4
@@ -11216,8 +11216,8 @@ Specifies maximal overall growth of the compilation unit caused by inlining.
 For example, parameter value 20 limits unit growth to 1.2 times the original
 size. Cold functions (either marked cold via an attribute or by profile
 feedback) are not accounted into the unit size.
-.IP "\fBipcp-unit-growth\fR" 4
-.IX Item "ipcp-unit-growth"
+.IP "\fBipa-cp-unit-growth\fR" 4
+.IX Item "ipa-cp-unit-growth"
 Specifies maximal overall growth of the compilation unit caused by
 interprocedural constant propagation.  For example, parameter value 10 limits
 unit growth to 1.1 times the original size.
@@ -12229,9 +12229,6 @@ will not try to thread through its block.
 .IX Item "uninit-control-dep-attempts"
 Maximum number of nested calls to search for control dependencies
 during uninitialized variable analysis.
-.IP "\fBmax-once-peeled-insns\fR" 4
-.IX Item "max-once-peeled-insns"
-The maximum number of insns of a peeled loop that rolls only once.
 .IP "\fBsra-max-scalarization-size-Osize\fR" 4
 .IX Item "sra-max-scalarization-size-Osize"
 Maximum size, in storage units, of an aggregate
@@ -12262,6 +12259,37 @@ a property of a variable such as its value.  This limits the number
 of iterations or recursive calls \s-1GCC\s0 performs when optimizing certain
 statements or when determining their validity prior to issuing
 diagnostics.
+.IP "\fBstore-merging-max-size\fR" 4
+.IX Item "store-merging-max-size"
+Maximum size of a single store merging region in bytes.
+.IP "\fBhash-table-verification-limit\fR" 4
+.IX Item "hash-table-verification-limit"
+The number of elements for which hash table verification is done
+for each searched element.
+.IP "\fBmax-find-base-term-values\fR" 4
+.IX Item "max-find-base-term-values"
+Maximum number of VALUEs handled during a single find_base_term call.
+.IP "\fBanalyzer-max-enodes-per-program-point\fR" 4
+.IX Item "analyzer-max-enodes-per-program-point"
+The maximum number of exploded nodes per program point within
+the analyzer, before terminating analysis of that point.
+.IP "\fBanalyzer-min-snodes-for-call-summary\fR" 4
+.IX Item "analyzer-min-snodes-for-call-summary"
+The minimum number of supernodes within a function for the
+analyzer to consider summarizing its effects at call sites.
+.IP "\fBanalyzer-max-recursion-depth\fR" 4
+.IX Item "analyzer-max-recursion-depth"
+The maximum number of times a callsite can appear in a call stack
+within the analyzer, before terminating analysis of a call that would
+recurse deeper.
+.IP "\fBgimple-fe-computed-hot-bb-threshold\fR" 4
+.IX Item "gimple-fe-computed-hot-bb-threshold"
+The number of executions of a basic block which is considered hot.
+The parameter is used only in \s-1GIMPLE FE.\s0
+.IP "\fBanalyzer-bb-explosion-factor\fR" 4
+.IX Item "analyzer-bb-explosion-factor"
+The maximum number of 'after supernode' exploded nodes within the analyzer
+per supernode, before terminating analysis.
 .RE
 .RS 4
 .Sp
