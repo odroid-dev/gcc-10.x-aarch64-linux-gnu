@@ -1,8 +1,6 @@
 This is libc.info, produced by makeinfo version 6.7 from libc.texinfo.
 
-This file documents the GNU C Library.
-
-   This is ‘The GNU C Library Reference Manual’, for version 2.31.
+This is ‘The GNU C Library Reference Manual’, for version 2.32.
 
    Copyright © 1993–2020 Free Software Foundation, Inc.
 
@@ -318,6 +316,7 @@ START-INFO-DIR-ENTRY
 * O_NDELAY: (libc)Operating Modes.
 * O_NOATIME: (libc)Operating Modes.
 * O_NOCTTY: (libc)Open-time Flags.
+* O_NOFOLLOW: (libc)Open-time Flags.
 * O_NOLINK: (libc)Open-time Flags.
 * O_NONBLOCK: (libc)Open-time Flags.
 * O_NONBLOCK: (libc)Operating Modes.
@@ -343,6 +342,7 @@ START-INFO-DIR-ENTRY
 * PF_LOCAL: (libc)Local Namespace Details.
 * PF_UNIX: (libc)Local Namespace Details.
 * PIPE_BUF: (libc)Limits for Files.
+* PTHREAD_ATTR_NO_SIGMASK_NP: (libc)Initial Thread Signal Mask.
 * P_tmpdir: (libc)Temporary Files.
 * RAND_MAX: (libc)ISO Random.
 * RE_DUP_MAX: (libc)General Limits.
@@ -936,6 +936,7 @@ START-INFO-DIR-ENTRY
 * fetestexcept: (libc)Status bit operations.
 * fetestexceptflag: (libc)Status bit operations.
 * feupdateenv: (libc)Control Functions.
+* fexecve: (libc)Executing a File.
 * fflush: (libc)Flushing Buffers.
 * fflush_unlocked: (libc)Flushing Buffers.
 * fgetc: (libc)Character Input.
@@ -1556,18 +1557,20 @@ START-INFO-DIR-ENTRY
 * printf_size: (libc)Predefined Printf Handlers.
 * printf_size_info: (libc)Predefined Printf Handlers.
 * psignal: (libc)Signal Messages.
-* pthread_clockjoin_np: (libc)Default Thread Attributes.
-* pthread_cond_clockwait: (libc)Default Thread Attributes.
+* pthread_attr_getsigmask_np: (libc)Initial Thread Signal Mask.
+* pthread_attr_setsigmask_np: (libc)Initial Thread Signal Mask.
+* pthread_clockjoin_np: (libc)Waiting with Explicit Clocks.
+* pthread_cond_clockwait: (libc)Waiting with Explicit Clocks.
 * pthread_getattr_default_np: (libc)Default Thread Attributes.
 * pthread_getspecific: (libc)Thread-specific Data.
 * pthread_key_create: (libc)Thread-specific Data.
 * pthread_key_delete: (libc)Thread-specific Data.
-* pthread_rwlock_clockrdlock: (libc)Default Thread Attributes.
-* pthread_rwlock_clockwrlock: (libc)Default Thread Attributes.
+* pthread_rwlock_clockrdlock: (libc)Waiting with Explicit Clocks.
+* pthread_rwlock_clockwrlock: (libc)Waiting with Explicit Clocks.
 * pthread_setattr_default_np: (libc)Default Thread Attributes.
 * pthread_setspecific: (libc)Thread-specific Data.
-* pthread_timedjoin_np: (libc)Default Thread Attributes.
-* pthread_tryjoin_np: (libc)Default Thread Attributes.
+* pthread_timedjoin_np: (libc)Waiting with Explicit Clocks.
+* pthread_tryjoin_np: (libc)Waiting with Explicit Clocks.
 * ptsname: (libc)Allocation.
 * ptsname_r: (libc)Allocation.
 * putc: (libc)Simple Output.
@@ -1679,7 +1682,7 @@ START-INFO-DIR-ENTRY
 * seed48_r: (libc)SVID Random.
 * seekdir: (libc)Random Access Directory.
 * select: (libc)Waiting for I/O.
-* sem_clockwait: (libc)Default Thread Attributes.
+* sem_clockwait: (libc)Waiting with Explicit Clocks.
 * sem_close: (libc)Semaphores.
 * sem_destroy: (libc)Semaphores.
 * sem_getvalue: (libc)Semaphores.
@@ -1751,11 +1754,13 @@ START-INFO-DIR-ENTRY
 * shm_open: (libc)Memory-mapped I/O.
 * shm_unlink: (libc)Memory-mapped I/O.
 * shutdown: (libc)Closing a Socket.
+* sigabbrev_np: (libc)Signal Messages.
 * sigaction: (libc)Advanced Signal Handling.
 * sigaddset: (libc)Signal Sets.
 * sigaltstack: (libc)Signal Stack.
 * sigblock: (libc)BSD Signal Handling.
 * sigdelset: (libc)Signal Sets.
+* sigdescr_np: (libc)Signal Messages.
 * sigemptyset: (libc)Signal Sets.
 * sigfillset: (libc)Signal Sets.
 * siginterrupt: (libc)BSD Signal Handling.
@@ -1824,6 +1829,8 @@ START-INFO-DIR-ENTRY
 * strdupa: (libc)Copying Strings and Arrays.
 * strerror: (libc)Error Messages.
 * strerror_r: (libc)Error Messages.
+* strerrordesc_np: (libc)Error Messages.
+* strerrorname_np: (libc)Error Messages.
 * strfmon: (libc)Formatting Numbers.
 * strfromd: (libc)Printing of Floats.
 * strfromf: (libc)Printing of Floats.
@@ -1872,7 +1879,6 @@ START-INFO-DIR-ENTRY
 * sync: (libc)Synchronizing I/O.
 * syscall: (libc)System Calls.
 * sysconf: (libc)Sysconf Definition.
-* sysctl: (libc)System Parameters.
 * syslog: (libc)syslog; vsyslog.
 * system: (libc)Running a Command.
 * sysv_signal: (libc)Basic Signal Handling.
@@ -2090,6 +2096,350 @@ START-INFO-DIR-ENTRY
 * ynfNx: (libc)Special Functions.
 * ynl: (libc)Special Functions.
 END-INFO-DIR-ENTRY
+
+
+File: libc.info,  Node: Process Completion Status,  Next: BSD Wait Functions,  Prev: Process Completion,  Up: Processes
+
+26.7 Process Completion Status
+==============================
+
+If the exit status value (*note Program Termination::) of the child
+process is zero, then the status value reported by ‘waitpid’ or ‘wait’
+is also zero.  You can test for other kinds of information encoded in
+the returned status value using the following macros.  These macros are
+defined in the header file ‘sys/wait.h’.
+
+ -- Macro: int WIFEXITED (int STATUS)
+
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+     This macro returns a nonzero value if the child process terminated
+     normally with ‘exit’ or ‘_exit’.
+
+ -- Macro: int WEXITSTATUS (int STATUS)
+
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+     If ‘WIFEXITED’ is true of STATUS, this macro returns the low-order
+     8 bits of the exit status value from the child process.  *Note Exit
+     Status::.
+
+ -- Macro: int WIFSIGNALED (int STATUS)
+
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+     This macro returns a nonzero value if the child process terminated
+     because it received a signal that was not handled.  *Note Signal
+     Handling::.
+
+ -- Macro: int WTERMSIG (int STATUS)
+
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+     If ‘WIFSIGNALED’ is true of STATUS, this macro returns the signal
+     number of the signal that terminated the child process.
+
+ -- Macro: int WCOREDUMP (int STATUS)
+
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+     This macro returns a nonzero value if the child process terminated
+     and produced a core dump.
+
+ -- Macro: int WIFSTOPPED (int STATUS)
+
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+     This macro returns a nonzero value if the child process is stopped.
+
+ -- Macro: int WSTOPSIG (int STATUS)
+
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+     If ‘WIFSTOPPED’ is true of STATUS, this macro returns the signal
+     number of the signal that caused the child process to stop.
+
+
+File: libc.info,  Node: BSD Wait Functions,  Next: Process Creation Example,  Prev: Process Completion Status,  Up: Processes
+
+26.8 BSD Process Wait Function
+==============================
+
+The GNU C Library also provides the ‘wait3’ function for compatibility
+with BSD. This function is declared in ‘sys/wait.h’.  It is the
+predecessor to ‘wait4’, which is more flexible.  ‘wait3’ is now
+obsolete.
+
+ -- Function: pid_t wait3 (int *STATUS-PTR, int OPTIONS, struct rusage
+          *USAGE)
+
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+     If USAGE is a null pointer, ‘wait3’ is equivalent to ‘waitpid (-1,
+     STATUS-PTR, OPTIONS)’.
+
+     If USAGE is not null, ‘wait3’ stores usage figures for the child
+     process in ‘*RUSAGE’ (but only if the child has terminated, not if
+     it has stopped).  *Note Resource Usage::.
+
+
+File: libc.info,  Node: Process Creation Example,  Prev: BSD Wait Functions,  Up: Processes
+
+26.9 Process Creation Example
+=============================
+
+Here is an example program showing how you might write a function
+similar to the built-in ‘system’.  It executes its COMMAND argument
+using the equivalent of ‘sh -c COMMAND’.
+
+     #include <stddef.h>
+     #include <stdlib.h>
+     #include <unistd.h>
+     #include <sys/types.h>
+     #include <sys/wait.h>
+
+     /* Execute the command using this shell program.  */
+     #define SHELL "/bin/sh"
+
+     int
+     my_system (const char *command)
+     {
+       int status;
+       pid_t pid;
+
+       pid = fork ();
+       if (pid == 0)
+         {
+           /* This is the child process.  Execute the shell command. */
+           execl (SHELL, SHELL, "-c", command, NULL);
+           _exit (EXIT_FAILURE);
+         }
+       else if (pid < 0)
+         /* The fork failed.  Report failure.  */
+         status = -1;
+       else
+         /* This is the parent process.  Wait for the child to complete.  */
+         if (waitpid (pid, &status, 0) != pid)
+           status = -1;
+       return status;
+     }
+
+   There are a couple of things you should pay attention to in this
+example.
+
+   Remember that the first ‘argv’ argument supplied to the program
+represents the name of the program being executed.  That is why, in the
+call to ‘execl’, ‘SHELL’ is supplied once to name the program to execute
+and a second time to supply a value for ‘argv[0]’.
+
+   The ‘execl’ call in the child process doesn’t return if it is
+successful.  If it fails, you must do something to make the child
+process terminate.  Just returning a bad status code with ‘return’ would
+leave two processes running the original program.  Instead, the right
+behavior is for the child process to report failure to its parent
+process.
+
+   Call ‘_exit’ to accomplish this.  The reason for using ‘_exit’
+instead of ‘exit’ is to avoid flushing fully buffered streams such as
+‘stdout’.  The buffers of these streams probably contain data that was
+copied from the parent process by the ‘fork’, data that will be output
+eventually by the parent process.  Calling ‘exit’ in the child would
+output the data twice.  *Note Termination Internals::.
+
+
+File: libc.info,  Node: Inter-Process Communication,  Next: Job Control,  Prev: Processes,  Up: Top
+
+27 Inter-Process Communication
+******************************
+
+This chapter describes the GNU C Library inter-process communication
+primitives.
+
+* Menu:
+
+* Semaphores::	Support for creating and managing semaphores
+
+
+File: libc.info,  Node: Semaphores,  Up: Inter-Process Communication
+
+27.1 Semaphores
+===============
+
+The GNU C Library implements the semaphore APIs as defined in POSIX and
+System V. Semaphores can be used by multiple processes to coordinate
+shared resources.  The following is a complete list of the semaphore
+functions provided by the GNU C Library.
+
+27.1.1 System V Semaphores
+--------------------------
+
+ -- Function: int semctl (int SEMID, int SEMNUM, int CMD);
+     Preliminary: | MT-Safe | AS-Safe | AC-Unsafe corrupt/linux | *Note
+     POSIX Safety Concepts::.
+
+ -- Function: int semget (key_t KEY, int NSEMS, int SEMFLG);
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+ -- Function: int semop (int SEMID, struct sembuf *SOPS, size_t NSOPS);
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+ -- Function: int semtimedop (int SEMID, struct sembuf *SOPS, size_t
+          NSOPS, const struct timespec *TIMEOUT);
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+27.1.2 POSIX Semaphores
+-----------------------
+
+ -- Function: int sem_init (sem_t *SEM, int PSHARED, unsigned int
+          VALUE);
+     Preliminary: | MT-Safe | AS-Safe | AC-Unsafe corrupt | *Note POSIX
+     Safety Concepts::.
+
+ -- Function: int sem_destroy (sem_t *SEM);
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+ -- Function: sem_t *sem_open (const char *NAME, int OFLAG, ...);
+     Preliminary: | MT-Safe | AS-Unsafe init | AC-Unsafe init | *Note
+     POSIX Safety Concepts::.
+
+ -- Function: int sem_close (sem_t *SEM);
+     Preliminary: | MT-Safe | AS-Unsafe lock | AC-Unsafe lock | *Note
+     POSIX Safety Concepts::.
+
+ -- Function: int sem_unlink (const char *NAME);
+     Preliminary: | MT-Safe | AS-Unsafe init | AC-Unsafe corrupt | *Note
+     POSIX Safety Concepts::.
+
+ -- Function: int sem_wait (sem_t *SEM);
+     Preliminary: | MT-Safe | AS-Safe | AC-Unsafe corrupt | *Note POSIX
+     Safety Concepts::.
+
+ -- Function: int sem_timedwait (sem_t *SEM, const struct timespec
+          *ABSTIME);
+     Preliminary: | MT-Safe | AS-Safe | AC-Unsafe corrupt | *Note POSIX
+     Safety Concepts::.
+
+ -- Function: int sem_trywait (sem_t *SEM);
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+ -- Function: int sem_post (sem_t *SEM);
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+ -- Function: int sem_getvalue (sem_t *SEM, int *SVAL);
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+
+File: libc.info,  Node: Job Control,  Next: Name Service Switch,  Prev: Inter-Process Communication,  Up: Top
+
+28 Job Control
+**************
+
+“Job control” refers to the protocol for allowing a user to move between
+multiple “process groups” (or “jobs”) within a single “login session”.
+The job control facilities are set up so that appropriate behavior for
+most programs happens automatically and they need not do anything
+special about job control.  So you can probably ignore the material in
+this chapter unless you are writing a shell or login program.
+
+   You need to be familiar with concepts relating to process creation
+(*note Process Creation Concepts::) and signal handling (*note Signal
+Handling::) in order to understand this material presented in this
+chapter.
+
+   Some old systems do not support job control, but GNU systems always
+have, and it is a required feature in the 2001 revision of POSIX.1
+(*note POSIX::).  If you need to be portable to old systems, you can use
+the ‘_POSIX_JOB_CONTROL’ macro to test at compile-time whether the
+system supports job control.  *Note System Options::.
+
+* Menu:
+
+* Concepts of Job Control::     Jobs can be controlled by a shell.
+* Controlling Terminal::        How a process gets its controlling terminal.
+* Access to the Terminal::      How processes share the controlling terminal.
+* Orphaned Process Groups::     Jobs left after the user logs out.
+* Implementing a Shell::        What a shell must do to implement job control.
+* Functions for Job Control::   Functions to control process groups.
+
+
+File: libc.info,  Node: Concepts of Job Control,  Next: Controlling Terminal,  Up: Job Control
+
+28.1 Concepts of Job Control
+============================
+
+The fundamental purpose of an interactive shell is to read commands from
+the user’s terminal and create processes to execute the programs
+specified by those commands.  It can do this using the ‘fork’ (*note
+Creating a Process::) and ‘exec’ (*note Executing a File::) functions.
+
+   A single command may run just one process—but often one command uses
+several processes.  If you use the ‘|’ operator in a shell command, you
+explicitly request several programs in their own processes.  But even if
+you run just one program, it can use multiple processes internally.  For
+example, a single compilation command such as ‘cc -c foo.c’ typically
+uses four processes (though normally only two at any given time).  If
+you run ‘make’, its job is to run other programs in separate processes.
+
+   The processes belonging to a single command are called a “process
+group” or “job”.  This is so that you can operate on all of them at
+once.  For example, typing ‘C-c’ sends the signal ‘SIGINT’ to terminate
+all the processes in the foreground process group.
+
+   A “session” is a larger group of processes.  Normally all the
+processes that stem from a single login belong to the same session.
+
+   Every process belongs to a process group.  When a process is created,
+it becomes a member of the same process group and session as its parent
+process.  You can put it in another process group using the ‘setpgid’
+function, provided the process group belongs to the same session.
+
+   The only way to put a process in a different session is to make it
+the initial process of a new session, or a “session leader”, using the
+‘setsid’ function.  This also puts the session leader into a new process
+group, and you can’t move it out of that process group again.
+
+   Usually, new sessions are created by the system login program, and
+the session leader is the process running the user’s login shell.
+
+   A shell that supports job control must arrange to control which job
+can use the terminal at any time.  Otherwise there might be multiple
+jobs trying to read from the terminal at once, and confusion about which
+process should receive the input typed by the user.  To prevent this,
+the shell must cooperate with the terminal driver using the protocol
+described in this chapter.
+
+   The shell can give unlimited access to the controlling terminal to
+only one process group at a time.  This is called the “foreground job”
+on that controlling terminal.  Other process groups managed by the shell
+that are executing without such access to the terminal are called
+“background jobs”.
+
+   If a background job needs to read from its controlling terminal, it
+is “stopped” by the terminal driver; if the ‘TOSTOP’ mode is set,
+likewise for writing.  The user can stop a foreground job by typing the
+SUSP character (*note Special Characters::) and a program can stop any
+job by sending it a ‘SIGSTOP’ signal.  It’s the responsibility of the
+shell to notice when jobs stop, to notify the user about them, and to
+provide mechanisms for allowing the user to interactively continue
+stopped jobs and switch jobs between foreground and background.
+
+   *Note Access to the Terminal::, for more information about I/O to the
+controlling terminal.
 
 
 File: libc.info,  Node: Controlling Terminal,  Next: Access to the Terminal,  Prev: Concepts of Job Control,  Up: Job Control
@@ -2765,7 +3115,6 @@ checking the status of jobs and reporting the information to the user.
      do_job_notification (void)
      {
        job *j, *jlast, *jnext;
-       process *p;
 
        /* Update status information for child processes.  */
        update_status ();
@@ -3264,17 +3613,17 @@ work.  The file could look like this:
      # Name Service Switch configuration file.
      #
 
-     passwd:     db files nis
+     passwd:     db files
      shadow:     files
-     group:      db files nis
+     group:      db files
 
-     hosts:      files nisplus nis dns
-     networks:   nisplus [NOTFOUND=return] files
+     hosts:      files dns
+     networks:   files
 
-     ethers:     nisplus [NOTFOUND=return] db files
-     protocols:  nisplus [NOTFOUND=return] db files
-     rpc:        nisplus [NOTFOUND=return] db files
-     services:   nisplus [NOTFOUND=return] db files
+     ethers:     db files
+     protocols:  db files
+     rpc:        db files
+     services:   db files
 
    The first column is the database as you can guess from the table
 above.  The rest of the line specifies how the lookup process works.
@@ -3460,20 +3809,14 @@ get the system running even if the file is corrupted or missing.
 service not to be available but if it is available the answer it returns
 is definitive.
 
-   The ‘passwd’, ‘group’, and ‘shadow’ databases are traditionally
+   The ‘passwd’, ‘group’, and ‘shadow’ databases was traditionally
 handled in a special way.  The appropriate files in the ‘/etc’ directory
-are read but if an entry with a name starting with a ‘+’ character is
-found NIS is used.  This kind of lookup remains possible if the GNU C
-Library was configured with the ‘--enable-obsolete-nsl’ option and the
-special lookup service ‘compat’ is used.  If the GNU C Library was
-configured with the ‘--enable-obsolete-nsl’ option the default value for
-the three databases above is ‘compat [NOTFOUND=return] files’.  If the
-‘--enable-obsolete-nsl’ option was not used the default value for the
-services is ‘files’.
+were read but if an entry with a name starting with a ‘+’ character was
+found NIS was used.  This kind of lookup was removed and now the default
+value for the services is ‘files’.  libnss_compat no longer depends on
+libnsl and can be used without NIS.
 
-   For all other databases the default value is ‘files’ unless the GNU C
-Library was configured with ‘--enable-obsolete-rpc’ option, in which
-case it the default value is ‘nis [NOTFOUND=return] files’.
+   For all other databases the default value is ‘files’.
 
    A second point is that the user should try to optimize the lookup
 process.  The different service have different response times.  A simple
@@ -6013,7 +6356,6 @@ can make changes.
 * Platform Type::               Determining operating system and basic
                                   machine type
 * Filesystem Handling::         Controlling/querying mounts
-* System Parameters::           Getting and setting various system parameters
 
    To get information on parameters of the system that are built into
 the system, such as the maximum length of a filename, *note System
@@ -6279,7 +6621,7 @@ described in *note Host Identification::.
      always a possibility.
 
 
-File: libc.info,  Node: Filesystem Handling,  Next: System Parameters,  Prev: Platform Type,  Up: System Management
+File: libc.info,  Node: Filesystem Handling,  Prev: Platform Type,  Up: System Management
 
 31.3 Controlling and Querying Mounts
 ====================================
@@ -6990,368 +7332,3 @@ should maintain and use these separately.  *Note Mount Information::.
      It is more widely available than ‘umount2’ but since it lacks the
      possibility to forcefully unmount a filesystem is deprecated when
      ‘umount2’ is also available.
-
-
-File: libc.info,  Node: System Parameters,  Prev: Filesystem Handling,  Up: System Management
-
-31.4 System Parameters
-======================
-
-This section describes the ‘sysctl’ function, which gets and sets a
-variety of system parameters.
-
-   The symbols used in this section are declared in the file
-‘sys/sysctl.h’.
-
- -- Function: int sysctl (int *NAMES, int NLEN, void *OLDVAL, size_t
-          *OLDLENP, void *NEWVAL, size_t NEWLEN)
-
-     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
-     Concepts::.
-
-     ‘sysctl’ gets or sets a specified system parameter.  There are so
-     many of these parameters that it is not practical to list them all
-     here, but here are some examples:
-
-        • network domain name
-        • paging parameters
-        • network Address Resolution Protocol timeout time
-        • maximum number of files that may be open
-        • root filesystem device
-        • when kernel was built
-
-     The set of available parameters depends on the kernel configuration
-     and can change while the system is running, particularly when you
-     load and unload loadable kernel modules.
-
-     The system parameters with which ‘sysctl’ is concerned are arranged
-     in a hierarchical structure like a hierarchical filesystem.  To
-     identify a particular parameter, you specify a path through the
-     structure in a way analogous to specifying the pathname of a file.
-     Each component of the path is specified by an integer and each of
-     these integers has a macro defined for it by ‘sys/sysctl.h’.  NAMES
-     is the path, in the form of an array of integers.  Each component
-     of the path is one element of the array, in order.  NLEN is the
-     number of components in the path.
-
-     For example, the first component of the path for all the paging
-     parameters is the value ‘CTL_VM’.  For the free page thresholds,
-     the second component of the path is ‘VM_FREEPG’.  So to get the
-     free page threshold values, make NAMES an array containing the two
-     elements ‘CTL_VM’ and ‘VM_FREEPG’ and make NLEN = 2.
-
-     The format of the value of a parameter depends on the parameter.
-     Sometimes it is an integer; sometimes it is an ASCII string;
-     sometimes it is an elaborate structure.  In the case of the free
-     page thresholds used in the example above, the parameter value is a
-     structure containing several integers.
-
-     In any case, you identify a place to return the parameter’s value
-     with OLDVAL and specify the amount of storage available at that
-     location as *OLDLENP.  *OLDLENP does double duty because it is also
-     the output location that contains the actual length of the returned
-     value.
-
-     If you don’t want the parameter value returned, specify a null
-     pointer for OLDVAL.
-
-     To set the parameter, specify the address and length of the new
-     value as NEWVAL and NEWLEN.  If you don’t want to set the
-     parameter, specify a null pointer as NEWVAL.
-
-     If you get and set a parameter in the same ‘sysctl’ call, the value
-     returned is the value of the parameter before it was set.
-
-     Each system parameter has a set of permissions similar to the
-     permissions for a file (including the permissions on directories in
-     its path) that determine whether you may get or set it.  For the
-     purposes of these permissions, every parameter is considered to be
-     owned by the superuser and Group 0 so processes with that effective
-     uid or gid may have more access to system parameters.  Unlike with
-     files, the superuser does not invariably have full permission to
-     all system parameters, because some of them are designed not to be
-     changed ever.
-
-     ‘sysctl’ returns a zero return value if it succeeds.  Otherwise, it
-     returns ‘-1’ and sets ‘errno’ appropriately.  Besides the failures
-     that apply to all system calls, the following are the ‘errno’ codes
-     for all possible failures:
-
-     ‘EPERM’
-          The process is not permitted to access one of the components
-          of the path of the system parameter or is not permitted to
-          access the system parameter itself in the way (read or write)
-          that it requested.
-     ‘ENOTDIR’
-          There is no system parameter corresponding to NAME.
-     ‘EFAULT’
-          OLDVAL is not null, which means the process wanted to read the
-          parameter, but *OLDLENP is zero, so there is no place to
-          return it.
-     ‘EINVAL’
-             • The process attempted to set a system parameter to a
-               value that is not valid for that parameter.
-             • The space provided for the return of the system parameter
-               is not the right size for that parameter.
-     ‘ENOMEM’
-          This value may be returned instead of the more correct
-          ‘EINVAL’ in some cases where the space provided for the return
-          of the system parameter is too small.
-
-   If you have a Linux kernel with the ‘proc’ filesystem, you can get
-and set most of the same parameters by reading and writing to files in
-the ‘sys’ directory of the ‘proc’ filesystem.  In the ‘sys’ directory,
-the directory structure represents the hierarchical structure of the
-parameters.  E.g.  you can display the free page thresholds with
-     cat /proc/sys/vm/freepages
-
-   Some more traditional and more widely available, though less general,
-GNU C Library functions for getting and setting some of the same system
-parameters are:
-
-   • ‘getdomainname’, ‘setdomainname’
-   • ‘gethostname’, ‘sethostname’ (*Note Host Identification::.)
-   • ‘uname’ (*Note Platform Type::.)
-
-
-File: libc.info,  Node: System Configuration,  Next: Cryptographic Functions,  Prev: System Management,  Up: Top
-
-32 System Configuration Parameters
-**********************************
-
-The functions and macros listed in this chapter give information about
-configuration parameters of the operating system—for example, capacity
-limits, presence of optional POSIX features, and the default path for
-executable files (*note String Parameters::).
-
-* Menu:
-
-* General Limits::           Constants and functions that describe
-				various process-related limits that have
-				one uniform value for any given machine.
-* System Options::           Optional POSIX features.
-* Version Supported::        Version numbers of POSIX.1 and POSIX.2.
-* Sysconf::                  Getting specific configuration values
-                                of general limits and system options.
-* Minimums::                 Minimum values for general limits.
-
-* Limits for Files::         Size limitations that pertain to individual files.
-                                These can vary between file systems
-                                or even from file to file.
-* Options for Files::        Optional features that some files may support.
-* File Minimums::            Minimum values for file limits.
-* Pathconf::                 Getting the limit values for a particular file.
-
-* Utility Limits::           Capacity limits of some POSIX.2 utility programs.
-* Utility Minimums::         Minimum allowable values of those limits.
-
-* String Parameters::        Getting the default search path.
-
-
-File: libc.info,  Node: General Limits,  Next: System Options,  Up: System Configuration
-
-32.1 General Capacity Limits
-============================
-
-The POSIX.1 and POSIX.2 standards specify a number of parameters that
-describe capacity limitations of the system.  These limits can be fixed
-constants for a given operating system, or they can vary from machine to
-machine.  For example, some limit values may be configurable by the
-system administrator, either at run time or by rebuilding the kernel,
-and this should not require recompiling application programs.
-
-   Each of the following limit parameters has a macro that is defined in
-‘limits.h’ only if the system has a fixed, uniform limit for the
-parameter in question.  If the system allows different file systems or
-files to have different limits, then the macro is undefined; use
-‘sysconf’ to find out the limit that applies at a particular time on a
-particular machine.  *Note Sysconf::.
-
-   Each of these parameters also has another macro, with a name starting
-with ‘_POSIX’, which gives the lowest value that the limit is allowed to
-have on _any_ POSIX system.  *Note Minimums::.
-
- -- Macro: int ARG_MAX
-
-     If defined, the unvarying maximum combined length of the ARGV and
-     ENVIRON arguments that can be passed to the ‘exec’ functions.
-
- -- Macro: int CHILD_MAX
-
-     If defined, the unvarying maximum number of processes that can
-     exist with the same real user ID at any one time.  In BSD and GNU,
-     this is controlled by the ‘RLIMIT_NPROC’ resource limit; *note
-     Limits on Resources::.
-
- -- Macro: int OPEN_MAX
-
-     If defined, the unvarying maximum number of files that a single
-     process can have open simultaneously.  In BSD and GNU, this is
-     controlled by the ‘RLIMIT_NOFILE’ resource limit; *note Limits on
-     Resources::.
-
- -- Macro: int STREAM_MAX
-
-     If defined, the unvarying maximum number of streams that a single
-     process can have open simultaneously.  *Note Opening Streams::.
-
- -- Macro: int TZNAME_MAX
-
-     If defined, the unvarying maximum length of a time zone name.
-     *Note Time Zone Functions::.
-
-   These limit macros are always defined in ‘limits.h’.
-
- -- Macro: int NGROUPS_MAX
-
-     The maximum number of supplementary group IDs that one process can
-     have.
-
-     The value of this macro is actually a lower bound for the maximum.
-     That is, you can count on being able to have that many
-     supplementary group IDs, but a particular machine might let you
-     have even more.  You can use ‘sysconf’ to see whether a particular
-     machine will let you have more (*note Sysconf::).
-
- -- Macro: ssize_t SSIZE_MAX
-
-     The largest value that can fit in an object of type ‘ssize_t’.
-     Effectively, this is the limit on the number of bytes that can be
-     read or written in a single operation.
-
-     This macro is defined in all POSIX systems because this limit is
-     never configurable.
-
- -- Macro: int RE_DUP_MAX
-
-     The largest number of repetitions you are guaranteed is allowed in
-     the construct ‘\{MIN,MAX\}’ in a regular expression.
-
-     The value of this macro is actually a lower bound for the maximum.
-     That is, you can count on being able to have that many repetitions,
-     but a particular machine might let you have even more.  You can use
-     ‘sysconf’ to see whether a particular machine will let you have
-     more (*note Sysconf::).  And even the value that ‘sysconf’ tells
-     you is just a lower bound—larger values might work.
-
-     This macro is defined in all POSIX.2 systems, because POSIX.2 says
-     it should always be defined even if there is no specific imposed
-     limit.
-
-
-File: libc.info,  Node: System Options,  Next: Version Supported,  Prev: General Limits,  Up: System Configuration
-
-32.2 Overall System Options
-===========================
-
-POSIX defines certain system-specific options that not all POSIX systems
-support.  Since these options are provided in the kernel, not in the
-library, simply using the GNU C Library does not guarantee any of these
-features are supported; it depends on the system you are using.
-
-   You can test for the availability of a given option using the macros
-in this section, together with the function ‘sysconf’.  The macros are
-defined only if you include ‘unistd.h’.
-
-   For the following macros, if the macro is defined in ‘unistd.h’, then
-the option is supported.  Otherwise, the option may or may not be
-supported; use ‘sysconf’ to find out.  *Note Sysconf::.
-
- -- Macro: int _POSIX_JOB_CONTROL
-
-     If this symbol is defined, it indicates that the system supports
-     job control.  Otherwise, the implementation behaves as if all
-     processes within a session belong to a single process group.  *Note
-     Job Control::.  Systems conforming to the 2001 revision of POSIX,
-     or newer, will always define this symbol.
-
- -- Macro: int _POSIX_SAVED_IDS
-
-     If this symbol is defined, it indicates that the system remembers
-     the effective user and group IDs of a process before it executes an
-     executable file with the set-user-ID or set-group-ID bits set, and
-     that explicitly changing the effective user or group IDs back to
-     these values is permitted.  If this option is not defined, then if
-     a nonprivileged process changes its effective user or group ID to
-     the real user or group ID of the process, it can’t change it back
-     again.  *Note Enable/Disable Setuid::.
-
-   For the following macros, if the macro is defined in ‘unistd.h’, then
-its value indicates whether the option is supported.  A value of ‘-1’
-means no, and any other value means yes.  If the macro is not defined,
-then the option may or may not be supported; use ‘sysconf’ to find out.
-*Note Sysconf::.
-
- -- Macro: int _POSIX2_C_DEV
-
-     If this symbol is defined, it indicates that the system has the
-     POSIX.2 C compiler command, ‘c89’.  The GNU C Library always
-     defines this as ‘1’, on the assumption that you would not have
-     installed it if you didn’t have a C compiler.
-
- -- Macro: int _POSIX2_FORT_DEV
-
-     If this symbol is defined, it indicates that the system has the
-     POSIX.2 Fortran compiler command, ‘fort77’.  The GNU C Library
-     never defines this, because we don’t know what the system has.
-
- -- Macro: int _POSIX2_FORT_RUN
-
-     If this symbol is defined, it indicates that the system has the
-     POSIX.2 ‘asa’ command to interpret Fortran carriage control.  The
-     GNU C Library never defines this, because we don’t know what the
-     system has.
-
- -- Macro: int _POSIX2_LOCALEDEF
-
-     If this symbol is defined, it indicates that the system has the
-     POSIX.2 ‘localedef’ command.  The GNU C Library never defines this,
-     because we don’t know what the system has.
-
- -- Macro: int _POSIX2_SW_DEV
-
-     If this symbol is defined, it indicates that the system has the
-     POSIX.2 commands ‘ar’, ‘make’, and ‘strip’.  The GNU C Library
-     always defines this as ‘1’, on the assumption that you had to have
-     ‘ar’ and ‘make’ to install the library, and it’s unlikely that
-     ‘strip’ would be absent when those are present.
-
-
-File: libc.info,  Node: Version Supported,  Next: Sysconf,  Prev: System Options,  Up: System Configuration
-
-32.3 Which Version of POSIX is Supported
-========================================
-
- -- Macro: long int _POSIX_VERSION
-
-     This constant represents the version of the POSIX.1 standard to
-     which the implementation conforms.  For an implementation
-     conforming to the 1995 POSIX.1 standard, the value is the integer
-     ‘199506L’.
-
-     ‘_POSIX_VERSION’ is always defined (in ‘unistd.h’) in any POSIX
-     system.
-
-     *Usage Note:* Don’t try to test whether the system supports POSIX
-     by including ‘unistd.h’ and then checking whether ‘_POSIX_VERSION’
-     is defined.  On a non-POSIX system, this will probably fail because
-     there is no ‘unistd.h’.  We do not know of _any_ way you can
-     reliably test at compilation time whether your target system
-     supports POSIX or whether ‘unistd.h’ exists.
-
- -- Macro: long int _POSIX2_C_VERSION
-
-     This constant represents the version of the POSIX.2 standard which
-     the library and system kernel support.  We don’t know what value
-     this will be for the first version of the POSIX.2 standard, because
-     the value is based on the year and month in which the standard is
-     officially adopted.
-
-     The value of this symbol says nothing about the utilities installed
-     on the system.
-
-     *Usage Note:* You can use this macro to tell whether a POSIX.1
-     system library supports POSIX.2 as well.  Any POSIX.1 system
-     contains ‘unistd.h’, so include that file and then test ‘defined
-     (_POSIX2_C_VERSION)’.
-

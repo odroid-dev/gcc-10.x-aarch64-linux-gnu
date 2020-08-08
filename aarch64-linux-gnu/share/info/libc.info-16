@@ -1,8 +1,6 @@
 This is libc.info, produced by makeinfo version 6.7 from libc.texinfo.
 
-This file documents the GNU C Library.
-
-   This is ‘The GNU C Library Reference Manual’, for version 2.31.
+This is ‘The GNU C Library Reference Manual’, for version 2.32.
 
    Copyright © 1993–2020 Free Software Foundation, Inc.
 
@@ -318,6 +316,7 @@ START-INFO-DIR-ENTRY
 * O_NDELAY: (libc)Operating Modes.
 * O_NOATIME: (libc)Operating Modes.
 * O_NOCTTY: (libc)Open-time Flags.
+* O_NOFOLLOW: (libc)Open-time Flags.
 * O_NOLINK: (libc)Open-time Flags.
 * O_NONBLOCK: (libc)Open-time Flags.
 * O_NONBLOCK: (libc)Operating Modes.
@@ -343,6 +342,7 @@ START-INFO-DIR-ENTRY
 * PF_LOCAL: (libc)Local Namespace Details.
 * PF_UNIX: (libc)Local Namespace Details.
 * PIPE_BUF: (libc)Limits for Files.
+* PTHREAD_ATTR_NO_SIGMASK_NP: (libc)Initial Thread Signal Mask.
 * P_tmpdir: (libc)Temporary Files.
 * RAND_MAX: (libc)ISO Random.
 * RE_DUP_MAX: (libc)General Limits.
@@ -936,6 +936,7 @@ START-INFO-DIR-ENTRY
 * fetestexcept: (libc)Status bit operations.
 * fetestexceptflag: (libc)Status bit operations.
 * feupdateenv: (libc)Control Functions.
+* fexecve: (libc)Executing a File.
 * fflush: (libc)Flushing Buffers.
 * fflush_unlocked: (libc)Flushing Buffers.
 * fgetc: (libc)Character Input.
@@ -1556,18 +1557,20 @@ START-INFO-DIR-ENTRY
 * printf_size: (libc)Predefined Printf Handlers.
 * printf_size_info: (libc)Predefined Printf Handlers.
 * psignal: (libc)Signal Messages.
-* pthread_clockjoin_np: (libc)Default Thread Attributes.
-* pthread_cond_clockwait: (libc)Default Thread Attributes.
+* pthread_attr_getsigmask_np: (libc)Initial Thread Signal Mask.
+* pthread_attr_setsigmask_np: (libc)Initial Thread Signal Mask.
+* pthread_clockjoin_np: (libc)Waiting with Explicit Clocks.
+* pthread_cond_clockwait: (libc)Waiting with Explicit Clocks.
 * pthread_getattr_default_np: (libc)Default Thread Attributes.
 * pthread_getspecific: (libc)Thread-specific Data.
 * pthread_key_create: (libc)Thread-specific Data.
 * pthread_key_delete: (libc)Thread-specific Data.
-* pthread_rwlock_clockrdlock: (libc)Default Thread Attributes.
-* pthread_rwlock_clockwrlock: (libc)Default Thread Attributes.
+* pthread_rwlock_clockrdlock: (libc)Waiting with Explicit Clocks.
+* pthread_rwlock_clockwrlock: (libc)Waiting with Explicit Clocks.
 * pthread_setattr_default_np: (libc)Default Thread Attributes.
 * pthread_setspecific: (libc)Thread-specific Data.
-* pthread_timedjoin_np: (libc)Default Thread Attributes.
-* pthread_tryjoin_np: (libc)Default Thread Attributes.
+* pthread_timedjoin_np: (libc)Waiting with Explicit Clocks.
+* pthread_tryjoin_np: (libc)Waiting with Explicit Clocks.
 * ptsname: (libc)Allocation.
 * ptsname_r: (libc)Allocation.
 * putc: (libc)Simple Output.
@@ -1679,7 +1682,7 @@ START-INFO-DIR-ENTRY
 * seed48_r: (libc)SVID Random.
 * seekdir: (libc)Random Access Directory.
 * select: (libc)Waiting for I/O.
-* sem_clockwait: (libc)Default Thread Attributes.
+* sem_clockwait: (libc)Waiting with Explicit Clocks.
 * sem_close: (libc)Semaphores.
 * sem_destroy: (libc)Semaphores.
 * sem_getvalue: (libc)Semaphores.
@@ -1751,11 +1754,13 @@ START-INFO-DIR-ENTRY
 * shm_open: (libc)Memory-mapped I/O.
 * shm_unlink: (libc)Memory-mapped I/O.
 * shutdown: (libc)Closing a Socket.
+* sigabbrev_np: (libc)Signal Messages.
 * sigaction: (libc)Advanced Signal Handling.
 * sigaddset: (libc)Signal Sets.
 * sigaltstack: (libc)Signal Stack.
 * sigblock: (libc)BSD Signal Handling.
 * sigdelset: (libc)Signal Sets.
+* sigdescr_np: (libc)Signal Messages.
 * sigemptyset: (libc)Signal Sets.
 * sigfillset: (libc)Signal Sets.
 * siginterrupt: (libc)BSD Signal Handling.
@@ -1824,6 +1829,8 @@ START-INFO-DIR-ENTRY
 * strdupa: (libc)Copying Strings and Arrays.
 * strerror: (libc)Error Messages.
 * strerror_r: (libc)Error Messages.
+* strerrordesc_np: (libc)Error Messages.
+* strerrorname_np: (libc)Error Messages.
 * strfmon: (libc)Formatting Numbers.
 * strfromd: (libc)Printing of Floats.
 * strfromf: (libc)Printing of Floats.
@@ -1872,7 +1879,6 @@ START-INFO-DIR-ENTRY
 * sync: (libc)Synchronizing I/O.
 * syscall: (libc)System Calls.
 * sysconf: (libc)Sysconf Definition.
-* sysctl: (libc)System Parameters.
 * syslog: (libc)syslog; vsyslog.
 * system: (libc)Running a Command.
 * sysv_signal: (libc)Basic Signal Handling.
@@ -2148,13 +2154,17 @@ Type Index
 * glibc.cpu.x86_data_cache_size:         Hardware Capability Tunables.
                                                               (line  46)
 * glibc.cpu.x86_ibt:                     Hardware Capability Tunables.
-                                                              (line  63)
+                                                              (line  77)
 * glibc.cpu.x86_non_temporal_threshold:  Hardware Capability Tunables.
                                                               (line  57)
+* glibc.cpu.x86_rep_movsb_threshold:     Hardware Capability Tunables.
+                                                              (line  63)
+* glibc.cpu.x86_rep_stosb_threshold:     Hardware Capability Tunables.
+                                                              (line  70)
 * glibc.cpu.x86_shared_cache_size:       Hardware Capability Tunables.
                                                               (line  52)
 * glibc.cpu.x86_shstk:                   Hardware Capability Tunables.
-                                                              (line  75)
+                                                              (line  89)
 * glibc.elision:                         Elision Tunables.    (line   6)
 * glibc.elision.enable:                  Elision Tunables.    (line  13)
 * glibc.elision.skip_lock_after_retries: Elision Tunables.    (line  37)
@@ -2193,6 +2203,12 @@ Type Index
                                                               (line   6)
 * glibc.pthread.mutex_spin_count:        POSIX Thread Tunables.
                                                               (line  12)
+* glibc.rtld:                            Dynamic Linking Tunables.
+                                                              (line   6)
+* glibc.rtld.nns:                        Dynamic Linking Tunables.
+                                                              (line  10)
+* glibc.rtld.optional_static_tls:        Dynamic Linking Tunables.
+                                                              (line  24)
 * glob64_t:                              Calling Glob.        (line 156)
 * glob_t:                                Calling Glob.        (line  11)
 * iconv_t:                               Generic Conversion Interface.
@@ -3038,16 +3054,16 @@ Function and Macro Index
 * erffN:                                 Special Functions.   (line  12)
 * erffNx:                                Special Functions.   (line  13)
 * erfl:                                  Special Functions.   (line  11)
-* err:                                   Error Messages.      (line 337)
-* error:                                 Error Messages.      (line 162)
-* error_at_line:                         Error Messages.      (line 200)
-* errx:                                  Error Messages.      (line 356)
+* err:                                   Error Messages.      (line 360)
+* error:                                 Error Messages.      (line 185)
+* error_at_line:                         Error Messages.      (line 223)
+* errx:                                  Error Messages.      (line 379)
 * execl:                                 Executing a File.    (line  37)
-* execle:                                Executing a File.    (line  57)
-* execlp:                                Executing a File.    (line  83)
+* execle:                                Executing a File.    (line  72)
+* execlp:                                Executing a File.    (line  98)
 * execv:                                 Executing a File.    (line  17)
 * execve:                                Executing a File.    (line  46)
-* execvp:                                Executing a File.    (line  69)
+* execvp:                                Executing a File.    (line  84)
 * exit:                                  Normal Termination.  (line  10)
 * exp:                                   Exponents and Logarithms.
                                                               (line   6)
@@ -3152,6 +3168,7 @@ Function and Macro Index
 * fetestexceptflag:                      Status bit operations.
                                                               (line 139)
 * feupdateenv:                           Control Functions.   (line  81)
+* fexecve:                               Executing a File.    (line  57)
 * fflush:                                Flushing Buffers.    (line  25)
 * fflush_unlocked:                       Flushing Buffers.    (line  37)
 * fgetc:                                 Character Input.     (line  22)
@@ -3466,7 +3483,7 @@ Function and Macro Index
 * gmtime_r:                              Broken-down Time.    (line 143)
 * grantpt:                               Allocation.          (line  26)
 * grantpt <1>:                           Configuring and compiling.
-                                                              (line 174)
+                                                              (line 178)
 * gsignal:                               Signaling Yourself.  (line  19)
 * gtty:                                  BSD Terminal Modes.  (line  31)
 * hasmntopt:                             mtab.                (line 205)
@@ -3806,7 +3823,7 @@ Function and Macro Index
 * mbrtowc:                               Converting a Character.
                                                               (line  87)
 * mbsinit:                               Keeping the state.   (line  48)
-* mbsnrtowcs:                            Converting Strings.  (line 142)
+* mbsnrtowcs:                            Converting Strings.  (line 147)
 * mbsrtowcs:                             Converting Strings.  (line  14)
 * mbstowcs:                              Non-reentrant String Conversion.
                                                               (line  13)
@@ -4016,28 +4033,32 @@ Function and Macro Index
 * printf_size_info:                      Predefined Printf Handlers.
                                                               (line  44)
 * psignal:                               Signal Messages.     (line  29)
-* pthread_clockjoin_np:                  Default Thread Attributes.
-                                                              (line  97)
-* pthread_cond_clockwait:                Default Thread Attributes.
-                                                              (line  39)
+* pthread_attr_getsigmask_np:            Initial Thread Signal Mask.
+                                                              (line  26)
+* pthread_attr_setsigmask_np:            Initial Thread Signal Mask.
+                                                              (line  10)
+* pthread_clockjoin_np:                  Waiting with Explicit Clocks.
+                                                              (line  73)
+* pthread_cond_clockwait:                Waiting with Explicit Clocks.
+                                                              (line  15)
 * pthread_getattr_default_np:            Default Thread Attributes.
                                                               (line   9)
 * pthread_key_create:                    Thread-specific Data.
                                                               (line  10)
 * pthread_key_delete:                    Thread-specific Data.
                                                               (line  25)
-* pthread_rwlock_clockrdlock:            Default Thread Attributes.
-                                                              (line  51)
-* pthread_rwlock_clockwrlock:            Default Thread Attributes.
-                                                              (line  63)
+* pthread_rwlock_clockrdlock:            Waiting with Explicit Clocks.
+                                                              (line  27)
+* pthread_rwlock_clockwrlock:            Waiting with Explicit Clocks.
+                                                              (line  39)
 * pthread_setattr_default_np:            Default Thread Attributes.
                                                               (line  17)
 * pthread_setspecific:                   Thread-specific Data.
                                                               (line  42)
-* pthread_timedjoin_np:                  Default Thread Attributes.
-                                                              (line  85)
-* pthread_tryjoin_np:                    Default Thread Attributes.
-                                                              (line  75)
+* pthread_timedjoin_np:                  Waiting with Explicit Clocks.
+                                                              (line  61)
+* pthread_tryjoin_np:                    Waiting with Explicit Clocks.
+                                                              (line  51)
 * ptsname:                               Allocation.          (line  83)
 * ptsname_r:                             Allocation.          (line  94)
 * putc:                                  Simple Output.       (line  48)
@@ -4193,8 +4214,8 @@ Function and Macro Index
 * semget:                                Semaphores.          (line  18)
 * semop:                                 Semaphores.          (line  22)
 * semtimedop:                            Semaphores.          (line  26)
-* sem_clockwait:                         Default Thread Attributes.
-                                                              (line  33)
+* sem_clockwait:                         Waiting with Explicit Clocks.
+                                                              (line   9)
 * sem_close:                             Semaphores.          (line  47)
 * sem_destroy:                           Semaphores.          (line  39)
 * sem_getvalue:                          Semaphores.          (line  72)
@@ -4231,16 +4252,16 @@ Function and Macro Index
 * setmntent:                             mtab.                (line 102)
 * setnetent:                             Networks Database.   (line  63)
 * setnetgrent:                           Lookup Netgroup.     (line  12)
-* setpayload:                            FP Bit Twiddling.    (line 177)
-* setpayloadf:                           FP Bit Twiddling.    (line 178)
-* setpayloadfN:                          FP Bit Twiddling.    (line 180)
-* setpayloadfNx:                         FP Bit Twiddling.    (line 181)
-* setpayloadl:                           FP Bit Twiddling.    (line 179)
-* setpayloadsig:                         FP Bit Twiddling.    (line 194)
-* setpayloadsigf:                        FP Bit Twiddling.    (line 195)
-* setpayloadsigfN:                       FP Bit Twiddling.    (line 197)
-* setpayloadsigfNx:                      FP Bit Twiddling.    (line 198)
-* setpayloadsigl:                        FP Bit Twiddling.    (line 196)
+* setpayload:                            FP Bit Twiddling.    (line 178)
+* setpayloadf:                           FP Bit Twiddling.    (line 179)
+* setpayloadfN:                          FP Bit Twiddling.    (line 181)
+* setpayloadfNx:                         FP Bit Twiddling.    (line 182)
+* setpayloadl:                           FP Bit Twiddling.    (line 180)
+* setpayloadsig:                         FP Bit Twiddling.    (line 195)
+* setpayloadsigf:                        FP Bit Twiddling.    (line 196)
+* setpayloadsigfN:                       FP Bit Twiddling.    (line 198)
+* setpayloadsigfNx:                      FP Bit Twiddling.    (line 199)
+* setpayloadsigl:                        FP Bit Twiddling.    (line 197)
 * setpgid:                               Process Group Functions.
                                                               (line  81)
 * setpgrp:                               Process Group Functions.
@@ -4271,19 +4292,21 @@ Function and Macro Index
 * shm_open:                              Memory-mapped I/O.   (line 355)
 * shm_unlink:                            Memory-mapped I/O.   (line 374)
 * shutdown:                              Closing a Socket.    (line  16)
+* sigabbrev_np:                          Signal Messages.     (line  62)
 * sigaction:                             Advanced Signal Handling.
                                                               (line  40)
 * sigaddset:                             Signal Sets.         (line  52)
 * sigaltstack:                           Signal Stack.        (line  70)
-* sigblock:                              BSD Signal Handling. (line  45)
+* sigblock:                              BSD Signal Handling. (line  51)
 * sigdelset:                             Signal Sets.         (line  67)
+* sigdescr_np:                           Signal Messages.     (line  49)
 * sigemptyset:                           Signal Sets.         (line  36)
 * sigfillset:                            Signal Sets.         (line  44)
 * siginterrupt:                          BSD Signal Handling. (line  20)
 * sigismember:                           Signal Sets.         (line  80)
 * siglongjmp:                            Non-Local Exits and Signals.
                                                               (line  34)
-* sigmask:                               BSD Signal Handling. (line  31)
+* sigmask:                               BSD Signal Handling. (line  34)
 * signal:                                Basic Signal Handling.
                                                               (line  20)
 * signbit:                               FP Bit Twiddling.    (line  31)
@@ -4293,13 +4316,13 @@ Function and Macro Index
                                                               (line  96)
 * significandl:                          Normalization Functions.
                                                               (line  97)
-* sigpause:                              BSD Signal Handling. (line  65)
+* sigpause:                              BSD Signal Handling. (line  71)
 * sigpending:                            Checking for Pending Signals.
                                                               (line   9)
 * sigprocmask:                           Process Signal Mask. (line  20)
 * sigsetjmp:                             Non-Local Exits and Signals.
                                                               (line  25)
-* sigsetmask:                            BSD Signal Handling. (line  55)
+* sigsetmask:                            BSD Signal Handling. (line  61)
 * sigstack:                              Signal Stack.        (line 116)
 * sigsuspend:                            Sigsuspend.          (line  11)
 * sin:                                   Trig Functions.      (line  18)
@@ -4373,6 +4396,8 @@ Function and Macro Index
 * strdupa:                               Copying Strings and Arrays.
                                                               (line 301)
 * strerror:                              Error Messages.      (line  14)
+* strerrordesc_np:                       Error Messages.      (line  86)
+* strerrorname_np:                       Error Messages.      (line  75)
 * strerror_r:                            Error Messages.      (line  32)
 * strfmon:                               Formatting Numbers.  (line  15)
 * strfromd:                              Printing of Floats.  (line   8)
@@ -4436,7 +4461,6 @@ Function and Macro Index
 * sync:                                  Synchronizing I/O.   (line  15)
 * syscall:                               System Calls.        (line  39)
 * sysconf:                               Sysconf Definition.  (line   6)
-* sysctl:                                System Parameters.   (line  12)
 * syslog:                                syslog; vsyslog.     (line   9)
 * system:                                Running a Command.   (line  11)
 * sysv_signal:                           Basic Signal Handling.
@@ -4616,8 +4640,8 @@ Function and Macro Index
 * va_copy:                               Argument Macros.     (line  56)
 * va_end:                                Argument Macros.     (line  36)
 * va_start:                              Argument Macros.     (line  13)
-* verr:                                  Error Messages.      (line 347)
-* verrx:                                 Error Messages.      (line 367)
+* verr:                                  Error Messages.      (line 370)
+* verrx:                                 Error Messages.      (line 390)
 * versionsort:                           Scanning Directory Content.
                                                               (line  57)
 * versionsort64:                         Scanning Directory Content.
@@ -4648,8 +4672,8 @@ Function and Macro Index
                                                               (line  62)
 * vsyslog:                               syslog; vsyslog.     (line 126)
 * vtimes:                                Resource Usage.      (line 111)
-* vwarn:                                 Error Messages.      (line 308)
-* vwarnx:                                Error Messages.      (line 328)
+* vwarn:                                 Error Messages.      (line 331)
+* vwarnx:                                Error Messages.      (line 351)
 * vwprintf:                              Variable Arguments Output.
                                                               (line  63)
 * vwscanf:                               Variable Arguments Input.
@@ -4658,8 +4682,8 @@ Function and Macro Index
 * wait3:                                 BSD Wait Functions.  (line  11)
 * wait4:                                 Process Completion.  (line 128)
 * waitpid:                               Process Completion.  (line  10)
-* warn:                                  Error Messages.      (line 298)
-* warnx:                                 Error Messages.      (line 317)
+* warn:                                  Error Messages.      (line 321)
+* warnx:                                 Error Messages.      (line 340)
 * WCOREDUMP:                             Process Completion Status.
                                                               (line  46)
 * wcpcpy:                                Copying Strings and Arrays.
@@ -4691,10 +4715,10 @@ Function and Macro Index
                                                               (line 163)
 * wcsncpy:                               Truncating Strings.  (line  38)
 * wcsnlen:                               String Length.       (line 106)
-* wcsnrtombs:                            Converting Strings.  (line 197)
+* wcsnrtombs:                            Converting Strings.  (line 206)
 * wcspbrk:                               Search Functions.    (line 328)
 * wcsrchr:                               Search Functions.    (line 166)
-* wcsrtombs:                             Converting Strings.  (line  95)
+* wcsrtombs:                             Converting Strings.  (line  99)
 * wcsspn:                                Search Functions.    (line 264)
 * wcsstr:                                Search Functions.    (line 192)
 * wcstod:                                Parsing of Floats.   (line 111)
@@ -4708,7 +4732,7 @@ Function and Macro Index
 * wcstold:                               Parsing of Floats.   (line 114)
 * wcstoll:                               Parsing of Integers. (line 132)
 * wcstombs:                              Non-reentrant String Conversion.
-                                                              (line  52)
+                                                              (line  60)
 * wcstoq:                                Parsing of Integers. (line 151)
 * wcstoul:                               Parsing of Integers. (line 103)
 * wcstoull:                              Parsing of Integers. (line 173)

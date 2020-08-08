@@ -1,8 +1,6 @@
 This is libc.info, produced by makeinfo version 6.7 from libc.texinfo.
 
-This file documents the GNU C Library.
-
-   This is ‘The GNU C Library Reference Manual’, for version 2.31.
+This is ‘The GNU C Library Reference Manual’, for version 2.32.
 
    Copyright © 1993–2020 Free Software Foundation, Inc.
 
@@ -318,6 +316,7 @@ START-INFO-DIR-ENTRY
 * O_NDELAY: (libc)Operating Modes.
 * O_NOATIME: (libc)Operating Modes.
 * O_NOCTTY: (libc)Open-time Flags.
+* O_NOFOLLOW: (libc)Open-time Flags.
 * O_NOLINK: (libc)Open-time Flags.
 * O_NONBLOCK: (libc)Open-time Flags.
 * O_NONBLOCK: (libc)Operating Modes.
@@ -343,6 +342,7 @@ START-INFO-DIR-ENTRY
 * PF_LOCAL: (libc)Local Namespace Details.
 * PF_UNIX: (libc)Local Namespace Details.
 * PIPE_BUF: (libc)Limits for Files.
+* PTHREAD_ATTR_NO_SIGMASK_NP: (libc)Initial Thread Signal Mask.
 * P_tmpdir: (libc)Temporary Files.
 * RAND_MAX: (libc)ISO Random.
 * RE_DUP_MAX: (libc)General Limits.
@@ -936,6 +936,7 @@ START-INFO-DIR-ENTRY
 * fetestexcept: (libc)Status bit operations.
 * fetestexceptflag: (libc)Status bit operations.
 * feupdateenv: (libc)Control Functions.
+* fexecve: (libc)Executing a File.
 * fflush: (libc)Flushing Buffers.
 * fflush_unlocked: (libc)Flushing Buffers.
 * fgetc: (libc)Character Input.
@@ -1556,18 +1557,20 @@ START-INFO-DIR-ENTRY
 * printf_size: (libc)Predefined Printf Handlers.
 * printf_size_info: (libc)Predefined Printf Handlers.
 * psignal: (libc)Signal Messages.
-* pthread_clockjoin_np: (libc)Default Thread Attributes.
-* pthread_cond_clockwait: (libc)Default Thread Attributes.
+* pthread_attr_getsigmask_np: (libc)Initial Thread Signal Mask.
+* pthread_attr_setsigmask_np: (libc)Initial Thread Signal Mask.
+* pthread_clockjoin_np: (libc)Waiting with Explicit Clocks.
+* pthread_cond_clockwait: (libc)Waiting with Explicit Clocks.
 * pthread_getattr_default_np: (libc)Default Thread Attributes.
 * pthread_getspecific: (libc)Thread-specific Data.
 * pthread_key_create: (libc)Thread-specific Data.
 * pthread_key_delete: (libc)Thread-specific Data.
-* pthread_rwlock_clockrdlock: (libc)Default Thread Attributes.
-* pthread_rwlock_clockwrlock: (libc)Default Thread Attributes.
+* pthread_rwlock_clockrdlock: (libc)Waiting with Explicit Clocks.
+* pthread_rwlock_clockwrlock: (libc)Waiting with Explicit Clocks.
 * pthread_setattr_default_np: (libc)Default Thread Attributes.
 * pthread_setspecific: (libc)Thread-specific Data.
-* pthread_timedjoin_np: (libc)Default Thread Attributes.
-* pthread_tryjoin_np: (libc)Default Thread Attributes.
+* pthread_timedjoin_np: (libc)Waiting with Explicit Clocks.
+* pthread_tryjoin_np: (libc)Waiting with Explicit Clocks.
 * ptsname: (libc)Allocation.
 * ptsname_r: (libc)Allocation.
 * putc: (libc)Simple Output.
@@ -1679,7 +1682,7 @@ START-INFO-DIR-ENTRY
 * seed48_r: (libc)SVID Random.
 * seekdir: (libc)Random Access Directory.
 * select: (libc)Waiting for I/O.
-* sem_clockwait: (libc)Default Thread Attributes.
+* sem_clockwait: (libc)Waiting with Explicit Clocks.
 * sem_close: (libc)Semaphores.
 * sem_destroy: (libc)Semaphores.
 * sem_getvalue: (libc)Semaphores.
@@ -1751,11 +1754,13 @@ START-INFO-DIR-ENTRY
 * shm_open: (libc)Memory-mapped I/O.
 * shm_unlink: (libc)Memory-mapped I/O.
 * shutdown: (libc)Closing a Socket.
+* sigabbrev_np: (libc)Signal Messages.
 * sigaction: (libc)Advanced Signal Handling.
 * sigaddset: (libc)Signal Sets.
 * sigaltstack: (libc)Signal Stack.
 * sigblock: (libc)BSD Signal Handling.
 * sigdelset: (libc)Signal Sets.
+* sigdescr_np: (libc)Signal Messages.
 * sigemptyset: (libc)Signal Sets.
 * sigfillset: (libc)Signal Sets.
 * siginterrupt: (libc)BSD Signal Handling.
@@ -1824,6 +1829,8 @@ START-INFO-DIR-ENTRY
 * strdupa: (libc)Copying Strings and Arrays.
 * strerror: (libc)Error Messages.
 * strerror_r: (libc)Error Messages.
+* strerrordesc_np: (libc)Error Messages.
+* strerrorname_np: (libc)Error Messages.
 * strfmon: (libc)Formatting Numbers.
 * strfromd: (libc)Printing of Floats.
 * strfromf: (libc)Printing of Floats.
@@ -1872,7 +1879,6 @@ START-INFO-DIR-ENTRY
 * sync: (libc)Synchronizing I/O.
 * syscall: (libc)System Calls.
 * sysconf: (libc)Sysconf Definition.
-* sysctl: (libc)System Parameters.
 * syslog: (libc)syslog; vsyslog.
 * system: (libc)Running a Command.
 * sysv_signal: (libc)Basic Signal Handling.
@@ -2207,20 +2213,24 @@ if ‘CFLAGS’ is specified it must enable optimization.  For example:
      executables (PIE) by default.
 
 ‘--enable-cet’
+‘--enable-cet=permissive’
      Enable Intel Control-flow Enforcement Technology (CET) support.
-     When the GNU C Library is built with ‘--enable-cet’, the resulting
-     library is protected with indirect branch tracking (IBT) and shadow
-     stack (SHSTK).  When CET is enabled, the GNU C Library is
-     compatible with all existing executables and shared libraries.
-     This feature is currently supported on i386, x86_64 and x32 with
-     GCC 8 and binutils 2.29 or later.  Note that when CET is enabled,
-     the GNU C Library requires CPUs capable of multi-byte NOPs, like
-     x86-64 processors as well as Intel Pentium Pro or newer.
+     When the GNU C Library is built with ‘--enable-cet’ or
+     ‘--enable-cet=permissive’, the resulting library is protected with
+     indirect branch tracking (IBT) and shadow stack (SHSTK).  When CET
+     is enabled, the GNU C Library is compatible with all existing
+     executables and shared libraries.  This feature is currently
+     supported on i386, x86_64 and x32 with GCC 8 and binutils 2.29 or
+     later.  Note that when CET is enabled, the GNU C Library requires
+     CPUs capable of multi-byte NOPs, like x86-64 processors as well as
+     Intel Pentium Pro or newer.  With ‘--enable-cet’, it is an error to
+     dlopen a non CET enabled shared library in CET enabled application.
+     With ‘--enable-cet=permissive’, CET is disabled when dlopening a
+     non CET enabled shared library in CET enabled application.
 
      NOTE: ‘--enable-cet’ has been tested for i686, x86_64 and x32 on
-     non-CET processors.  ‘--enable-cet’ has been tested for x86_64 and
-     x32 on CET SDVs, but Intel CET support hasn’t been validated for
-     i686.
+     non-CET processors.  ‘--enable-cet’ has been tested for i686,
+     x86_64 and x32 on CET processors.
 
 ‘--disable-profile’
      Don’t build libraries with profiling information.  You may want to
@@ -2306,15 +2316,6 @@ if ‘CFLAGS’ is specified it must enable optimization.  For example:
           tunables.  This frontend allows users to specify tunables as a
           colon-separated list in a single environment variable
           ‘GLIBC_TUNABLES’.
-
-‘--enable-obsolete-nsl’
-     By default, libnsl is only built as shared library for backward
-     compatibility and the NSS modules libnss_compat, libnss_nis and
-     libnss_nisplus are not built at all.  Use this option to enable
-     libnsl with all depending NSS modules and header files.  For
-     architectures and ABIs that have been added after version 2.28 of
-     the GNU C Library this option is not available, and the libnsl
-     compatibility library is not built.
 
 ‘--disable-crypt’
      Do not install the passphrase-hashing library ‘libcrypt’ or the
@@ -2557,6 +2558,16 @@ build the GNU C Library:
      better code.  As of release time, GCC 9.2.1 is the newest compiler
      verified to work to build the GNU C Library.
 
+     For PowerPC 64-bits little-endian (powerpc64le), a GCC version with
+     support for ‘-mno-gnu-attribute’, ‘-mabi=ieeelongdouble’, and
+     ‘-mabi=ibmlondouble’ is required.  Likewise, the compiler must also
+     support passing ‘-mlong-double-128’ with the preceding options.  As
+     of release, this implies GCC 7.4 and newer (excepting GCC 7.5.0,
+     see GCC PR94200).  These additional features are required for
+     building the GNU C Library with support for IEEE long double.
+
+     For ARC architecture builds, GCC 8.3 or higher is needed.
+
      For multi-arch support it is recommended to use a GCC which has
      been built with support for GNU indirect functions.  This ensures
      that correct debugging information is generated for functions
@@ -2578,6 +2589,13 @@ build the GNU C Library:
      No other assembler or linker has the necessary functionality at the
      moment.  As of release time, GNU ‘binutils’ 2.32 is the newest
      verified to work to build the GNU C Library.
+
+     For PowerPC 64-bits little-endian (powerpc64le), ‘objcopy’ is
+     required to support ‘--update-section’.  This option requires
+     binutils 2.26 or newer.
+
+     ARC architecture needs ‘binutils’ 2.32 or higher for TLS related
+     fixes.
 
    • GNU ‘texinfo’ 4.7 or later
 
@@ -5346,7 +5364,7 @@ Concept Index
                                                               (line   6)
 * controlling terminal, determining:     Identifying the Terminal.
                                                               (line   6)
-* controlling terminal, setting:         Open-time Flags.     (line  91)
+* controlling terminal, setting:         Open-time Flags.     (line  97)
 * conversion specifications (printf):    Formatted Output Basics.
                                                               (line  14)
 * conversion specifications (scanf):     Formatted Input Basics.
@@ -5476,6 +5494,8 @@ Concept Index
 * DRBG:                                  Unpredictable Bytes. (line   6)
 * DSUSP character:                       Signal Characters.   (line  57)
 * duplicating file descriptors:          Duplicating Descriptors.
+                                                              (line   6)
+* dynamic linking tunables:              Dynamic Linking Tunables.
                                                               (line   6)
 * dynamic memory allocation:             Memory Allocation and C.
                                                               (line  26)
@@ -5997,7 +6017,7 @@ Concept Index
                                                               (line   6)
 * mutual exclusion:                      ISO C Mutexes.       (line   6)
 * Name not unique on network:            Error Codes.         (line 734)
-* name of running program:               Error Messages.      (line  81)
+* name of running program:               Error Messages.      (line 104)
 * name of socket:                        Socket Addresses.    (line   6)
 * Name Service Switch:                   Name Service Switch. (line   6)
 * name space:                            Reserved Names.      (line   6)
@@ -6044,7 +6064,7 @@ Concept Index
 * No such file or directory:             Error Codes.         (line  19)
 * No such process:                       Error Codes.         (line  25)
 * No XENIX semaphores available:         Error Codes.         (line 778)
-* non-blocking open:                     Open-time Flags.     (line  66)
+* non-blocking open:                     Open-time Flags.     (line  72)
 * non-local exit, from signal handler:   Longjmp in Handler.  (line   6)
 * non-local exits:                       Non-Local Exits.     (line   6)
 * noncanonical input processing:         Canonical or Not.    (line  26)
@@ -6099,7 +6119,7 @@ Concept Index
 * Optimization:                          FP Function Optimizations.
                                                               (line   6)
 * optimizing NSS:                        Notes on NSS Configuration File.
-                                                              (line  31)
+                                                              (line  25)
 * option parsing with argp:              Argp.                (line   6)
 * optional arguments:                    Variadic Functions.  (line   6)
 * optional POSIX features:               System Options.      (line   6)
@@ -6232,7 +6252,7 @@ Concept Index
                                                               (line   6)
 * program error signals:                 Program Error Signals.
                                                               (line   6)
-* program name:                          Error Messages.      (line  81)
+* program name:                          Error Messages.      (line 104)
 * program startup:                       Program Arguments.   (line   6)
 * program termination:                   Program Termination. (line   6)
 * program termination signals:           Termination Signals. (line   6)
@@ -6337,6 +6357,8 @@ Concept Index
 * RPC program version wrong:             Error Codes.         (line 485)
 * RPC struct is bad:                     Error Codes.         (line 473)
 * RPC version wrong:                     Error Codes.         (line 477)
+* rtld tunables:                         Dynamic Linking Tunables.
+                                                              (line   6)
 * runnable process:                      Absolute Priority.   (line  25)
 * running a command:                     Running a Command.   (line   6)
 * saved set-group-ID:                    How Change Persona.  (line   6)
@@ -6495,7 +6517,7 @@ Concept Index
 * stateful:                              Keeping the state.   (line   6)
 * stateful <1>:                          Converting a Character.
                                                               (line  94)
-* stateful <2>:                          Converting Strings.  (line  71)
+* stateful <2>:                          Converting Strings.  (line  75)
 * stateful <3>:                          Generic Conversion Interface.
                                                               (line 121)
 * stateful <4>:                          iconv Examples.      (line  96)
@@ -6573,7 +6595,7 @@ Concept Index
 * SVID:                                  SVID.                (line   6)
 * swap space:                            Memory Concepts.     (line  18)
 * symbolic link:                         Symbolic Links.      (line   6)
-* symbolic link, opening:                Open-time Flags.     (line 107)
+* symbolic link, opening:                Open-time Flags.     (line 113)
 * synchronizing:                         Synchronizing I/O.   (line   6)
 * synchronizing <1>:                     Synchronizing AIO Operations.
                                                               (line  17)
