@@ -1192,7 +1192,7 @@ _Machine-Dependent Options_
 
      _eBPF Options_
           -mbig-endian -mlittle-endian -mkernel=VERSION
-          -mframe-limit=BYTES
+          -mframe-limit=BYTES -mxbpf
 
      _FR30 Options_
           -msmall-model  -mno-lsim
@@ -19684,6 +19684,12 @@ File: gcc.info,  Node: eBPF Options,  Next: FR30 Options,  Prev: DEC Alpha Optio
 '-mlittle-endian'
      Generate code for a little-endian target.  This is the default.
 
+'-mxbpf'
+     Generate code for an expanded version of BPF, which relaxes some of
+     the restrictions imposed by the BPF architecture:
+        - Save and restore callee-saved registers at function entry and
+          exit, respectively.
+
 
 File: gcc.info,  Node: FR30 Options,  Next: FT32 Options,  Prev: eBPF Options,  Up: Submodel Options
 
@@ -31275,6 +31281,7 @@ their own attributes.
 * ARM Function Attributes::
 * AVR Function Attributes::
 * Blackfin Function Attributes::
+* BPF Function Attributes::
 * CR16 Function Attributes::
 * C-SKY Function Attributes::
 * Epiphany Function Attributes::
@@ -33176,7 +33183,7 @@ These function attributes are supported by the AVR back end:
      function, 'signal' is silently ignored.
 
 
-File: gcc.info,  Node: Blackfin Function Attributes,  Next: CR16 Function Attributes,  Prev: AVR Function Attributes,  Up: Function Attributes
+File: gcc.info,  Node: Blackfin Function Attributes,  Next: BPF Function Attributes,  Prev: AVR Function Attributes,  Up: Function Attributes
 
 6.33.7 Blackfin Function Attributes
 -----------------------------------
@@ -33236,9 +33243,25 @@ These function attributes are supported by the Blackfin back end:
      are used or not.
 
 
-File: gcc.info,  Node: CR16 Function Attributes,  Next: C-SKY Function Attributes,  Prev: Blackfin Function Attributes,  Up: Function Attributes
+File: gcc.info,  Node: BPF Function Attributes,  Next: CR16 Function Attributes,  Prev: Blackfin Function Attributes,  Up: Function Attributes
 
-6.33.8 CR16 Function Attributes
+6.33.8 BPF Function Attributes
+------------------------------
+
+These function attributes are supported by the BPF back end:
+
+'kernel_helper'
+     use this attribute to indicate the specified function declaration
+     is a kernel helper.  The helper function is passed as an argument
+     to the attribute.  Example:
+
+          int bpf_probe_read (void *dst, int size, const void *unsafe_ptr)
+            __attribute__ ((kernel_helper (4)));
+
+
+File: gcc.info,  Node: CR16 Function Attributes,  Next: C-SKY Function Attributes,  Prev: BPF Function Attributes,  Up: Function Attributes
+
+6.33.9 CR16 Function Attributes
 -------------------------------
 
 These function attributes are supported by the CR16 back end:
@@ -33252,8 +33275,8 @@ These function attributes are supported by the CR16 back end:
 
 File: gcc.info,  Node: C-SKY Function Attributes,  Next: Epiphany Function Attributes,  Prev: CR16 Function Attributes,  Up: Function Attributes
 
-6.33.9 C-SKY Function Attributes
---------------------------------
+6.33.10 C-SKY Function Attributes
+---------------------------------
 
 These function attributes are supported by the C-SKY back end:
 
@@ -33281,7 +33304,7 @@ These function attributes are supported by the C-SKY back end:
 
 File: gcc.info,  Node: Epiphany Function Attributes,  Next: H8/300 Function Attributes,  Prev: C-SKY Function Attributes,  Up: Function Attributes
 
-6.33.10 Epiphany Function Attributes
+6.33.11 Epiphany Function Attributes
 ------------------------------------
 
 These function attributes are supported by the Epiphany back end:
@@ -33343,7 +33366,7 @@ These function attributes are supported by the Epiphany back end:
 
 File: gcc.info,  Node: H8/300 Function Attributes,  Next: IA-64 Function Attributes,  Prev: Epiphany Function Attributes,  Up: Function Attributes
 
-6.33.11 H8/300 Function Attributes
+6.33.12 H8/300 Function Attributes
 ----------------------------------
 
 These function attributes are available for H8/300 targets:
@@ -33370,7 +33393,7 @@ These function attributes are available for H8/300 targets:
 
 File: gcc.info,  Node: IA-64 Function Attributes,  Next: M32C Function Attributes,  Prev: H8/300 Function Attributes,  Up: Function Attributes
 
-6.33.12 IA-64 Function Attributes
+6.33.13 IA-64 Function Attributes
 ---------------------------------
 
 These function attributes are supported on IA-64 targets:
@@ -33395,7 +33418,7 @@ These function attributes are supported on IA-64 targets:
 
 File: gcc.info,  Node: M32C Function Attributes,  Next: M32R/D Function Attributes,  Prev: IA-64 Function Attributes,  Up: Function Attributes
 
-6.33.13 M32C Function Attributes
+6.33.14 M32C Function Attributes
 --------------------------------
 
 These function attributes are supported by the M32C back end:
@@ -33453,7 +33476,7 @@ These function attributes are supported by the M32C back end:
 
 File: gcc.info,  Node: M32R/D Function Attributes,  Next: m68k Function Attributes,  Prev: M32C Function Attributes,  Up: Function Attributes
 
-6.33.14 M32R/D Function Attributes
+6.33.15 M32R/D Function Attributes
 ----------------------------------
 
 These function attributes are supported by the M32R/D back end:
@@ -33488,7 +33511,7 @@ These function attributes are supported by the M32R/D back end:
 
 File: gcc.info,  Node: m68k Function Attributes,  Next: MCORE Function Attributes,  Prev: M32R/D Function Attributes,  Up: Function Attributes
 
-6.33.15 m68k Function Attributes
+6.33.16 m68k Function Attributes
 --------------------------------
 
 These function attributes are supported by the m68k back end:
@@ -33511,7 +33534,7 @@ These function attributes are supported by the m68k back end:
 
 File: gcc.info,  Node: MCORE Function Attributes,  Next: MeP Function Attributes,  Prev: m68k Function Attributes,  Up: Function Attributes
 
-6.33.16 MCORE Function Attributes
+6.33.17 MCORE Function Attributes
 ---------------------------------
 
 These function attributes are supported by the MCORE back end:
@@ -33529,7 +33552,7 @@ These function attributes are supported by the MCORE back end:
 
 File: gcc.info,  Node: MeP Function Attributes,  Next: MicroBlaze Function Attributes,  Prev: MCORE Function Attributes,  Up: Function Attributes
 
-6.33.17 MeP Function Attributes
+6.33.18 MeP Function Attributes
 -------------------------------
 
 These function attributes are supported by the MeP back end:
@@ -33564,7 +33587,7 @@ These function attributes are supported by the MeP back end:
 
 File: gcc.info,  Node: MicroBlaze Function Attributes,  Next: Microsoft Windows Function Attributes,  Prev: MeP Function Attributes,  Up: Function Attributes
 
-6.33.18 MicroBlaze Function Attributes
+6.33.19 MicroBlaze Function Attributes
 --------------------------------------
 
 These function attributes are supported on MicroBlaze targets:
@@ -33598,7 +33621,7 @@ These function attributes are supported on MicroBlaze targets:
 
 File: gcc.info,  Node: Microsoft Windows Function Attributes,  Next: MIPS Function Attributes,  Prev: MicroBlaze Function Attributes,  Up: Function Attributes
 
-6.33.19 Microsoft Windows Function Attributes
+6.33.20 Microsoft Windows Function Attributes
 ---------------------------------------------
 
 The following attributes are available on Microsoft Windows and Symbian
@@ -33690,7 +33713,7 @@ OS targets.
 
 File: gcc.info,  Node: MIPS Function Attributes,  Next: MSP430 Function Attributes,  Prev: Microsoft Windows Function Attributes,  Up: Function Attributes
 
-6.33.20 MIPS Function Attributes
+6.33.21 MIPS Function Attributes
 --------------------------------
 
 These function attributes are supported by the MIPS back end:
@@ -33803,7 +33826,7 @@ These function attributes are supported by the MIPS back end:
 
 File: gcc.info,  Node: MSP430 Function Attributes,  Next: NDS32 Function Attributes,  Prev: MIPS Function Attributes,  Up: Function Attributes
 
-6.33.21 MSP430 Function Attributes
+6.33.22 MSP430 Function Attributes
 ----------------------------------
 
 These function attributes are supported by the MSP430 back end:
@@ -33886,7 +33909,7 @@ These function attributes are supported by the MSP430 back end:
 
 File: gcc.info,  Node: NDS32 Function Attributes,  Next: Nios II Function Attributes,  Prev: MSP430 Function Attributes,  Up: Function Attributes
 
-6.33.22 NDS32 Function Attributes
+6.33.23 NDS32 Function Attributes
 ---------------------------------
 
 These function attributes are supported by the NDS32 back end:
@@ -33941,7 +33964,7 @@ These function attributes are supported by the NDS32 back end:
 
 File: gcc.info,  Node: Nios II Function Attributes,  Next: Nvidia PTX Function Attributes,  Prev: NDS32 Function Attributes,  Up: Function Attributes
 
-6.33.23 Nios II Function Attributes
+6.33.24 Nios II Function Attributes
 -----------------------------------
 
 These function attributes are supported by the Nios II back end:
@@ -33971,7 +33994,7 @@ These function attributes are supported by the Nios II back end:
 
 File: gcc.info,  Node: Nvidia PTX Function Attributes,  Next: PowerPC Function Attributes,  Prev: Nios II Function Attributes,  Up: Function Attributes
 
-6.33.24 Nvidia PTX Function Attributes
+6.33.25 Nvidia PTX Function Attributes
 --------------------------------------
 
 These function attributes are supported by the Nvidia PTX back end:
@@ -33987,7 +34010,7 @@ These function attributes are supported by the Nvidia PTX back end:
 
 File: gcc.info,  Node: PowerPC Function Attributes,  Next: RISC-V Function Attributes,  Prev: Nvidia PTX Function Attributes,  Up: Function Attributes
 
-6.33.25 PowerPC Function Attributes
+6.33.26 PowerPC Function Attributes
 -----------------------------------
 
 These function attributes are supported by the PowerPC back end:
@@ -34161,7 +34184,7 @@ These function attributes are supported by the PowerPC back end:
 
 File: gcc.info,  Node: RISC-V Function Attributes,  Next: RL78 Function Attributes,  Prev: PowerPC Function Attributes,  Up: Function Attributes
 
-6.33.26 RISC-V Function Attributes
+6.33.27 RISC-V Function Attributes
 ----------------------------------
 
 These function attributes are supported by the RISC-V back end:
@@ -34194,7 +34217,7 @@ These function attributes are supported by the RISC-V back end:
 
 File: gcc.info,  Node: RL78 Function Attributes,  Next: RX Function Attributes,  Prev: RISC-V Function Attributes,  Up: Function Attributes
 
-6.33.27 RL78 Function Attributes
+6.33.28 RL78 Function Attributes
 --------------------------------
 
 These function attributes are supported by the RL78 back end:
@@ -34223,7 +34246,7 @@ These function attributes are supported by the RL78 back end:
 
 File: gcc.info,  Node: RX Function Attributes,  Next: S/390 Function Attributes,  Prev: RL78 Function Attributes,  Up: Function Attributes
 
-6.33.28 RX Function Attributes
+6.33.29 RX Function Attributes
 ------------------------------
 
 These function attributes are supported by the RX back end:
@@ -34278,7 +34301,7 @@ These function attributes are supported by the RX back end:
 
 File: gcc.info,  Node: S/390 Function Attributes,  Next: SH Function Attributes,  Prev: RX Function Attributes,  Up: Function Attributes
 
-6.33.29 S/390 Function Attributes
+6.33.30 S/390 Function Attributes
 ---------------------------------
 
 These function attributes are supported on the S/390:
@@ -34338,7 +34361,7 @@ These function attributes are supported on the S/390:
 
 File: gcc.info,  Node: SH Function Attributes,  Next: Symbian OS Function Attributes,  Prev: S/390 Function Attributes,  Up: Function Attributes
 
-6.33.30 SH Function Attributes
+6.33.31 SH Function Attributes
 ------------------------------
 
 These function attributes are supported on the SH family of processors:
@@ -34414,7 +34437,7 @@ These function attributes are supported on the SH family of processors:
 
 File: gcc.info,  Node: Symbian OS Function Attributes,  Next: V850 Function Attributes,  Prev: SH Function Attributes,  Up: Function Attributes
 
-6.33.31 Symbian OS Function Attributes
+6.33.32 Symbian OS Function Attributes
 --------------------------------------
 
 *Note Microsoft Windows Function Attributes::, for discussion of the
@@ -34423,7 +34446,7 @@ File: gcc.info,  Node: Symbian OS Function Attributes,  Next: V850 Function Attr
 
 File: gcc.info,  Node: V850 Function Attributes,  Next: Visium Function Attributes,  Prev: Symbian OS Function Attributes,  Up: Function Attributes
 
-6.33.32 V850 Function Attributes
+6.33.33 V850 Function Attributes
 --------------------------------
 
 The V850 back end supports these function attributes:
@@ -34438,7 +34461,7 @@ The V850 back end supports these function attributes:
 
 File: gcc.info,  Node: Visium Function Attributes,  Next: x86 Function Attributes,  Prev: V850 Function Attributes,  Up: Function Attributes
 
-6.33.33 Visium Function Attributes
+6.33.34 Visium Function Attributes
 ----------------------------------
 
 These function attributes are supported by the Visium back end:
@@ -34452,7 +34475,7 @@ These function attributes are supported by the Visium back end:
 
 File: gcc.info,  Node: x86 Function Attributes,  Next: Xstormy16 Function Attributes,  Prev: Visium Function Attributes,  Up: Function Attributes
 
-6.33.34 x86 Function Attributes
+6.33.35 x86 Function Attributes
 -------------------------------
 
 These function attributes are supported by the x86 back end:
@@ -35105,7 +35128,7 @@ These function attributes are supported by the x86 back end:
 
 File: gcc.info,  Node: Xstormy16 Function Attributes,  Prev: x86 Function Attributes,  Up: Function Attributes
 
-6.33.35 Xstormy16 Function Attributes
+6.33.36 Xstormy16 Function Attributes
 -------------------------------------
 
 These function attributes are supported by the Xstormy16 back end:
@@ -43593,7 +43616,6 @@ instructions, but allow the compiler to schedule those calls.
 * AVR Built-in Functions::
 * Blackfin Built-in Functions::
 * BPF Built-in Functions::
-* BPF Kernel Helpers::
 * FR-V Built-in Functions::
 * MIPS DSP Built-in Functions::
 * MIPS Paired-Single Support::
@@ -44476,7 +44498,7 @@ instructions.  These functions are named as follows:
      void __builtin_bfin_ssync (void)
 
 
-File: gcc.info,  Node: BPF Built-in Functions,  Next: BPF Kernel Helpers,  Prev: Blackfin Built-in Functions,  Up: Target Builtins
+File: gcc.info,  Node: BPF Built-in Functions,  Next: FR-V Built-in Functions,  Prev: Blackfin Built-in Functions,  Up: Target Builtins
 
 6.60.12 BPF Built-in Functions
 ------------------------------
@@ -44499,158 +44521,9 @@ The following built-in functions are available for eBPF targets.
      register '%r6' and return it.
 
 
-File: gcc.info,  Node: BPF Kernel Helpers,  Next: FR-V Built-in Functions,  Prev: BPF Built-in Functions,  Up: Target Builtins
+File: gcc.info,  Node: FR-V Built-in Functions,  Next: MIPS DSP Built-in Functions,  Prev: BPF Built-in Functions,  Up: Target Builtins
 
-6.60.13 BPF Kernel Helpers
---------------------------
-
-These built-in functions are available for calling kernel helpers, and
-they are available depending on the kernel version selected as the CPU.
-
- Rather than using the built-ins directly, it is preferred for programs
-to include 'bpf-helpers.h' and use the wrappers defined there.
-
- For a full description of what the helpers do, the arguments they take,
-and the returned value, see the 'linux/include/uapi/linux/bpf.h' in a
-Linux source tree.
-
-     void *__builtin_bpf_helper_map_lookup_elem (void *map, void *key)
-     int   __builtin_bpf_helper_map_update_elem (void *map, void *key,
-                                                 void *value,
-                                                 unsigned long long flags)
-     int   __builtin_bpf_helper_map_delete_elem (void *map, const void *key)
-     int   __builtin_bpf_helper_map_push_elem (void *map, const void *value,
-                                               unsigned long long flags)
-     int   __builtin_bpf_helper_map_pop_elem (void *map, void *value)
-     int   __builtin_bpf_helper_map_peek_elem (void *map, void *value)
-     int __builtin_bpf_helper_clone_redirect (void *skb,
-                                              unsigned int ifindex,
-                                              unsigned long long flags)
-     int __builtin_bpf_helper_skb_get_tunnel_key (void *ctx, void *key, int size, int flags)
-     int __builtin_bpf_helper_skb_set_tunnel_key (void *ctx, void *key, int size, int flags)
-     int __builtin_bpf_helper_skb_get_tunnel_opt (void *ctx, void *md, int size)
-     int __builtin_bpf_helper_skb_set_tunnel_opt (void *ctx, void *md, int size)
-     int __builtin_bpf_helper_skb_get_xfrm_state (void *ctx, int index, void *state,
-     				     int size, int flags)
-     static unsigned long long __builtin_bpf_helper_skb_cgroup_id (void *ctx)
-     static unsigned long long __builtin_bpf_helper_skb_ancestor_cgroup_id
-                                              (void *ctx, int level)
-     int __builtin_bpf_helper_skb_vlan_push (void *ctx, __be16 vlan_proto, __u16 vlan_tci)
-     int __builtin_bpf_helper_skb_vlan_pop (void *ctx)
-     int __builtin_bpf_helper_skb_ecn_set_ce (void *ctx)
-
-     int __builtin_bpf_helper_skb_load_bytes (void *ctx, int off, void *to, int len)
-     int __builtin_bpf_helper_skb_load_bytes_relative (void *ctx, int off, void *to, int len, __u32 start_header)
-     int __builtin_bpf_helper_skb_store_bytes (void *ctx, int off, void *from, int len, int flags)
-     int __builtin_bpf_helper_skb_under_cgroup (void *ctx, void *map, int index)
-     int __builtin_bpf_helper_skb_change_head (void *, int len, int flags)
-     int __builtin_bpf_helper_skb_pull_data (void *, int len)
-     int __builtin_bpf_helper_skb_change_proto (void *ctx, __be16 proto, __u64 flags)
-     int __builtin_bpf_helper_skb_change_type (void *ctx, __u32 type)
-     int __builtin_bpf_helper_skb_change_tail (void *ctx, __u32 len, __u64 flags)
-     int __builtin_bpf_helper_skb_adjust_room (void *ctx, __s32 len_diff, __u32 mode,
-         				  unsigned long long flags)
-
- Other helpers:
-
-     int __builtin_bpf_helper_probe_read (void *dst, unsigned int size, void *src)
-     unsigned long long __builtin_bpf_helper_ktime_get_ns (void)
-     int __builtin_bpf_helper_trace_printk (const char *fmt, unsigned int fmt_size, ...)
-     void __builtin_bpf_helper_tail_call (void *ctx, void *prog_array_map, unsigned int index)
-     unsigned int __builtin_bpf_helper_get_smp_processor_id (void)
-     unsigned long long __builtin_bpf_helper_get_current_pid_tgid (void)
-     unsigned long long __builtin_bpf_helper_get_current_uid_gid (void)
-     int __builtin_bpf_helper_get_current_comm (void *buf, unsigned int size_of_buf)
-     unsigned long long __builtin_bpf_helper_perf_event_read (void *map, unsigned long long flags)
-
-     int __builtin_bpf_helper_redirect (unsigned int ifindex, unsigned long long flags)
-     int __builtin_bpf_helper_redirect_map (void *map, unsigned int key, unsigned long long flags)
-     int __builtin_bpf_helper_perf_event_output (void *ctx,void *map, unsigned long long flags, void *data, unsigned long long size)
-     int __builtin_bpf_helper_get_stackid (void *ctx, void *map, unsigned long long flags)
-     int __builtin_bpf_helper_probe_write_user (void *dst, const void *src, unsigned int len)
-     int __builtin_bpf_helper_current_task_under_cgroup (void *map, unsigned int index)
-
-     static unsigned long long __builtin_bpf_helper_get_prandom_u32 (void)
-     int __builtin_bpf_helper_xdp_adjust_head (void *ctx, int offset)
-     int __builtin_bpf_helper_xdp_adjust_meta (void *ctx, int offset)
-     int __builtin_bpf_helper_get_socket_cookie (void *ctx)
-     int __builtin_bpf_helper_setsockopt (void *ctx, int level, int optname, void *optval,
-     			     int optlen)
-     int __builtin_bpf_helper_getsockopt (void *ctx, int level, int optname, void *optval,
-     			     int optlen)
-     int __builtin_bpf_helper_sock_ops_cb_flags_set (void *ctx, int flags)
-     int __builtin_bpf_helper_sk_redirect_map (void *ctx, void *map, int key, int flags)
-     int __builtin_bpf_helper_sk_redirect_hash (void *ctx, void *map, void *key, int flags)
-     int __builtin_bpf_helper_sock_map_update (void *map, void *key, void *value,
-     				  unsigned long long flags)
-     int __builtin_bpf_helper_sock_hash_update (void *map, void *key, void *value,
-     				   unsigned long long flags)
-     int __builtin_bpf_helper_perf_event_read_value (void *map, unsigned long long flags,
-     					void *buf, unsigned int buf_size)
-     int __builtin_bpf_helper_perf_prog_read_value (void *ctx, void *buf,
-     				       unsigned int buf_size)
-
-     int __builtin_bpf_helper_override_return (void *ctx, unsigned long rc)
-     int __builtin_bpf_helper_msg_redirect_map (void *ctx, void *map, int key, int flags)
-     int __builtin_bpf_helper_msg_redirect_hash (void *ctx,
-     				    void *map, void *key, int flags)
-     int __builtin_bpf_helper_msg_apply_bytes (void *ctx, int len)
-     int __builtin_bpf_helper_msg_cork_bytes (void *ctx, int len)
-     int __builtin_bpf_helper_msg_pull_data (void *ctx, int start, int end, int flags)
-     int __builtin_bpf_helper_msg_push_data (void *ctx, int start, int end, int flags)
-     int __builtin_bpf_helper_msg_pop_data (void *ctx, int start, int cut, int flags)
-     int __builtin_bpf_helper_bind (void *ctx, void *addr, int addr_len)
-     int __builtin_bpf_helper_xdp_adjust_tail (void *ctx, int offset)
-     int __builtin_bpf_helper_sk_select_reuseport (void *ctx, void *map, void *key, __u32 flags)
-     int __builtin_bpf_helper_get_stack (void *ctx, void *buf, int size, int flags)
-     int __builtin_bpf_helper_fib_lookup (void *ctx, struct bpf_fib_lookup *params,
-     			     int plen, __u32 flags)
-
-     int __builtin_bpf_helper_lwt_push_encap (void *ctx, unsigned int type, void *hdr,
-     				 unsigned int len)
-     int __builtin_bpf_helper_lwt_seg6_store_bytes (void *ctx, unsigned int offset,
-     				       void *from, unsigned int len)
-     int __builtin_bpf_helper_lwt_seg6_action (void *ctx, unsigned int action, void *param,
-     				  unsigned int param_len)
-     int __builtin_bpf_helper_lwt_seg6_adjust_srh (void *ctx, unsigned int offset,
-     				      unsigned int len)
-     int __builtin_bpf_helper_rc_repeat (void *ctx)
-     int __builtin_bpf_helper_rc_keydown (void *ctx, unsigned int protocol,
-     			     unsigned long long scancode, unsigned int toggle)
-     static unsigned long long __builtin_bpf_helper_get_current_cgroup_id (void)
-     static void *__builtin_bpf_helper_get_local_storage (void *map, unsigned long long flags)
-     static struct bpf_sock *__builtin_bpf_helper_sk_lookup_tcp (void *ctx, void *tuple, int size, unsigned long long netns_id, unsigned long long flags)
-     static struct bpf_sock *__builtin_bpf_helper_sk_lookup_udp (void *ctx, void *tuple, int size, unsigned long long netns_id, unsigned long long flags)
-     int __builtin_bpf_helper_sk_release (struct bpf_sock *sk)
-     int __builtin_bpf_helper_rc_pointer_rel (void *ctx, int rel_x, int rel_y)
-     static void __builtin_bpf_helper_spin_lock (struct bpf_spin_lock *lock)
-     static void __builtin_bpf_helper_spin_unlock (struct bpf_spin_lock *lock)
-
-     static struct bpf_sock *__builtin_bpf_helper_sk_fullsock (struct bpf_sock *sk)
-     static struct bpf_tcp_sock *__builtin_bpf_helper_tcp_sock (struct bpf_sock *sk)
-     static struct bpf_sock *__builtin_bpf_helper_get_listener_sock (struct bpf_sock *sk)
-
-     int __builtin_bpf_helper_l3_csum_replace (void *ctx, int off, int from, int to, int flags)
-     int __builtin_bpf_helper_l4_csum_replace (void *ctx, int off, int from, int to, int flags)
-     int __builtin_bpf_helper_csum_diff (void *from, int from_size, void *to, int to_size, int seed)
-
-     static unsigned int __builtin_bpf_helper_get_cgroup_classid (void *ctx)
-     static unsigned int __builtin_bpf_helper_get_route_realm (void *ctx)
-     static unsigned int __builtin_bpf_helper_get_hash_recalc (void *ctx)
-     static unsigned long long __builtin_bpf_helper_get_current_task (void *ctx)
-
-     static long long __builtin_bpf_helper_csum_update (void *ctx, __u32 csum)
-     static void __builtin_bpf_helper_set_hash_invalid (void *ctx)
-     int __builtin_bpf_helper_get_numa_node_id (void)
-     int __builtin_bpf_helper_probe_read_str (void *ctx, __u32 size,
-     				 const void *unsafe_ptr)
-     static unsigned int __builtin_bpf_helper_get_socket_uid (void *ctx)
-     static unsigned int __builtin_bpf_helper_set_hash (void *ctx, __u32 hash)
-
-
-File: gcc.info,  Node: FR-V Built-in Functions,  Next: MIPS DSP Built-in Functions,  Prev: BPF Kernel Helpers,  Up: Target Builtins
-
-6.60.14 FR-V Built-in Functions
+6.60.13 FR-V Built-in Functions
 -------------------------------
 
 GCC provides many FR-V-specific built-in functions.  In general, these
@@ -44674,7 +44547,7 @@ tabular form.
 
 File: gcc.info,  Node: Argument Types,  Next: Directly-mapped Integer Functions,  Up: FR-V Built-in Functions
 
-6.60.14.1 Argument Types
+6.60.13.1 Argument Types
 ........................
 
 The arguments to the built-in functions can be divided into three
@@ -44713,7 +44586,7 @@ details.
 
 File: gcc.info,  Node: Directly-mapped Integer Functions,  Next: Directly-mapped Media Functions,  Prev: Argument Types,  Up: FR-V Built-in Functions
 
-6.60.14.2 Directly-Mapped Integer Functions
+6.60.13.2 Directly-Mapped Integer Functions
 ...........................................
 
 The functions listed below map directly to FR-V I-type instructions.
@@ -44733,7 +44606,7 @@ Function prototype               Example usage           Assembly output
 
 File: gcc.info,  Node: Directly-mapped Media Functions,  Next: Raw read/write Functions,  Prev: Directly-mapped Integer Functions,  Up: FR-V Built-in Functions
 
-6.60.14.3 Directly-Mapped Media Functions
+6.60.13.3 Directly-Mapped Media Functions
 .........................................
 
 The functions listed below map directly to FR-V M-type instructions.
@@ -44880,7 +44753,7 @@ sw2)'                            B)'                     A,B,C'
 
 File: gcc.info,  Node: Raw read/write Functions,  Next: Other Built-in Functions,  Prev: Directly-mapped Media Functions,  Up: FR-V Built-in Functions
 
-6.60.14.4 Raw Read/Write Functions
+6.60.13.4 Raw Read/Write Functions
 ..................................
 
 This sections describes built-in functions related to read and write
@@ -44901,7 +44774,7 @@ described in Fujitsu's manual described above.
 
 File: gcc.info,  Node: Other Built-in Functions,  Prev: Raw read/write Functions,  Up: FR-V Built-in Functions
 
-6.60.14.5 Other Built-in Functions
+6.60.13.5 Other Built-in Functions
 ..................................
 
 This section describes built-in functions that are not named after a
@@ -44934,7 +44807,7 @@ specific FR-V instruction.
 
 File: gcc.info,  Node: MIPS DSP Built-in Functions,  Next: MIPS Paired-Single Support,  Prev: FR-V Built-in Functions,  Up: Target Builtins
 
-6.60.15 MIPS DSP Built-in Functions
+6.60.14 MIPS DSP Built-in Functions
 -----------------------------------
 
 The MIPS DSP Application-Specific Extension (ASE) includes new
@@ -45207,7 +45080,7 @@ details on what each instruction does.
 
 File: gcc.info,  Node: MIPS Paired-Single Support,  Next: MIPS Loongson Built-in Functions,  Prev: MIPS DSP Built-in Functions,  Up: Target Builtins
 
-6.60.16 MIPS Paired-Single Support
+6.60.15 MIPS Paired-Single Support
 ----------------------------------
 
 The MIPS64 architecture includes a number of instructions that operate
@@ -45243,7 +45116,7 @@ targets.  For example, the code above sets the lower half of 'a' to
 
 File: gcc.info,  Node: MIPS Loongson Built-in Functions,  Next: MIPS SIMD Architecture (MSA) Support,  Prev: MIPS Paired-Single Support,  Up: Target Builtins
 
-6.60.17 MIPS Loongson Built-in Functions
+6.60.16 MIPS Loongson Built-in Functions
 ----------------------------------------
 
 GCC provides intrinsics to access the SIMD instructions provided by the
@@ -45374,7 +45247,7 @@ each instruction.
 
 File: gcc.info,  Node: Paired-Single Arithmetic,  Next: Paired-Single Built-in Functions,  Up: MIPS Loongson Built-in Functions
 
-6.60.17.1 Paired-Single Arithmetic
+6.60.16.1 Paired-Single Arithmetic
 ..................................
 
 The table below lists the 'v2sf' operations for which hardware support
@@ -45398,7 +45271,7 @@ the command-line option '-mno-fused-madd'.
 
 File: gcc.info,  Node: Paired-Single Built-in Functions,  Next: MIPS-3D Built-in Functions,  Prev: Paired-Single Arithmetic,  Up: MIPS Loongson Built-in Functions
 
-6.60.17.2 Paired-Single Built-in Functions
+6.60.16.2 Paired-Single Built-in Functions
 ..........................................
 
 The following paired-single functions map directly to a particular MIPS
@@ -45477,7 +45350,7 @@ case, COND can be any of the 16 floating-point conditions: 'f', 'un',
 
 File: gcc.info,  Node: MIPS-3D Built-in Functions,  Prev: Paired-Single Built-in Functions,  Up: MIPS Loongson Built-in Functions
 
-6.60.17.3 MIPS-3D Built-in Functions
+6.60.16.3 MIPS-3D Built-in Functions
 ....................................
 
 The MIPS-3D Application-Specific Extension (ASE) includes additional
@@ -45625,7 +45498,7 @@ case, COND can be any of the 16 floating-point conditions: 'f', 'un',
 
 File: gcc.info,  Node: MIPS SIMD Architecture (MSA) Support,  Next: Other MIPS Built-in Functions,  Prev: MIPS Loongson Built-in Functions,  Up: Target Builtins
 
-6.60.18 MIPS SIMD Architecture (MSA) Support
+6.60.17 MIPS SIMD Architecture (MSA) Support
 --------------------------------------------
 
 * Menu:
@@ -45695,7 +45568,7 @@ restrictions and/or input/output values manipulated:
 
 File: gcc.info,  Node: MIPS SIMD Architecture Built-in Functions,  Up: MIPS SIMD Architecture (MSA) Support
 
-6.60.18.1 MIPS SIMD Architecture Built-in Functions
+6.60.17.1 MIPS SIMD Architecture Built-in Functions
 ...................................................
 
 The intrinsics provided are listed below; each is named after the
@@ -46412,7 +46285,7 @@ machine instruction.
 
 File: gcc.info,  Node: Other MIPS Built-in Functions,  Next: MSP430 Built-in Functions,  Prev: MIPS SIMD Architecture (MSA) Support,  Up: Target Builtins
 
-6.60.19 Other MIPS Built-in Functions
+6.60.18 Other MIPS Built-in Functions
 -------------------------------------
 
 GCC provides other MIPS-specific built-in functions:
@@ -46436,7 +46309,7 @@ GCC provides other MIPS-specific built-in functions:
 
 File: gcc.info,  Node: MSP430 Built-in Functions,  Next: NDS32 Built-in Functions,  Prev: Other MIPS Built-in Functions,  Up: Target Builtins
 
-6.60.20 MSP430 Built-in Functions
+6.60.19 MSP430 Built-in Functions
 ---------------------------------
 
 GCC provides a couple of special builtin functions to aid in the writing
@@ -46466,7 +46339,7 @@ of interrupt handlers in C.
 
 File: gcc.info,  Node: NDS32 Built-in Functions,  Next: picoChip Built-in Functions,  Prev: MSP430 Built-in Functions,  Up: Target Builtins
 
-6.60.21 NDS32 Built-in Functions
+6.60.20 NDS32 Built-in Functions
 --------------------------------
 
 These built-in functions are available for the NDS32 target:
@@ -46499,7 +46372,7 @@ These built-in functions are available for the NDS32 target:
 
 File: gcc.info,  Node: picoChip Built-in Functions,  Next: Basic PowerPC Built-in Functions,  Prev: NDS32 Built-in Functions,  Up: Target Builtins
 
-6.60.22 picoChip Built-in Functions
+6.60.21 picoChip Built-in Functions
 -----------------------------------
 
 GCC provides an interface to selected machine instructions from the
@@ -46535,7 +46408,7 @@ picoChip instruction set.
 
 File: gcc.info,  Node: Basic PowerPC Built-in Functions,  Next: PowerPC AltiVec/VSX Built-in Functions,  Prev: picoChip Built-in Functions,  Up: Target Builtins
 
-6.60.23 Basic PowerPC Built-in Functions
+6.60.22 Basic PowerPC Built-in Functions
 ----------------------------------------
 
 * Menu:
@@ -46554,7 +46427,7 @@ PowerPC built-in functions.
 
 File: gcc.info,  Node: Basic PowerPC Built-in Functions Available on all Configurations,  Next: Basic PowerPC Built-in Functions Available on ISA 2.05,  Up: Basic PowerPC Built-in Functions
 
-6.60.23.1 Basic PowerPC Built-in Functions Available on all Configurations
+6.60.22.1 Basic PowerPC Built-in Functions Available on all Configurations
 ..........................................................................
 
  -- Built-in Function: void __builtin_cpu_init (void)
@@ -46779,7 +46652,7 @@ value.
 
 File: gcc.info,  Node: Basic PowerPC Built-in Functions Available on ISA 2.05,  Next: Basic PowerPC Built-in Functions Available on ISA 2.06,  Prev: Basic PowerPC Built-in Functions Available on all Configurations,  Up: Basic PowerPC Built-in Functions
 
-6.60.23.2 Basic PowerPC Built-in Functions Available on ISA 2.05
+6.60.22.2 Basic PowerPC Built-in Functions Available on ISA 2.05
 ................................................................
 
 The basic built-in functions described in this section are available on
@@ -46877,7 +46750,7 @@ family of processors, for efficient use of 128-bit floating point
 
 File: gcc.info,  Node: Basic PowerPC Built-in Functions Available on ISA 2.06,  Next: Basic PowerPC Built-in Functions Available on ISA 2.07,  Prev: Basic PowerPC Built-in Functions Available on ISA 2.05,  Up: Basic PowerPC Built-in Functions
 
-6.60.23.3 Basic PowerPC Built-in Functions Available on ISA 2.06
+6.60.22.3 Basic PowerPC Built-in Functions Available on ISA 2.06
 ................................................................
 
 The basic built-in functions described in this section are available on
@@ -46918,7 +46791,7 @@ targets, require '-mfloat128'.
 
 File: gcc.info,  Node: Basic PowerPC Built-in Functions Available on ISA 2.07,  Next: Basic PowerPC Built-in Functions Available on ISA 3.0,  Prev: Basic PowerPC Built-in Functions Available on ISA 2.06,  Up: Basic PowerPC Built-in Functions
 
-6.60.23.4 Basic PowerPC Built-in Functions Available on ISA 2.07
+6.60.22.4 Basic PowerPC Built-in Functions Available on ISA 2.07
 ................................................................
 
 The basic built-in functions described in this section are available on
@@ -46934,7 +46807,7 @@ options as for '-mcpu=power7' in addition to the '-mpower8-fusion',
 
 File: gcc.info,  Node: Basic PowerPC Built-in Functions Available on ISA 3.0,  Prev: Basic PowerPC Built-in Functions Available on ISA 2.07,  Up: Basic PowerPC Built-in Functions
 
-6.60.23.5 Basic PowerPC Built-in Functions Available on ISA 3.0
+6.60.22.5 Basic PowerPC Built-in Functions Available on ISA 3.0
 ...............................................................
 
 The basic built-in functions described in this section are available on
@@ -47068,7 +46941,7 @@ builtin uses the older 'mffs' instruction to read the FPSCR.
 
 File: gcc.info,  Node: PowerPC AltiVec/VSX Built-in Functions,  Next: PowerPC Hardware Transactional Memory Built-in Functions,  Prev: Basic PowerPC Built-in Functions,  Up: Target Builtins
 
-6.60.24 PowerPC AltiVec/VSX Built-in Functions
+6.60.23 PowerPC AltiVec/VSX Built-in Functions
 ----------------------------------------------
 
 GCC provides an interface for the PowerPC family of processors to access
@@ -47163,7 +47036,7 @@ are briefly described below.
 
 File: gcc.info,  Node: PowerPC AltiVec Built-in Functions on ISA 2.05,  Next: PowerPC AltiVec Built-in Functions Available on ISA 2.06,  Up: PowerPC AltiVec/VSX Built-in Functions
 
-6.60.24.1 PowerPC AltiVec Built-in Functions on ISA 2.05
+6.60.23.1 PowerPC AltiVec Built-in Functions on ISA 2.05
 ........................................................
 
 The following interfaces are supported for the generic and specific
@@ -48709,7 +48582,7 @@ values within the range required for that operation.
 
 File: gcc.info,  Node: PowerPC AltiVec Built-in Functions Available on ISA 2.06,  Next: PowerPC AltiVec Built-in Functions Available on ISA 2.07,  Prev: PowerPC AltiVec Built-in Functions on ISA 2.05,  Up: PowerPC AltiVec/VSX Built-in Functions
 
-6.60.24.2 PowerPC AltiVec Built-in Functions Available on ISA 2.06
+6.60.23.2 PowerPC AltiVec Built-in Functions Available on ISA 2.06
 ..................................................................
 
 The AltiVec built-in functions described in this section are available
@@ -49144,7 +49017,7 @@ instructions.
 
 File: gcc.info,  Node: PowerPC AltiVec Built-in Functions Available on ISA 2.07,  Next: PowerPC AltiVec Built-in Functions Available on ISA 3.0,  Prev: PowerPC AltiVec Built-in Functions Available on ISA 2.06,  Up: PowerPC AltiVec/VSX Built-in Functions
 
-6.60.24.3 PowerPC AltiVec Built-in Functions Available on ISA 2.07
+6.60.23.3 PowerPC AltiVec Built-in Functions Available on ISA 2.07
 ..................................................................
 
 If the ISA 2.07 additions to the vector/scalar (power8-vector)
@@ -49522,7 +49395,7 @@ and VECTOR __UINT128 types, but the index value must be 0.
 
 File: gcc.info,  Node: PowerPC AltiVec Built-in Functions Available on ISA 3.0,  Prev: PowerPC AltiVec Built-in Functions Available on ISA 2.07,  Up: PowerPC AltiVec/VSX Built-in Functions
 
-6.60.24.4 PowerPC AltiVec Built-in Functions Available on ISA 3.0
+6.60.23.4 PowerPC AltiVec Built-in Functions Available on ISA 3.0
 .................................................................
 
 The following additional built-in functions are also available for the
@@ -50155,7 +50028,7 @@ the following additional functions are available for both 32-bit and
 
 File: gcc.info,  Node: PowerPC Hardware Transactional Memory Built-in Functions,  Next: PowerPC Atomic Memory Operation Functions,  Prev: PowerPC AltiVec/VSX Built-in Functions,  Up: Target Builtins
 
-6.60.25 PowerPC Hardware Transactional Memory Built-in Functions
+6.60.24 PowerPC Hardware Transactional Memory Built-in Functions
 ----------------------------------------------------------------
 
 GCC provides two interfaces for accessing the Hardware Transactional
@@ -50165,7 +50038,7 @@ interface, consisting of built-in functions specific to PowerPC and a
 higher level interface consisting of inline functions that are common
 between PowerPC and S/390.
 
-6.60.25.1 PowerPC HTM Low Level Built-in Functions
+6.60.24.1 PowerPC HTM Low Level Built-in Functions
 ..................................................
 
 The following low level built-in functions are available with '-mhtm' or
@@ -50299,7 +50172,7 @@ using the following code example:
          /* Code to use in transaction suspended state.  */
        }
 
-6.60.25.2 PowerPC HTM High Level Inline Functions
+6.60.24.2 PowerPC HTM High Level Inline Functions
 .................................................
 
 The following high level HTM interface is made available by including
@@ -50365,7 +50238,7 @@ work on either PowerPC or S/390:
 
 File: gcc.info,  Node: PowerPC Atomic Memory Operation Functions,  Next: PowerPC Matrix-Multiply Assist Built-in Functions,  Prev: PowerPC Hardware Transactional Memory Built-in Functions,  Up: Target Builtins
 
-6.60.26 PowerPC Atomic Memory Operation Functions
+6.60.25 PowerPC Atomic Memory Operation Functions
 -------------------------------------------------
 
 ISA 3.0 of the PowerPC added new atomic memory operation (amo)
@@ -50428,7 +50301,7 @@ environments.  All of the functions are declared in the include file
 
 File: gcc.info,  Node: PowerPC Matrix-Multiply Assist Built-in Functions,  Next: RX Built-in Functions,  Prev: PowerPC Atomic Memory Operation Functions,  Up: Target Builtins
 
-6.60.27 PowerPC Matrix-Multiply Assist Built-in Functions
+6.60.26 PowerPC Matrix-Multiply Assist Built-in Functions
 ---------------------------------------------------------
 
 ISA 3.1 of the PowerPC added new Matrix-Multiply Assist (MMA)
@@ -50524,7 +50397,7 @@ they are constants and that their values are within range. 
 
 File: gcc.info,  Node: RX Built-in Functions,  Next: S/390 System z Built-in Functions,  Prev: PowerPC Matrix-Multiply Assist Built-in Functions,  Up: Target Builtins
 
-6.60.28 RX Built-in Functions
+6.60.27 RX Built-in Functions
 -----------------------------
 
 GCC supports some of the RX instructions which cannot be expressed in
@@ -50622,7 +50495,7 @@ following functions are supported:
 
 File: gcc.info,  Node: S/390 System z Built-in Functions,  Next: SH Built-in Functions,  Prev: RX Built-in Functions,  Up: Target Builtins
 
-6.60.29 S/390 System z Built-in Functions
+6.60.28 S/390 System z Built-in Functions
 -----------------------------------------
 
  -- Built-in Function: int __builtin_tbegin (void*)
@@ -50727,7 +50600,7 @@ File: gcc.info,  Node: S/390 System z Built-in Functions,  Next: SH Built-in Fun
 
 File: gcc.info,  Node: SH Built-in Functions,  Next: SPARC VIS Built-in Functions,  Prev: S/390 System z Built-in Functions,  Up: Target Builtins
 
-6.60.30 SH Built-in Functions
+6.60.29 SH Built-in Functions
 -----------------------------
 
 The following built-in functions are supported on the SH1, SH2, SH3 and
@@ -50769,7 +50642,7 @@ SH4 families of processors:
 
 File: gcc.info,  Node: SPARC VIS Built-in Functions,  Next: TI C6X Built-in Functions,  Prev: SH Built-in Functions,  Up: Target Builtins
 
-6.60.31 SPARC VIS Built-in Functions
+6.60.30 SPARC VIS Built-in Functions
 ------------------------------------
 
 GCC supports SIMD operations on the SPARC using both the generic vector
@@ -50983,7 +50856,7 @@ functions also become available:
 
 File: gcc.info,  Node: TI C6X Built-in Functions,  Next: TILE-Gx Built-in Functions,  Prev: SPARC VIS Built-in Functions,  Up: Target Builtins
 
-6.60.32 TI C6X Built-in Functions
+6.60.31 TI C6X Built-in Functions
 ---------------------------------
 
 GCC provides intrinsics to access certain instructions of the TI C6X
@@ -51023,7 +50896,7 @@ C6X instructions.
 
 File: gcc.info,  Node: TILE-Gx Built-in Functions,  Next: TILEPro Built-in Functions,  Prev: TI C6X Built-in Functions,  Up: Target Builtins
 
-6.60.33 TILE-Gx Built-in Functions
+6.60.32 TILE-Gx Built-in Functions
 ----------------------------------
 
 GCC provides intrinsics to access every instruction of the TILE-Gx
@@ -51056,7 +50929,7 @@ that no network operations before it are reordered with those after it.
 
 File: gcc.info,  Node: TILEPro Built-in Functions,  Next: x86 Built-in Functions,  Prev: TILE-Gx Built-in Functions,  Up: Target Builtins
 
-6.60.34 TILEPro Built-in Functions
+6.60.33 TILEPro Built-in Functions
 ----------------------------------
 
 GCC provides intrinsics to access every instruction of the TILEPro
@@ -51091,7 +50964,7 @@ that no network operations before it are reordered with those after it.
 
 File: gcc.info,  Node: x86 Built-in Functions,  Next: x86 transactional memory intrinsics,  Prev: TILEPro Built-in Functions,  Up: Target Builtins
 
-6.60.35 x86 Built-in Functions
+6.60.34 x86 Built-in Functions
 ------------------------------
 
 These built-in functions are available for the x86-32 and x86-64 family
@@ -52562,7 +52435,7 @@ be used instead.
 
 File: gcc.info,  Node: x86 transactional memory intrinsics,  Next: x86 control-flow protection intrinsics,  Prev: x86 Built-in Functions,  Up: Target Builtins
 
-6.60.36 x86 Transactional Memory Intrinsics
+6.60.35 x86 Transactional Memory Intrinsics
 -------------------------------------------
 
 These hardware transactional memory intrinsics for x86 allow you to use
@@ -52652,7 +52525,7 @@ must synchronize together to ensure consistency.
 
 File: gcc.info,  Node: x86 control-flow protection intrinsics,  Prev: x86 transactional memory intrinsics,  Up: Target Builtins
 
-6.60.37 x86 Control-Flow Protection Intrinsics
+6.60.36 x86 Control-Flow Protection Intrinsics
 ----------------------------------------------
 
  -- CET Function: ret_type _get_ssp (void)
@@ -65868,6 +65741,8 @@ Keyword Index
                                                              (line   34)
 * kernel attribute, Nvidia PTX:          Nvidia PTX Function Attributes.
                                                              (line    9)
+* kernel helper, function attribute, BPF: BPF Function Attributes.
+                                                             (line    9)
 * keywords, alternate:                   Alternate Keywords. (line    6)
 * known causes of trouble:               Trouble.            (line    6)
 * kspisusp function attribute, Blackfin: Blackfin Function Attributes.
@@ -67141,422 +67016,422 @@ Node: G++ and GCC4105
 Node: Standards6165
 Node: Invoking GCC19782
 Node: Option Summary24958
-Node: Overall Options80017
-Node: Invoking G++95345
-Node: C Dialect Options96868
-Node: C++ Dialect Options116100
-Node: Objective-C and Objective-C++ Dialect Options165242
-Node: Diagnostic Message Formatting Options176638
-Node: Warning Options202359
-Ref: Wtrigraphs298419
-Node: Static Analyzer Options334104
-Node: Debugging Options346813
-Node: Optimize Options366062
-Ref: Type-punning435631
-Node: Instrumentation Options542479
-Node: Preprocessor Options582379
-Ref: dashMF587226
-Ref: fdollars-in-identifiers591805
-Node: Assembler Options604185
-Node: Link Options604876
-Ref: Link Options-Footnote-1621752
-Node: Directory Options622088
-Node: Code Gen Options630491
-Node: Developer Options658856
-Node: Submodel Options700770
-Node: AArch64 Options702580
-Ref: aarch64-feature-modifiers717183
-Node: Adapteva Epiphany Options722295
-Node: AMD GCN Options728247
-Node: ARC Options729141
-Node: ARM Options750367
-Node: AVR Options791132
-Node: Blackfin Options817654
-Node: C6X Options825546
-Node: CRIS Options827089
-Node: CR16 Options830828
-Node: C-SKY Options831740
-Node: Darwin Options836600
-Node: DEC Alpha Options844041
-Node: eBPF Options855657
-Node: FR30 Options856699
-Node: FT32 Options857259
-Node: FRV Options858205
-Node: GNU/Linux Options864969
-Node: H8/300 Options866350
-Node: HPPA Options867802
-Node: IA-64 Options877334
-Node: LM32 Options885462
-Node: M32C Options885985
-Node: M32R/D Options887258
-Node: M680x0 Options890803
-Node: MCore Options904878
-Node: MeP Options906380
-Node: MicroBlaze Options910340
-Node: MIPS Options913430
-Node: MMIX Options949969
-Node: MN10300 Options952446
-Node: Moxie Options954989
-Node: MSP430 Options955476
-Node: NDS32 Options962572
-Node: Nios II Options964742
-Node: Nvidia PTX Options976904
-Node: OpenRISC Options979373
-Node: PDP-11 Options981893
-Node: picoChip Options983142
-Node: PowerPC Options985280
-Node: PRU Options985500
-Node: RISC-V Options987709
-Node: RL78 Options993213
-Node: RS/6000 and PowerPC Options996988
-Node: RX Options1037940
-Node: S/390 and zSeries Options1046542
-Node: Score Options1057305
-Node: SH Options1058154
-Node: Solaris 2 Options1073294
-Node: SPARC Options1074532
-Node: System V Options1090158
-Node: TILE-Gx Options1090986
-Node: TILEPro Options1092004
-Node: V850 Options1092508
-Node: VAX Options1099195
-Node: Visium Options1099733
-Node: VMS Options1102041
-Node: VxWorks Options1102857
-Node: x86 Options1104009
-Node: x86 Windows Options1166119
-Node: Xstormy16 Options1168924
-Node: Xtensa Options1169218
-Node: zSeries Options1174367
-Node: Spec Files1174563
-Node: Environment Variables1196731
-Node: Precompiled Headers1205457
-Node: C Implementation1211646
-Node: Translation implementation1213336
-Node: Environment implementation1213927
-Node: Identifiers implementation1214481
-Node: Characters implementation1215567
-Node: Integers implementation1219217
-Node: Floating point implementation1221266
-Node: Arrays and pointers implementation1224329
-Ref: Arrays and pointers implementation-Footnote-11225789
-Node: Hints implementation1225915
-Node: Structures unions enumerations and bit-fields implementation1227410
-Node: Qualifiers implementation1229634
-Node: Declarators implementation1231413
-Node: Statements implementation1231754
-Node: Preprocessing directives implementation1232080
-Node: Library functions implementation1234401
-Node: Architecture implementation1235050
-Node: Locale-specific behavior implementation1236695
-Node: C++ Implementation1237000
-Node: Conditionally-supported behavior1238283
-Node: Exception handling1238900
-Node: C Extensions1239367
-Node: Statement Exprs1244571
-Node: Local Labels1249943
-Node: Labels as Values1252916
-Ref: Labels as Values-Footnote-11255443
-Node: Nested Functions1255628
-Node: Nonlocal Gotos1259582
-Node: Constructing Calls1261848
-Node: Typeof1266563
-Node: Conditionals1270492
-Node: __int1281271381
-Node: Long Long1271906
-Node: Complex1273397
-Node: Floating Types1276165
-Node: Half-Precision1279632
-Node: Decimal Float1282043
-Node: Hex Floats1283897
-Node: Fixed-Point1284971
-Node: Named Address Spaces1288229
-Ref: AVR Named Address Spaces1288910
-Node: Zero Length1295522
-Node: Empty Structures1299703
-Node: Variable Length1300109
-Node: Variadic Macros1302827
-Node: Escaped Newlines1305205
-Node: Subscripting1306066
-Node: Pointer Arith1306791
-Node: Variadic Pointer Args1307368
-Node: Pointers to Arrays1308093
-Node: Initializers1308846
-Node: Compound Literals1309347
-Node: Designated Inits1312914
-Node: Case Ranges1316838
-Node: Cast to Union1317519
-Node: Mixed Declarations1319242
-Node: Function Attributes1319752
-Node: Common Function Attributes1324180
-Node: AArch64 Function Attributes1389021
-Node: AMD GCN Function Attributes1395215
-Node: ARC Function Attributes1398268
-Node: ARM Function Attributes1401205
-Node: AVR Function Attributes1406344
-Node: Blackfin Function Attributes1410879
-Node: CR16 Function Attributes1413377
-Node: C-SKY Function Attributes1413901
-Node: Epiphany Function Attributes1415198
-Node: H8/300 Function Attributes1417953
-Node: IA-64 Function Attributes1419151
-Node: M32C Function Attributes1420193
-Node: M32R/D Function Attributes1422531
-Node: m68k Function Attributes1424005
-Node: MCORE Function Attributes1424949
-Node: MeP Function Attributes1425760
-Node: MicroBlaze Function Attributes1427061
-Node: Microsoft Windows Function Attributes1428568
-Node: MIPS Function Attributes1433137
-Node: MSP430 Function Attributes1438755
-Node: NDS32 Function Attributes1442834
-Node: Nios II Function Attributes1445258
-Node: Nvidia PTX Function Attributes1446555
-Node: PowerPC Function Attributes1447170
-Node: RISC-V Function Attributes1453944
-Node: RL78 Function Attributes1455360
-Node: RX Function Attributes1456599
-Node: S/390 Function Attributes1459146
-Node: SH Function Attributes1460974
-Node: Symbian OS Function Attributes1464402
-Node: V850 Function Attributes1464738
-Node: Visium Function Attributes1465283
-Node: x86 Function Attributes1465811
-Node: Xstormy16 Function Attributes1488300
-Node: Variable Attributes1488807
-Node: Common Variable Attributes1490340
-Node: ARC Variable Attributes1508470
-Node: AVR Variable Attributes1508852
-Node: Blackfin Variable Attributes1514014
-Node: H8/300 Variable Attributes1514872
-Node: IA-64 Variable Attributes1515945
-Node: M32R/D Variable Attributes1516696
-Node: MeP Variable Attributes1517479
-Node: Microsoft Windows Variable Attributes1519572
-Node: MSP430 Variable Attributes1522025
-Node: Nvidia PTX Variable Attributes1523979
-Node: PowerPC Variable Attributes1524596
-Node: RL78 Variable Attributes1525153
-Node: V850 Variable Attributes1525572
-Node: x86 Variable Attributes1526205
-Node: Xstormy16 Variable Attributes1527261
-Node: Type Attributes1527831
-Node: Common Type Attributes1529495
-Node: ARC Type Attributes1550988
-Node: ARM Type Attributes1551460
-Node: MeP Type Attributes1552242
-Node: PowerPC Type Attributes1552644
-Node: x86 Type Attributes1553633
-Node: Label Attributes1554625
-Node: Enumerator Attributes1556558
-Node: Statement Attributes1557877
-Node: Attribute Syntax1559360
-Node: Function Prototypes1570618
-Node: C++ Comments1572398
-Node: Dollar Signs1572917
-Node: Character Escapes1573382
-Node: Alignment1573666
-Node: Inline1575319
-Node: Volatiles1580136
-Node: Using Assembly Language with C1583035
-Node: Basic Asm1584272
-Node: Extended Asm1589722
-Ref: Volatile1593821
-Ref: AssemblerTemplate1597941
-Ref: OutputOperands1602181
-Ref: FlagOutputOperands1609144
-Ref: InputOperands1612091
-Ref: Clobbers and Scratch Registers1616359
-Ref: GotoLabels1625000
-Ref: x86Operandmodifiers1627135
-Ref: x86floatingpointasmoperands1630292
-Node: Constraints1633621
-Node: Simple Constraints1634727
-Node: Multi-Alternative1642041
-Node: Modifiers1643716
-Node: Machine Constraints1646514
-Node: Asm Labels1702739
-Node: Explicit Register Variables1704359
-Ref: Explicit Reg Vars1704573
-Node: Global Register Variables1705182
-Ref: Global Reg Vars1705390
-Node: Local Register Variables1710172
-Ref: Local Reg Vars1710392
-Node: Size of an asm1714020
-Node: Alternate Keywords1715498
-Node: Incomplete Enums1717003
-Node: Function Names1717760
-Node: Return Address1719664
-Node: Vector Extensions1724251
-Node: Offsetof1734016
-Node: __sync Builtins1734849
-Node: __atomic Builtins1741292
-Node: Integer Overflow Builtins1754917
-Node: x86 specific memory model extensions for transactional memory1761400
-Node: Object Size Checking1762666
-Node: Other Builtins1768922
-Node: Target Builtins1818373
-Node: AArch64 Built-in Functions1820114
-Node: Alpha Built-in Functions1820569
-Node: Altera Nios II Built-in Functions1823617
-Node: ARC Built-in Functions1827986
-Node: ARC SIMD Built-in Functions1833198
-Node: ARM iWMMXt Built-in Functions1842094
-Node: ARM C Language Extensions (ACLE)1849090
-Node: ARM Floating Point Status and Control Intrinsics1850429
-Node: ARM ARMv8-M Security Extensions1850914
-Node: AVR Built-in Functions1852259
-Node: Blackfin Built-in Functions1856020
-Node: BPF Built-in Functions1856638
-Node: BPF Kernel Helpers1857533
-Node: FR-V Built-in Functions1867261
-Node: Argument Types1868120
-Node: Directly-mapped Integer Functions1869874
-Node: Directly-mapped Media Functions1870958
-Node: Raw read/write Functions1879164
-Node: Other Built-in Functions1880072
-Node: MIPS DSP Built-in Functions1881258
-Node: MIPS Paired-Single Support1893755
-Node: MIPS Loongson Built-in Functions1895254
-Node: Paired-Single Arithmetic1901776
-Node: Paired-Single Built-in Functions1902724
-Node: MIPS-3D Built-in Functions1905391
-Node: MIPS SIMD Architecture (MSA) Support1910785
-Node: MIPS SIMD Architecture Built-in Functions1913625
-Node: Other MIPS Built-in Functions1940479
-Node: MSP430 Built-in Functions1941488
-Node: NDS32 Built-in Functions1942889
-Node: picoChip Built-in Functions1944182
-Node: Basic PowerPC Built-in Functions1945531
-Node: Basic PowerPC Built-in Functions Available on all Configurations1946331
-Node: Basic PowerPC Built-in Functions Available on ISA 2.051954840
-Node: Basic PowerPC Built-in Functions Available on ISA 2.061959675
-Node: Basic PowerPC Built-in Functions Available on ISA 2.071961755
-Node: Basic PowerPC Built-in Functions Available on ISA 3.01962609
-Node: PowerPC AltiVec/VSX Built-in Functions1969525
-Node: PowerPC AltiVec Built-in Functions on ISA 2.051973207
-Node: PowerPC AltiVec Built-in Functions Available on ISA 2.062062445
-Node: PowerPC AltiVec Built-in Functions Available on ISA 2.072086890
-Node: PowerPC AltiVec Built-in Functions Available on ISA 3.02108094
-Node: PowerPC Hardware Transactional Memory Built-in Functions2143230
-Node: PowerPC Atomic Memory Operation Functions2151745
-Node: PowerPC Matrix-Multiply Assist Built-in Functions2154308
-Node: RX Built-in Functions2160303
-Node: S/390 System z Built-in Functions2164329
-Node: SH Built-in Functions2169559
-Node: SPARC VIS Built-in Functions2171287
-Node: TI C6X Built-in Functions2179819
-Node: TILE-Gx Built-in Functions2180850
-Node: TILEPro Built-in Functions2181969
-Node: x86 Built-in Functions2183069
-Node: x86 transactional memory intrinsics2246875
-Node: x86 control-flow protection intrinsics2250142
-Node: Target Format Checks2251913
-Node: Solaris Format Checks2252345
-Node: Darwin Format Checks2252771
-Node: Pragmas2253734
-Node: AArch64 Pragmas2254675
-Node: ARM Pragmas2255132
-Node: M32C Pragmas2255759
-Node: MeP Pragmas2256831
-Node: PRU Pragmas2258883
-Node: RS/6000 and PowerPC Pragmas2259461
-Node: S/390 Pragmas2260201
-Node: Darwin Pragmas2260767
-Node: Solaris Pragmas2261820
-Node: Symbol-Renaming Pragmas2262984
-Node: Structure-Layout Pragmas2264621
-Node: Weak Pragmas2266901
-Node: Diagnostic Pragmas2267636
-Node: Visibility Pragmas2271827
-Node: Push/Pop Macro Pragmas2272512
-Node: Function Specific Option Pragmas2273485
-Node: Loop-Specific Pragmas2275451
-Node: Unnamed Fields2277051
-Node: Thread-Local2279248
-Node: C99 Thread-Local Edits2281354
-Node: C++98 Thread-Local Edits2283352
-Node: Binary constants2286797
-Node: C++ Extensions2287468
-Node: C++ Volatiles2289098
-Node: Restricted Pointers2291446
-Node: Vague Linkage2293037
-Node: C++ Interface2296660
-Ref: C++ Interface-Footnote-12300457
-Node: Template Instantiation2300595
-Node: Bound member functions2306686
-Node: C++ Attributes2308218
-Node: Function Multiversioning2312290
-Node: Type Traits2314097
-Node: C++ Concepts2321047
-Node: Deprecated Features2322553
-Node: Backwards Compatibility2324378
-Node: Objective-C2325450
-Node: GNU Objective-C runtime API2326057
-Node: Modern GNU Objective-C runtime API2327064
-Node: Traditional GNU Objective-C runtime API2329500
-Node: Executing code before main2330227
-Node: What you can and what you cannot do in +load2332971
-Node: Type encoding2335341
-Node: Legacy type encoding2340482
-Node: @encode2341572
-Node: Method signatures2342117
-Node: Garbage Collection2344109
-Node: Constant string objects2346799
-Node: compatibility_alias2349308
-Node: Exceptions2350033
-Node: Synchronization2352743
-Node: Fast enumeration2353927
-Node: Using fast enumeration2354239
-Node: c99-like fast enumeration syntax2355450
-Node: Fast enumeration details2356153
-Node: Fast enumeration protocol2358493
-Node: Messaging with the GNU Objective-C runtime2361645
-Node: Dynamically registering methods2363017
-Node: Forwarding hook2364708
-Node: Compatibility2367748
-Node: Gcov2374304
-Node: Gcov Intro2374839
-Node: Invoking Gcov2377557
-Node: Gcov and Optimization2400392
-Node: Gcov Data Files2404135
-Node: Cross-profiling2405544
-Node: Gcov-tool2407398
-Node: Gcov-tool Intro2407823
-Node: Invoking Gcov-tool2409793
-Node: Gcov-dump2412371
-Node: Gcov-dump Intro2412694
-Node: Invoking Gcov-dump2412961
-Node: lto-dump2413562
-Node: lto-dump Intro2413861
-Node: Invoking lto-dump2414111
-Node: Trouble2415207
-Node: Actual Bugs2416624
-Node: Interoperation2417071
-Node: Incompatibilities2423962
-Node: Fixed Headers2432114
-Node: Standard Libraries2433772
-Node: Disappointments2435144
-Node: C++ Misunderstandings2439503
-Node: Static Definitions2440314
-Node: Name lookup2441367
-Ref: Name lookup-Footnote-12446148
-Node: Temporaries2446337
-Node: Copy Assignment2448313
-Node: Non-bugs2450120
-Node: Warnings and Errors2460626
-Node: Bugs2462388
-Node: Bug Criteria2462855
-Node: Bug Reporting2465065
-Node: Service2465283
-Node: Contributing2466103
-Node: Funding2466844
-Node: GNU Project2469334
-Node: Copying2469980
-Node: GNU Free Documentation License2507488
-Node: Contributors2532606
-Node: Option Index2573579
-Node: Keyword Index2852985
+Node: Overall Options80024
+Node: Invoking G++95352
+Node: C Dialect Options96875
+Node: C++ Dialect Options116107
+Node: Objective-C and Objective-C++ Dialect Options165249
+Node: Diagnostic Message Formatting Options176645
+Node: Warning Options202366
+Ref: Wtrigraphs298426
+Node: Static Analyzer Options334111
+Node: Debugging Options346820
+Node: Optimize Options366069
+Ref: Type-punning435638
+Node: Instrumentation Options542486
+Node: Preprocessor Options582386
+Ref: dashMF587233
+Ref: fdollars-in-identifiers591812
+Node: Assembler Options604192
+Node: Link Options604883
+Ref: Link Options-Footnote-1621759
+Node: Directory Options622095
+Node: Code Gen Options630498
+Node: Developer Options658863
+Node: Submodel Options700777
+Node: AArch64 Options702587
+Ref: aarch64-feature-modifiers717190
+Node: Adapteva Epiphany Options722302
+Node: AMD GCN Options728254
+Node: ARC Options729148
+Node: ARM Options750374
+Node: AVR Options791139
+Node: Blackfin Options817661
+Node: C6X Options825553
+Node: CRIS Options827096
+Node: CR16 Options830835
+Node: C-SKY Options831747
+Node: Darwin Options836607
+Node: DEC Alpha Options844048
+Node: eBPF Options855664
+Node: FR30 Options856946
+Node: FT32 Options857506
+Node: FRV Options858452
+Node: GNU/Linux Options865216
+Node: H8/300 Options866597
+Node: HPPA Options868049
+Node: IA-64 Options877581
+Node: LM32 Options885709
+Node: M32C Options886232
+Node: M32R/D Options887505
+Node: M680x0 Options891050
+Node: MCore Options905125
+Node: MeP Options906627
+Node: MicroBlaze Options910587
+Node: MIPS Options913677
+Node: MMIX Options950216
+Node: MN10300 Options952693
+Node: Moxie Options955236
+Node: MSP430 Options955723
+Node: NDS32 Options962819
+Node: Nios II Options964989
+Node: Nvidia PTX Options977151
+Node: OpenRISC Options979620
+Node: PDP-11 Options982140
+Node: picoChip Options983389
+Node: PowerPC Options985527
+Node: PRU Options985747
+Node: RISC-V Options987956
+Node: RL78 Options993460
+Node: RS/6000 and PowerPC Options997235
+Node: RX Options1038187
+Node: S/390 and zSeries Options1046789
+Node: Score Options1057552
+Node: SH Options1058401
+Node: Solaris 2 Options1073541
+Node: SPARC Options1074779
+Node: System V Options1090405
+Node: TILE-Gx Options1091233
+Node: TILEPro Options1092251
+Node: V850 Options1092755
+Node: VAX Options1099442
+Node: Visium Options1099980
+Node: VMS Options1102288
+Node: VxWorks Options1103104
+Node: x86 Options1104256
+Node: x86 Windows Options1166366
+Node: Xstormy16 Options1169171
+Node: Xtensa Options1169465
+Node: zSeries Options1174614
+Node: Spec Files1174810
+Node: Environment Variables1196978
+Node: Precompiled Headers1205704
+Node: C Implementation1211893
+Node: Translation implementation1213583
+Node: Environment implementation1214174
+Node: Identifiers implementation1214728
+Node: Characters implementation1215814
+Node: Integers implementation1219464
+Node: Floating point implementation1221513
+Node: Arrays and pointers implementation1224576
+Ref: Arrays and pointers implementation-Footnote-11226036
+Node: Hints implementation1226162
+Node: Structures unions enumerations and bit-fields implementation1227657
+Node: Qualifiers implementation1229881
+Node: Declarators implementation1231660
+Node: Statements implementation1232001
+Node: Preprocessing directives implementation1232327
+Node: Library functions implementation1234648
+Node: Architecture implementation1235297
+Node: Locale-specific behavior implementation1236942
+Node: C++ Implementation1237247
+Node: Conditionally-supported behavior1238530
+Node: Exception handling1239147
+Node: C Extensions1239614
+Node: Statement Exprs1244818
+Node: Local Labels1250190
+Node: Labels as Values1253163
+Ref: Labels as Values-Footnote-11255690
+Node: Nested Functions1255875
+Node: Nonlocal Gotos1259829
+Node: Constructing Calls1262095
+Node: Typeof1266810
+Node: Conditionals1270739
+Node: __int1281271628
+Node: Long Long1272153
+Node: Complex1273644
+Node: Floating Types1276412
+Node: Half-Precision1279879
+Node: Decimal Float1282290
+Node: Hex Floats1284144
+Node: Fixed-Point1285218
+Node: Named Address Spaces1288476
+Ref: AVR Named Address Spaces1289157
+Node: Zero Length1295769
+Node: Empty Structures1299950
+Node: Variable Length1300356
+Node: Variadic Macros1303074
+Node: Escaped Newlines1305452
+Node: Subscripting1306313
+Node: Pointer Arith1307038
+Node: Variadic Pointer Args1307615
+Node: Pointers to Arrays1308340
+Node: Initializers1309093
+Node: Compound Literals1309594
+Node: Designated Inits1313161
+Node: Case Ranges1317085
+Node: Cast to Union1317766
+Node: Mixed Declarations1319489
+Node: Function Attributes1319999
+Node: Common Function Attributes1324455
+Node: AArch64 Function Attributes1389296
+Node: AMD GCN Function Attributes1395490
+Node: ARC Function Attributes1398543
+Node: ARM Function Attributes1401480
+Node: AVR Function Attributes1406619
+Node: Blackfin Function Attributes1411154
+Node: BPF Function Attributes1413651
+Node: CR16 Function Attributes1414239
+Node: C-SKY Function Attributes1414758
+Node: Epiphany Function Attributes1416057
+Node: H8/300 Function Attributes1418812
+Node: IA-64 Function Attributes1420010
+Node: M32C Function Attributes1421052
+Node: M32R/D Function Attributes1423390
+Node: m68k Function Attributes1424864
+Node: MCORE Function Attributes1425808
+Node: MeP Function Attributes1426619
+Node: MicroBlaze Function Attributes1427920
+Node: Microsoft Windows Function Attributes1429427
+Node: MIPS Function Attributes1433996
+Node: MSP430 Function Attributes1439614
+Node: NDS32 Function Attributes1443693
+Node: Nios II Function Attributes1446117
+Node: Nvidia PTX Function Attributes1447414
+Node: PowerPC Function Attributes1448029
+Node: RISC-V Function Attributes1454803
+Node: RL78 Function Attributes1456219
+Node: RX Function Attributes1457458
+Node: S/390 Function Attributes1460005
+Node: SH Function Attributes1461833
+Node: Symbian OS Function Attributes1465261
+Node: V850 Function Attributes1465597
+Node: Visium Function Attributes1466142
+Node: x86 Function Attributes1466670
+Node: Xstormy16 Function Attributes1489159
+Node: Variable Attributes1489666
+Node: Common Variable Attributes1491199
+Node: ARC Variable Attributes1509329
+Node: AVR Variable Attributes1509711
+Node: Blackfin Variable Attributes1514873
+Node: H8/300 Variable Attributes1515731
+Node: IA-64 Variable Attributes1516804
+Node: M32R/D Variable Attributes1517555
+Node: MeP Variable Attributes1518338
+Node: Microsoft Windows Variable Attributes1520431
+Node: MSP430 Variable Attributes1522884
+Node: Nvidia PTX Variable Attributes1524838
+Node: PowerPC Variable Attributes1525455
+Node: RL78 Variable Attributes1526012
+Node: V850 Variable Attributes1526431
+Node: x86 Variable Attributes1527064
+Node: Xstormy16 Variable Attributes1528120
+Node: Type Attributes1528690
+Node: Common Type Attributes1530354
+Node: ARC Type Attributes1551847
+Node: ARM Type Attributes1552319
+Node: MeP Type Attributes1553101
+Node: PowerPC Type Attributes1553503
+Node: x86 Type Attributes1554492
+Node: Label Attributes1555484
+Node: Enumerator Attributes1557417
+Node: Statement Attributes1558736
+Node: Attribute Syntax1560219
+Node: Function Prototypes1571477
+Node: C++ Comments1573257
+Node: Dollar Signs1573776
+Node: Character Escapes1574241
+Node: Alignment1574525
+Node: Inline1576178
+Node: Volatiles1580995
+Node: Using Assembly Language with C1583894
+Node: Basic Asm1585131
+Node: Extended Asm1590581
+Ref: Volatile1594680
+Ref: AssemblerTemplate1598800
+Ref: OutputOperands1603040
+Ref: FlagOutputOperands1610003
+Ref: InputOperands1612950
+Ref: Clobbers and Scratch Registers1617218
+Ref: GotoLabels1625859
+Ref: x86Operandmodifiers1627994
+Ref: x86floatingpointasmoperands1631151
+Node: Constraints1634480
+Node: Simple Constraints1635586
+Node: Multi-Alternative1642900
+Node: Modifiers1644575
+Node: Machine Constraints1647373
+Node: Asm Labels1703598
+Node: Explicit Register Variables1705218
+Ref: Explicit Reg Vars1705432
+Node: Global Register Variables1706041
+Ref: Global Reg Vars1706249
+Node: Local Register Variables1711031
+Ref: Local Reg Vars1711251
+Node: Size of an asm1714879
+Node: Alternate Keywords1716357
+Node: Incomplete Enums1717862
+Node: Function Names1718619
+Node: Return Address1720523
+Node: Vector Extensions1725110
+Node: Offsetof1734875
+Node: __sync Builtins1735708
+Node: __atomic Builtins1742151
+Node: Integer Overflow Builtins1755776
+Node: x86 specific memory model extensions for transactional memory1762259
+Node: Object Size Checking1763525
+Node: Other Builtins1769781
+Node: Target Builtins1819232
+Node: AArch64 Built-in Functions1820950
+Node: Alpha Built-in Functions1821405
+Node: Altera Nios II Built-in Functions1824453
+Node: ARC Built-in Functions1828822
+Node: ARC SIMD Built-in Functions1834034
+Node: ARM iWMMXt Built-in Functions1842930
+Node: ARM C Language Extensions (ACLE)1849926
+Node: ARM Floating Point Status and Control Intrinsics1851265
+Node: ARM ARMv8-M Security Extensions1851750
+Node: AVR Built-in Functions1853095
+Node: Blackfin Built-in Functions1856856
+Node: BPF Built-in Functions1857474
+Node: FR-V Built-in Functions1858374
+Node: Argument Types1859237
+Node: Directly-mapped Integer Functions1860991
+Node: Directly-mapped Media Functions1862075
+Node: Raw read/write Functions1870281
+Node: Other Built-in Functions1871189
+Node: MIPS DSP Built-in Functions1872375
+Node: MIPS Paired-Single Support1884872
+Node: MIPS Loongson Built-in Functions1886371
+Node: Paired-Single Arithmetic1892893
+Node: Paired-Single Built-in Functions1893841
+Node: MIPS-3D Built-in Functions1896508
+Node: MIPS SIMD Architecture (MSA) Support1901902
+Node: MIPS SIMD Architecture Built-in Functions1904742
+Node: Other MIPS Built-in Functions1931596
+Node: MSP430 Built-in Functions1932605
+Node: NDS32 Built-in Functions1934006
+Node: picoChip Built-in Functions1935299
+Node: Basic PowerPC Built-in Functions1936648
+Node: Basic PowerPC Built-in Functions Available on all Configurations1937448
+Node: Basic PowerPC Built-in Functions Available on ISA 2.051945957
+Node: Basic PowerPC Built-in Functions Available on ISA 2.061950792
+Node: Basic PowerPC Built-in Functions Available on ISA 2.071952872
+Node: Basic PowerPC Built-in Functions Available on ISA 3.01953726
+Node: PowerPC AltiVec/VSX Built-in Functions1960642
+Node: PowerPC AltiVec Built-in Functions on ISA 2.051964324
+Node: PowerPC AltiVec Built-in Functions Available on ISA 2.062053562
+Node: PowerPC AltiVec Built-in Functions Available on ISA 2.072078007
+Node: PowerPC AltiVec Built-in Functions Available on ISA 3.02099211
+Node: PowerPC Hardware Transactional Memory Built-in Functions2134347
+Node: PowerPC Atomic Memory Operation Functions2142862
+Node: PowerPC Matrix-Multiply Assist Built-in Functions2145425
+Node: RX Built-in Functions2151420
+Node: S/390 System z Built-in Functions2155446
+Node: SH Built-in Functions2160676
+Node: SPARC VIS Built-in Functions2162404
+Node: TI C6X Built-in Functions2170936
+Node: TILE-Gx Built-in Functions2171967
+Node: TILEPro Built-in Functions2173086
+Node: x86 Built-in Functions2174186
+Node: x86 transactional memory intrinsics2237992
+Node: x86 control-flow protection intrinsics2241259
+Node: Target Format Checks2243030
+Node: Solaris Format Checks2243462
+Node: Darwin Format Checks2243888
+Node: Pragmas2244851
+Node: AArch64 Pragmas2245792
+Node: ARM Pragmas2246249
+Node: M32C Pragmas2246876
+Node: MeP Pragmas2247948
+Node: PRU Pragmas2250000
+Node: RS/6000 and PowerPC Pragmas2250578
+Node: S/390 Pragmas2251318
+Node: Darwin Pragmas2251884
+Node: Solaris Pragmas2252937
+Node: Symbol-Renaming Pragmas2254101
+Node: Structure-Layout Pragmas2255738
+Node: Weak Pragmas2258018
+Node: Diagnostic Pragmas2258753
+Node: Visibility Pragmas2262944
+Node: Push/Pop Macro Pragmas2263629
+Node: Function Specific Option Pragmas2264602
+Node: Loop-Specific Pragmas2266568
+Node: Unnamed Fields2268168
+Node: Thread-Local2270365
+Node: C99 Thread-Local Edits2272471
+Node: C++98 Thread-Local Edits2274469
+Node: Binary constants2277914
+Node: C++ Extensions2278585
+Node: C++ Volatiles2280215
+Node: Restricted Pointers2282563
+Node: Vague Linkage2284154
+Node: C++ Interface2287777
+Ref: C++ Interface-Footnote-12291574
+Node: Template Instantiation2291712
+Node: Bound member functions2297803
+Node: C++ Attributes2299335
+Node: Function Multiversioning2303407
+Node: Type Traits2305214
+Node: C++ Concepts2312164
+Node: Deprecated Features2313670
+Node: Backwards Compatibility2315495
+Node: Objective-C2316567
+Node: GNU Objective-C runtime API2317174
+Node: Modern GNU Objective-C runtime API2318181
+Node: Traditional GNU Objective-C runtime API2320617
+Node: Executing code before main2321344
+Node: What you can and what you cannot do in +load2324088
+Node: Type encoding2326458
+Node: Legacy type encoding2331599
+Node: @encode2332689
+Node: Method signatures2333234
+Node: Garbage Collection2335226
+Node: Constant string objects2337916
+Node: compatibility_alias2340425
+Node: Exceptions2341150
+Node: Synchronization2343860
+Node: Fast enumeration2345044
+Node: Using fast enumeration2345356
+Node: c99-like fast enumeration syntax2346567
+Node: Fast enumeration details2347270
+Node: Fast enumeration protocol2349610
+Node: Messaging with the GNU Objective-C runtime2352762
+Node: Dynamically registering methods2354134
+Node: Forwarding hook2355825
+Node: Compatibility2358865
+Node: Gcov2365421
+Node: Gcov Intro2365956
+Node: Invoking Gcov2368674
+Node: Gcov and Optimization2391509
+Node: Gcov Data Files2395252
+Node: Cross-profiling2396661
+Node: Gcov-tool2398515
+Node: Gcov-tool Intro2398940
+Node: Invoking Gcov-tool2400910
+Node: Gcov-dump2403488
+Node: Gcov-dump Intro2403811
+Node: Invoking Gcov-dump2404078
+Node: lto-dump2404679
+Node: lto-dump Intro2404978
+Node: Invoking lto-dump2405228
+Node: Trouble2406324
+Node: Actual Bugs2407741
+Node: Interoperation2408188
+Node: Incompatibilities2415079
+Node: Fixed Headers2423231
+Node: Standard Libraries2424889
+Node: Disappointments2426261
+Node: C++ Misunderstandings2430620
+Node: Static Definitions2431431
+Node: Name lookup2432484
+Ref: Name lookup-Footnote-12437265
+Node: Temporaries2437454
+Node: Copy Assignment2439430
+Node: Non-bugs2441237
+Node: Warnings and Errors2451743
+Node: Bugs2453505
+Node: Bug Criteria2453972
+Node: Bug Reporting2456182
+Node: Service2456400
+Node: Contributing2457220
+Node: Funding2457961
+Node: GNU Project2460451
+Node: Copying2461097
+Node: GNU Free Documentation License2498605
+Node: Contributors2523723
+Node: Option Index2564696
+Node: Keyword Index2844102
 
 End Tag Table
 
