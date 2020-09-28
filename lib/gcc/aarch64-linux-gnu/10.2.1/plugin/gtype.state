@@ -4,7 +4,7 @@
 ;;; Don't parse this file wihout knowing GCC gengtype internals.
 ;;; This file should be parsed by the same gengtype which wrote it.
 
-(!version  "10.2.1 20200921")
+(!version  "10.2.1 20200928")
 (!srcdir  "../../gcc/gcc")
 (!languages 11 ada brig c cp d fortran go jit lto objc objcp)
 (!fileslist 220
@@ -22239,8 +22239,8 @@
  )
  
  (!type struct 1313 nil  gc_used "rtl_data"
-  (!srcfileloc  "emit-rtl.h" 306)
-  (!fields 61 
+  (!srcfileloc  "emit-rtl.h" 309)
+  (!fields 62 
    (!pair  "expr"
     (!type already_seen 999)
     (!srcfileloc  "emit-rtl.h" 61)
@@ -22464,29 +22464,33 @@
     (!type already_seen 2)
     (!srcfileloc  "emit-rtl.h" 276)
     nil )
+   (!pair  "sp_is_clobbered_by_asm"
+    (!type already_seen 2)
+    (!srcfileloc  "emit-rtl.h" 279)
+    nil )
    (!pair  "is_leaf"
     (!type already_seen 2)
-    (!srcfileloc  "emit-rtl.h" 282)
+    (!srcfileloc  "emit-rtl.h" 285)
     nil )
    (!pair  "uses_only_leaf_regs"
     (!type already_seen 2)
-    (!srcfileloc  "emit-rtl.h" 287)
+    (!srcfileloc  "emit-rtl.h" 290)
     nil )
    (!pair  "has_bb_partition"
     (!type already_seen 2)
-    (!srcfileloc  "emit-rtl.h" 292)
+    (!srcfileloc  "emit-rtl.h" 295)
     nil )
    (!pair  "bb_reorder_complete"
     (!type already_seen 2)
-    (!srcfileloc  "emit-rtl.h" 296)
+    (!srcfileloc  "emit-rtl.h" 299)
     nil )
    (!pair  "asm_clobbers"
     (!type already_seen 2)
-    (!srcfileloc  "emit-rtl.h" 302)
+    (!srcfileloc  "emit-rtl.h" 305)
     nil )
    (!pair  "max_insn_address"
     (!type already_seen 2)
-    (!srcfileloc  "emit-rtl.h" 305)
+    (!srcfileloc  "emit-rtl.h" 308)
     nil )
   )
   nil 2047 nil nil )
@@ -29418,7 +29422,7 @@
   nil )
  (!pair  "vinfo_t"
   (!type already_seen 1751)
-  (!srcfileloc  "ada/gcc-interface/decl.c" 7584)
+  (!srcfileloc  "ada/gcc-interface/decl.c" 7590)
   nil )
  (!pair  "intrin_binding_t"
   (!type already_seen 1749)
@@ -34463,7 +34467,7 @@
   nil )
  (!pair  "x_rtl"
   (!type already_seen 1313)
-  (!srcfileloc  "emit-rtl.h" 323)
+  (!srcfileloc  "emit-rtl.h" 326)
   nil )
  (!pair  "shift_test"
   (!type already_seen 100)
