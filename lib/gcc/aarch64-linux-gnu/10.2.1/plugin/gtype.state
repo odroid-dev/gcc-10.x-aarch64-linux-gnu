@@ -4,7 +4,7 @@
 ;;; Don't parse this file wihout knowing GCC gengtype internals.
 ;;; This file should be parsed by the same gengtype which wrote it.
 
-(!version  "10.2.1 20200928")
+(!version  "10.2.1 20201007")
 (!srcdir  "../../gcc/gcc")
 (!languages 11 ada brig c cp d fortran go jit lto objc objcp)
 (!fileslist 220
@@ -29828,7 +29828,7 @@
   nil )
  (!pair  "aarch64_cc"
   (!type already_seen 2)
-  (!srcfileloc  "config/aarch64/aarch64.c" 1491)
+  (!srcfileloc  "config/aarch64/aarch64.c" 1517)
   nil )
  (!pair  "use_optype_p"
   (!type already_seen 407)
@@ -33376,7 +33376,7 @@
  )
  (!pair  "cv_cache"
   (!type already_seen 398)
-  (!srcfileloc  "cp/constexpr.c" 6895)
+  (!srcfileloc  "cp/constexpr.c" 6902)
   (!options 
    (!option deletable string  "")
   )
@@ -33975,25 +33975,25 @@
   nil )
  (!pair  "aarch64_sls_shared_thunks_needed"
   (!type already_seen 2)
-  (!srcfileloc  "config/aarch64/aarch64.c" 23004)
+  (!srcfileloc  "config/aarch64/aarch64.c" 23095)
   nil )
  (!pair  "aarch64_sls_shared_thunks"
   (!type array 2197 nil  gc_used "30" 
    (!type already_seen 23)
   )
-  (!srcfileloc  "config/aarch64/aarch64.c" 23003)
+  (!srcfileloc  "config/aarch64/aarch64.c" 23094)
   nil )
  (!pair  "va_list_type"
   (!type already_seen 23)
-  (!srcfileloc  "config/aarch64/aarch64.c" 16128)
+  (!srcfileloc  "config/aarch64/aarch64.c" 16218)
   nil )
  (!pair  "aarch64_previous_fndecl"
   (!type already_seen 23)
-  (!srcfileloc  "config/aarch64/aarch64.c" 15121)
+  (!srcfileloc  "config/aarch64/aarch64.c" 15209)
   nil )
  (!pair  "tls_get_addr_libfunc"
   (!type already_seen 100)
-  (!srcfileloc  "config/aarch64/aarch64.c" 2919)
+  (!srcfileloc  "config/aarch64/aarch64.c" 2968)
   nil )
  (!pair  "stack_chk_fail_decl"
   (!type already_seen 23)
