@@ -4,7 +4,7 @@
 ;;; Don't parse this file wihout knowing GCC gengtype internals.
 ;;; This file should be parsed by the same gengtype which wrote it.
 
-(!version  "10.2.1 20201109")
+(!version  "10.2.1 20201116")
 (!srcdir  "../../gcc/gcc")
 (!languages 11 ada brig c cp d fortran go jit lto objc objcp)
 (!fileslist 220
@@ -26665,7 +26665,7 @@
    (!type already_seen 1896)
   )
   gc_pointed_to "cp_parser"
-  (!srcfileloc  "cp/parser.c" 43522)
+  (!srcfileloc  "cp/parser.c" 43523)
   (!fields 37 
    (!pair  "lexer"
     (!type already_seen 1882)
@@ -27273,7 +27273,7 @@
   nil 0 nil nil )
  
  (!type struct 1963 nil  gc_used "typename_hasher"
-  (!srcfileloc  "cp/decl.c" 3825)
+  (!srcfileloc  "cp/decl.c" 3835)
   (!fields 0 )
   nil 1032 nil nil )
  
@@ -27282,11 +27282,11 @@
    (!type already_seen 1964)
   )
   gc_pointed_to "hash_table<typename_hasher>"
-  (!srcfileloc  "cp/decl.c" 3825)
+  (!srcfileloc  "cp/decl.c" 3835)
   (!fields 1 
    (!pair  "typename_hasher"
     (!type already_seen 1963)
-    (!srcfileloc  "cp/decl.c" 3825)
+    (!srcfileloc  "cp/decl.c" 3835)
     nil )
   )
  )
@@ -27563,7 +27563,7 @@
   nil 0 nil nil )
  
  (!type undefined 2008 nil  gc_unused "class_to_loc_map_t::iterator"
-  (!srcfileloc  "cp/parser.c" 31477)
+  (!srcfileloc  "cp/parser.c" 31478)
  )
  
  (!type struct 2009 
@@ -28924,15 +28924,15 @@
   nil )
  (!pair  "cp_parser"
   (!type already_seen 1896)
-  (!srcfileloc  "cp/parser.c" 43522)
+  (!srcfileloc  "cp/parser.c" 43523)
   nil )
  (!pair  "iter_t"
   (!type already_seen 2008)
-  (!srcfileloc  "cp/parser.c" 31477)
+  (!srcfileloc  "cp/parser.c" 31478)
   nil )
  (!pair  "class_to_loc_map_t::iterator"
   (!type already_seen 2008)
-  (!srcfileloc  "cp/parser.c" 31477)
+  (!srcfileloc  "cp/parser.c" 31478)
   nil )
  (!pair  "cp_parser_expression_stack"
   (!type array 2139 nil  gc_unused "NUM_PREC_VALUES" 
@@ -28998,11 +28998,11 @@
   nil )
  (!pair  "typename_hasher"
   (!type already_seen 1963)
-  (!srcfileloc  "cp/decl.c" 3825)
+  (!srcfileloc  "cp/decl.c" 3835)
   nil )
  (!pair  "hash_table<typename_hasher>"
   (!type already_seen 1964)
-  (!srcfileloc  "cp/decl.c" 3825)
+  (!srcfileloc  "cp/decl.c" 3835)
   nil )
  (!pair  "incomplete_var"
   (!type already_seen 1958)
@@ -29394,7 +29394,7 @@
   nil )
  (!pair  "atomic_acces_t"
   (!type already_seen 2)
-  (!srcfileloc  "ada/gcc-interface/trans.c" 4811)
+  (!srcfileloc  "ada/gcc-interface/trans.c" 4776)
   nil )
  (!pair  "vec<loop_info,va_gc>"
   (!type already_seen 1762)
@@ -33052,11 +33052,11 @@
   nil )
  (!pair  "generic_parm_count"
   (!type already_seen 2)
-  (!srcfileloc  "cp/parser.c" 44012)
+  (!srcfileloc  "cp/parser.c" 44013)
   nil )
  (!pair  "the_parser"
   (!type already_seen 1897)
-  (!srcfileloc  "cp/parser.c" 43522)
+  (!srcfileloc  "cp/parser.c" 43523)
   nil )
  (!pair  "cp_parser_context_free_list"
   (!type already_seen 1889)
@@ -33208,18 +33208,18 @@
   nil )
  (!pair  "start_cleanup_cnt"
   (!type already_seen 2)
-  (!srcfileloc  "cp/decl.c" 8639)
+  (!srcfileloc  "cp/decl.c" 8649)
   nil )
  (!pair  "decomp_type_table"
   (!type already_seen 941)
-  (!srcfileloc  "cp/decl.c" 8121)
+  (!srcfileloc  "cp/decl.c" 8131)
   (!options 
    (!option cache string  "")
   )
  )
  (!pair  "typename_htab"
   (!type already_seen 1965)
-  (!srcfileloc  "cp/decl.c" 3825)
+  (!srcfileloc  "cp/decl.c" 3835)
   nil )
  (!pair  "local_entities"
   (!type already_seen 84)
@@ -33376,7 +33376,7 @@
  )
  (!pair  "cv_cache"
   (!type already_seen 398)
-  (!srcfileloc  "cp/constexpr.c" 6916)
+  (!srcfileloc  "cp/constexpr.c" 6906)
   (!options 
    (!option deletable string  "")
   )
@@ -33757,7 +33757,7 @@
  )
  (!pair  "thunk_labelno"
   (!type already_seen 2)
-  (!srcfileloc  "ada/gcc-interface/trans.c" 11189)
+  (!srcfileloc  "ada/gcc-interface/trans.c" 11161)
   nil )
  (!pair  "gnu_loop_stack"
   (!type already_seen 1763)
@@ -34005,7 +34005,7 @@
   nil )
  (!pair  "critical_name_mutexes"
   (!type already_seen 398)
-  (!srcfileloc  "omp-low.c" 9404)
+  (!srcfileloc  "omp-low.c" 9423)
   nil )
  (!pair  "grid_attr_trees"
   (!type already_seen 1537)
