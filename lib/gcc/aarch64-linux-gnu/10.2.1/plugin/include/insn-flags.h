@@ -5679,10 +5679,6 @@
 #define HAVE_aarch64_sve2_xarvnx8hi (TARGET_SVE2)
 #define HAVE_aarch64_sve2_xarvnx4si (TARGET_SVE2)
 #define HAVE_aarch64_sve2_xarvnx2di (TARGET_SVE2)
-#define HAVE_aarch64_sve2_bcaxvnx16qi (TARGET_SVE2)
-#define HAVE_aarch64_sve2_bcaxvnx8hi (TARGET_SVE2)
-#define HAVE_aarch64_sve2_bcaxvnx4si (TARGET_SVE2)
-#define HAVE_aarch64_sve2_bcaxvnx2di (TARGET_SVE2)
 #define HAVE_aarch64_sve2_eor3vnx16qi (TARGET_SVE2)
 #define HAVE_aarch64_sve2_eor3vnx8hi (TARGET_SVE2)
 #define HAVE_aarch64_sve2_eor3vnx4si (TARGET_SVE2)
@@ -8483,6 +8479,10 @@
 #define HAVE_cond_uqshlvnx4si (TARGET_SVE2)
 #define HAVE_cond_sqshlvnx2di (TARGET_SVE2)
 #define HAVE_cond_uqshlvnx2di (TARGET_SVE2)
+#define HAVE_aarch64_sve2_bcaxvnx16qi (TARGET_SVE2)
+#define HAVE_aarch64_sve2_bcaxvnx8hi (TARGET_SVE2)
+#define HAVE_aarch64_sve2_bcaxvnx4si (TARGET_SVE2)
+#define HAVE_aarch64_sve2_bcaxvnx2di (TARGET_SVE2)
 #define HAVE_aarch64_sve2_bslvnx16qi (TARGET_SVE2)
 #define HAVE_aarch64_sve2_bslvnx8hi (TARGET_SVE2)
 #define HAVE_aarch64_sve2_bslvnx4si (TARGET_SVE2)
@@ -14743,10 +14743,6 @@ extern rtx        gen_aarch64_sve2_xarvnx16qi                        (rtx, rtx, 
 extern rtx        gen_aarch64_sve2_xarvnx8hi                         (rtx, rtx, rtx, rtx);
 extern rtx        gen_aarch64_sve2_xarvnx4si                         (rtx, rtx, rtx, rtx);
 extern rtx        gen_aarch64_sve2_xarvnx2di                         (rtx, rtx, rtx, rtx);
-extern rtx        gen_aarch64_sve2_bcaxvnx16qi                       (rtx, rtx, rtx, rtx);
-extern rtx        gen_aarch64_sve2_bcaxvnx8hi                        (rtx, rtx, rtx, rtx);
-extern rtx        gen_aarch64_sve2_bcaxvnx4si                        (rtx, rtx, rtx, rtx);
-extern rtx        gen_aarch64_sve2_bcaxvnx2di                        (rtx, rtx, rtx, rtx);
 extern rtx        gen_aarch64_sve2_eor3vnx16qi                       (rtx, rtx, rtx, rtx);
 extern rtx        gen_aarch64_sve2_eor3vnx8hi                        (rtx, rtx, rtx, rtx);
 extern rtx        gen_aarch64_sve2_eor3vnx4si                        (rtx, rtx, rtx, rtx);
@@ -17935,6 +17931,10 @@ extern rtx        gen_cond_sqshlvnx4si                               (rtx, rtx, 
 extern rtx        gen_cond_uqshlvnx4si                               (rtx, rtx, rtx, rtx, rtx);
 extern rtx        gen_cond_sqshlvnx2di                               (rtx, rtx, rtx, rtx, rtx);
 extern rtx        gen_cond_uqshlvnx2di                               (rtx, rtx, rtx, rtx, rtx);
+extern rtx        gen_aarch64_sve2_bcaxvnx16qi                       (rtx, rtx, rtx, rtx);
+extern rtx        gen_aarch64_sve2_bcaxvnx8hi                        (rtx, rtx, rtx, rtx);
+extern rtx        gen_aarch64_sve2_bcaxvnx4si                        (rtx, rtx, rtx, rtx);
+extern rtx        gen_aarch64_sve2_bcaxvnx2di                        (rtx, rtx, rtx, rtx);
 extern rtx        gen_aarch64_sve2_bslvnx16qi                        (rtx, rtx, rtx, rtx);
 extern rtx        gen_aarch64_sve2_bslvnx8hi                         (rtx, rtx, rtx, rtx);
 extern rtx        gen_aarch64_sve2_bslvnx4si                         (rtx, rtx, rtx, rtx);
