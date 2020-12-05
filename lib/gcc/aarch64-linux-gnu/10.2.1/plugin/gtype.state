@@ -4,7 +4,7 @@
 ;;; Don't parse this file wihout knowing GCC gengtype internals.
 ;;; This file should be parsed by the same gengtype which wrote it.
 
-(!version  "10.2.1 20201129")
+(!version  "10.2.1 20201205")
 (!srcdir  "../../gcc/gcc")
 (!languages 11 ada brig c cp d fortran go jit lto objc objcp)
 (!fileslist 220
@@ -27664,15 +27664,15 @@
    (!type already_seen 2023)
   )
   gc_pointed_to "hash_map<tree,tree_pair_p>"
-  (!srcfileloc  "cp/pt.c" 28772)
+  (!srcfileloc  "cp/pt.c" 28776)
   (!fields 2 
    (!pair  "tree_pair_p"
     (!type already_seen 541)
-    (!srcfileloc  "cp/pt.c" 28772)
+    (!srcfileloc  "cp/pt.c" 28776)
     nil )
    (!pair  "tree"
     (!type already_seen 23)
-    (!srcfileloc  "cp/pt.c" 28772)
+    (!srcfileloc  "cp/pt.c" 28776)
     nil )
   )
  )
@@ -28900,7 +28900,7 @@
   nil )
  (!pair  "hash_map<tree,tree_pair_p>"
   (!type already_seen 2023)
-  (!srcfileloc  "cp/pt.c" 28772)
+  (!srcfileloc  "cp/pt.c" 28776)
   nil )
  (!pair  "pending_template"
   (!type already_seen 2009)
@@ -32963,7 +32963,7 @@
   nil )
  (!pair  "dguide_cache"
   (!type already_seen 2024)
-  (!srcfileloc  "cp/pt.c" 28772)
+  (!srcfileloc  "cp/pt.c" 28776)
   (!options 
    (!option deletable string  "")
   )
@@ -33975,21 +33975,21 @@
   nil )
  (!pair  "aarch64_sls_shared_thunks_needed"
   (!type already_seen 2)
-  (!srcfileloc  "config/aarch64/aarch64.c" 23191)
+  (!srcfileloc  "config/aarch64/aarch64.c" 23199)
   nil )
  (!pair  "aarch64_sls_shared_thunks"
   (!type array 2197 nil  gc_used "30" 
    (!type already_seen 23)
   )
-  (!srcfileloc  "config/aarch64/aarch64.c" 23190)
+  (!srcfileloc  "config/aarch64/aarch64.c" 23198)
   nil )
  (!pair  "va_list_type"
   (!type already_seen 23)
-  (!srcfileloc  "config/aarch64/aarch64.c" 16250)
+  (!srcfileloc  "config/aarch64/aarch64.c" 16258)
   nil )
  (!pair  "aarch64_previous_fndecl"
   (!type already_seen 23)
-  (!srcfileloc  "config/aarch64/aarch64.c" 15241)
+  (!srcfileloc  "config/aarch64/aarch64.c" 15249)
   nil )
  (!pair  "tls_get_addr_libfunc"
   (!type already_seen 100)
