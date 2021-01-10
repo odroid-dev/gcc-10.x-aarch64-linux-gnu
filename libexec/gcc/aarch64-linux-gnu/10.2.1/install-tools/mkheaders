@@ -53,7 +53,7 @@ if [ x$1 != x ] ; then
   prefix=$1
   shift
 else
-  prefix=/mnt/workspace-01/build-tools-gcc/aarch64-linux-gnu
+  prefix=/mnt/ws-01/build-tools-gcc/aarch64-linux-gnu
 fi
 
 # Allow for alternate isysroot in which to find headers
