@@ -4,7 +4,7 @@
 ;;; Don't parse this file wihout knowing GCC gengtype internals.
 ;;; This file should be parsed by the same gengtype which wrote it.
 
-(!version  "10.2.1 20210110")
+(!version  "10.2.1 20210120")
 (!srcdir  "../../gcc/gcc")
 (!languages 11 ada brig c cp d fortran go jit lto objc objcp)
 (!fileslist 220
@@ -32067,15 +32067,15 @@
   nil )
  (!pair  "objc_parmlist"
   (!type already_seen 23)
-  (!srcfileloc  "objc/objc-act.c" 8244)
+  (!srcfileloc  "objc/objc-act.c" 8258)
   nil )
  (!pair  "interface_map"
   (!type already_seen 2113)
-  (!srcfileloc  "objc/objc-act.c" 3790)
+  (!srcfileloc  "objc/objc-act.c" 3804)
   nil )
  (!pair  "string_layout_checked"
   (!type already_seen 2)
-  (!srcfileloc  "objc/objc-act.c" 3076)
+  (!srcfileloc  "objc/objc-act.c" 3090)
   nil )
  (!pair  "string_htab"
   (!type already_seen 2125)
@@ -33761,7 +33761,7 @@
  )
  (!pair  "thunk_labelno"
   (!type already_seen 2)
-  (!srcfileloc  "ada/gcc-interface/trans.c" 11161)
+  (!srcfileloc  "ada/gcc-interface/trans.c" 11162)
   nil )
  (!pair  "gnu_loop_stack"
   (!type already_seen 1763)
@@ -33979,13 +33979,13 @@
   nil )
  (!pair  "aarch64_sls_shared_thunks_needed"
   (!type already_seen 2)
-  (!srcfileloc  "config/aarch64/aarch64.c" 23199)
+  (!srcfileloc  "config/aarch64/aarch64.c" 23200)
   nil )
  (!pair  "aarch64_sls_shared_thunks"
   (!type array 2197 nil  gc_used "30" 
    (!type already_seen 23)
   )
-  (!srcfileloc  "config/aarch64/aarch64.c" 23198)
+  (!srcfileloc  "config/aarch64/aarch64.c" 23199)
   nil )
  (!pair  "va_list_type"
   (!type already_seen 23)
