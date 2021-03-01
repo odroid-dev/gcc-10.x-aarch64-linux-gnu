@@ -4,7 +4,7 @@
 ;;; Don't parse this file wihout knowing GCC gengtype internals.
 ;;; This file should be parsed by the same gengtype which wrote it.
 
-(!version  "10.2.1 20210216")
+(!version  "10.2.1 20210301")
 (!srcdir  "../../gcc/gcc")
 (!languages 11 ada brig c cp d fortran go jit lto objc objcp)
 (!fileslist 220
@@ -26665,7 +26665,7 @@
    (!type already_seen 1896)
   )
   gc_pointed_to "cp_parser"
-  (!srcfileloc  "cp/parser.c" 43545)
+  (!srcfileloc  "cp/parser.c" 43552)
   (!fields 37 
    (!pair  "lexer"
     (!type already_seen 1882)
@@ -27567,7 +27567,7 @@
   nil 0 nil nil )
  
  (!type undefined 2008 nil  gc_unused "class_to_loc_map_t::iterator"
-  (!srcfileloc  "cp/parser.c" 31480)
+  (!srcfileloc  "cp/parser.c" 31487)
  )
  
  (!type struct 2009 
@@ -27668,15 +27668,15 @@
    (!type already_seen 2023)
   )
   gc_pointed_to "hash_map<tree,tree_pair_p>"
-  (!srcfileloc  "cp/pt.c" 28819)
+  (!srcfileloc  "cp/pt.c" 28829)
   (!fields 2 
    (!pair  "tree_pair_p"
     (!type already_seen 541)
-    (!srcfileloc  "cp/pt.c" 28819)
+    (!srcfileloc  "cp/pt.c" 28829)
     nil )
    (!pair  "tree"
     (!type already_seen 23)
-    (!srcfileloc  "cp/pt.c" 28819)
+    (!srcfileloc  "cp/pt.c" 28829)
     nil )
   )
  )
@@ -27758,7 +27758,7 @@
   nil 0 nil nil )
  
  (!type struct 2033 nil  gc_used "cplus_array_hasher"
-  (!srcfileloc  "cp/tree.c" 987)
+  (!srcfileloc  "cp/tree.c" 984)
   (!fields 0 )
   nil 1032 nil nil )
  
@@ -27767,11 +27767,11 @@
    (!type already_seen 2034)
   )
   gc_pointed_to "hash_table<cplus_array_hasher>"
-  (!srcfileloc  "cp/tree.c" 987)
+  (!srcfileloc  "cp/tree.c" 984)
   (!fields 1 
    (!pair  "cplus_array_hasher"
     (!type already_seen 2033)
-    (!srcfileloc  "cp/tree.c" 987)
+    (!srcfileloc  "cp/tree.c" 984)
     nil )
   )
  )
@@ -27781,7 +27781,7 @@
   nil 0 nil nil )
  
  (!type struct 2037 nil  gc_used "list_hasher"
-  (!srcfileloc  "cp/tree.c" 2068)
+  (!srcfileloc  "cp/tree.c" 2065)
   (!fields 0 )
   nil 1032 nil nil )
  
@@ -27790,11 +27790,11 @@
    (!type already_seen 2038)
   )
   gc_pointed_to "hash_table<list_hasher>"
-  (!srcfileloc  "cp/tree.c" 2068)
+  (!srcfileloc  "cp/tree.c" 2065)
   (!fields 1 
    (!pair  "list_hasher"
     (!type already_seen 2037)
-    (!srcfileloc  "cp/tree.c" 2068)
+    (!srcfileloc  "cp/tree.c" 2065)
     nil )
   )
  )
@@ -28872,19 +28872,19 @@
   nil )
  (!pair  "list_hasher"
   (!type already_seen 2037)
-  (!srcfileloc  "cp/tree.c" 2068)
+  (!srcfileloc  "cp/tree.c" 2065)
   nil )
  (!pair  "hash_table<list_hasher>"
   (!type already_seen 2038)
-  (!srcfileloc  "cp/tree.c" 2068)
+  (!srcfileloc  "cp/tree.c" 2065)
   nil )
  (!pair  "cplus_array_hasher"
   (!type already_seen 2033)
-  (!srcfileloc  "cp/tree.c" 987)
+  (!srcfileloc  "cp/tree.c" 984)
   nil )
  (!pair  "hash_table<cplus_array_hasher>"
   (!type already_seen 2034)
-  (!srcfileloc  "cp/tree.c" 987)
+  (!srcfileloc  "cp/tree.c" 984)
   nil )
  (!pair  "deferred_access"
   (!type already_seen 2028)
@@ -28904,7 +28904,7 @@
   nil )
  (!pair  "hash_map<tree,tree_pair_p>"
   (!type already_seen 2023)
-  (!srcfileloc  "cp/pt.c" 28819)
+  (!srcfileloc  "cp/pt.c" 28829)
   nil )
  (!pair  "pending_template"
   (!type already_seen 2009)
@@ -28928,15 +28928,15 @@
   nil )
  (!pair  "cp_parser"
   (!type already_seen 1896)
-  (!srcfileloc  "cp/parser.c" 43545)
+  (!srcfileloc  "cp/parser.c" 43552)
   nil )
  (!pair  "iter_t"
   (!type already_seen 2008)
-  (!srcfileloc  "cp/parser.c" 31480)
+  (!srcfileloc  "cp/parser.c" 31487)
   nil )
  (!pair  "class_to_loc_map_t::iterator"
   (!type already_seen 2008)
-  (!srcfileloc  "cp/parser.c" 31480)
+  (!srcfileloc  "cp/parser.c" 31487)
   nil )
  (!pair  "cp_parser_expression_stack"
   (!type array 2139 nil  gc_unused "NUM_PREC_VALUES" 
@@ -29832,7 +29832,7 @@
   nil )
  (!pair  "aarch64_cc"
   (!type already_seen 2)
-  (!srcfileloc  "config/aarch64/aarch64.c" 1543)
+  (!srcfileloc  "config/aarch64/aarch64.c" 1588)
   nil )
  (!pair  "use_optype_p"
   (!type already_seen 407)
@@ -32943,15 +32943,15 @@
   nil )
  (!pair  "deleted_copy_types"
   (!type already_seen 474)
-  (!srcfileloc  "cp/tree.c" 4097)
+  (!srcfileloc  "cp/tree.c" 4094)
   nil )
  (!pair  "list_hash_table"
   (!type already_seen 2039)
-  (!srcfileloc  "cp/tree.c" 2068)
+  (!srcfileloc  "cp/tree.c" 2065)
   nil )
  (!pair  "cplus_array_htab"
   (!type already_seen 2035)
-  (!srcfileloc  "cp/tree.c" 987)
+  (!srcfileloc  "cp/tree.c" 984)
   nil )
  (!pair  "deferred_access_no_check"
   (!type already_seen 2)
@@ -32967,21 +32967,21 @@
   nil )
  (!pair  "dguide_cache"
   (!type already_seen 2024)
-  (!srcfileloc  "cp/pt.c" 28819)
+  (!srcfileloc  "cp/pt.c" 28829)
   (!options 
    (!option deletable string  "")
   )
  )
  (!pair  "explicit_specifier_map"
   (!type already_seen 941)
-  (!srcfileloc  "cp/pt.c" 13551)
+  (!srcfileloc  "cp/pt.c" 13562)
   (!options 
    (!option cache string  "")
   )
  )
  (!pair  "defarg_inst"
   (!type already_seen 941)
-  (!srcfileloc  "cp/pt.c" 13440)
+  (!srcfileloc  "cp/pt.c" 13451)
   (!options 
    (!option cache string  "")
   )
@@ -33056,11 +33056,11 @@
   nil )
  (!pair  "generic_parm_count"
   (!type already_seen 2)
-  (!srcfileloc  "cp/parser.c" 44035)
+  (!srcfileloc  "cp/parser.c" 44042)
   nil )
  (!pair  "the_parser"
   (!type already_seen 1897)
-  (!srcfileloc  "cp/parser.c" 43545)
+  (!srcfileloc  "cp/parser.c" 43552)
   nil )
  (!pair  "cp_parser_context_free_list"
   (!type already_seen 1889)
@@ -33979,25 +33979,25 @@
   nil )
  (!pair  "aarch64_sls_shared_thunks_needed"
   (!type already_seen 2)
-  (!srcfileloc  "config/aarch64/aarch64.c" 23201)
+  (!srcfileloc  "config/aarch64/aarch64.c" 23254)
   nil )
  (!pair  "aarch64_sls_shared_thunks"
   (!type array 2197 nil  gc_used "30" 
    (!type already_seen 23)
   )
-  (!srcfileloc  "config/aarch64/aarch64.c" 23200)
+  (!srcfileloc  "config/aarch64/aarch64.c" 23253)
   nil )
  (!pair  "va_list_type"
   (!type already_seen 23)
-  (!srcfileloc  "config/aarch64/aarch64.c" 16259)
+  (!srcfileloc  "config/aarch64/aarch64.c" 16312)
   nil )
  (!pair  "aarch64_previous_fndecl"
   (!type already_seen 23)
-  (!srcfileloc  "config/aarch64/aarch64.c" 15250)
+  (!srcfileloc  "config/aarch64/aarch64.c" 15303)
   nil )
  (!pair  "tls_get_addr_libfunc"
   (!type already_seen 100)
-  (!srcfileloc  "config/aarch64/aarch64.c" 2994)
+  (!srcfileloc  "config/aarch64/aarch64.c" 3039)
   nil )
  (!pair  "stack_chk_fail_decl"
   (!type already_seen 23)
