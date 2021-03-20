@@ -1,8 +1,8 @@
 This is libc.info, produced by makeinfo version 6.7 from libc.texinfo.
 
-This is ‘The GNU C Library Reference Manual’, for version 2.32.
+This is ‘The GNU C Library Reference Manual’, for version 2.33.
 
-   Copyright © 1993–2020 Free Software Foundation, Inc.
+   Copyright © 1993–2021 Free Software Foundation, Inc.
 
    Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -43,6 +43,7 @@ START-INFO-DIR-ENTRY
 * CLOCK_REALTIME: (libc)Getting the Time.
 * COLL_WEIGHTS_MAX: (libc)Utility Limits.
 * CPU_CLR: (libc)CPU Affinity.
+* CPU_FEATURE_USABLE: (libc)X86.
 * CPU_ISSET: (libc)CPU Affinity.
 * CPU_SET: (libc)CPU Affinity.
 * CPU_SETSIZE: (libc)CPU Affinity.
@@ -245,6 +246,7 @@ START-INFO-DIR-ENTRY
 * F_SETLK: (libc)File Locks.
 * F_SETLKW: (libc)File Locks.
 * F_SETOWN: (libc)Interrupt Input.
+* HAS_CPU_FEATURE: (libc)X86.
 * HUGE_VAL: (libc)Math Error Reporting.
 * HUGE_VALF: (libc)Math Error Reporting.
 * HUGE_VALL: (libc)Math Error Reporting.
@@ -321,6 +323,7 @@ START-INFO-DIR-ENTRY
 * O_NONBLOCK: (libc)Open-time Flags.
 * O_NONBLOCK: (libc)Operating Modes.
 * O_NOTRANS: (libc)Open-time Flags.
+* O_PATH: (libc)Access Modes.
 * O_RDONLY: (libc)Access Modes.
 * O_RDWR: (libc)Access Modes.
 * O_READ: (libc)Access Modes.
@@ -493,6 +496,7 @@ START-INFO-DIR-ENTRY
 * __ppc_yield: (libc)PowerPC.
 * __riscv_flush_icache: (libc)RISC-V.
 * __va_copy: (libc)Argument Macros.
+* __x86_get_cpuid_feature_leaf: (libc)X86.
 * _exit: (libc)Termination Internals.
 * _flushlbf: (libc)Flushing Buffers.
 * _tolower: (libc)Case Conversion.
@@ -1395,7 +1399,7 @@ START-INFO-DIR-ENTRY
 * lutimes: (libc)File Times.
 * madvise: (libc)Memory-mapped I/O.
 * makecontext: (libc)System V contexts.
-* mallinfo: (libc)Statistics of Malloc.
+* mallinfo2: (libc)Statistics of Malloc.
 * malloc: (libc)Basic Allocation.
 * mallopt: (libc)Malloc Tunable Parameters.
 * mblen: (libc)Non-reentrant Character Conversion.
@@ -2011,7 +2015,6 @@ START-INFO-DIR-ENTRY
 * vswprintf: (libc)Variable Arguments Output.
 * vswscanf: (libc)Variable Arguments Input.
 * vsyslog: (libc)syslog; vsyslog.
-* vtimes: (libc)Resource Usage.
 * vwarn: (libc)Error Messages.
 * vwarnx: (libc)Error Messages.
 * vwprintf: (libc)Variable Arguments Output.
@@ -2203,7 +2206,7 @@ Variable and Constant Macro Index
 * _POSIX_VDISABLE:                       Special Characters.  (line  22)
 * _POSIX_VDISABLE <1>:                   Options for Files.   (line  40)
 * _POSIX_VERSION:                        Version Supported.   (line   6)
-* _REENTRANT:                            Feature Test Macros. (line 247)
+* _REENTRANT:                            Feature Test Macros. (line 248)
 * _SC_2_C_DEV:                           Constants for Sysconf.
                                                               (line 306)
 * _SC_2_FORT_DEV:                        Constants for Sysconf.
@@ -2487,7 +2490,7 @@ Variable and Constant Macro Index
                                                               (line 524)
 * _SC_XOPEN_XPG4:                        Constants for Sysconf.
                                                               (line 528)
-* _THREAD_SAFE:                          Feature Test Macros. (line 248)
+* _THREAD_SAFE:                          Feature Test Macros. (line 249)
 * _XOPEN_SOURCE:                         Feature Test Macros. (line  90)
 * _XOPEN_SOURCE_EXTENDED:                Feature Test Macros. (line  91)
 * __free_hook:                           Hooks for Malloc.    (line  37)
@@ -3521,13 +3524,13 @@ Variable and Constant Macro Index
 * OPTION_NO_USAGE:                       Argp Option Flags.   (line  41)
 * optopt:                                Using Getopt.        (line  18)
 * OXTABS:                                Output Modes.        (line  31)
-* O_ACCMODE:                             Access Modes.        (line  56)
+* O_ACCMODE:                             Access Modes.        (line  42)
 * O_APPEND:                              Operating Modes.     (line  10)
 * O_ASYNC:                               Operating Modes.     (line  44)
 * O_CREAT:                               Open-time Flags.     (line  21)
 * O_DIRECTORY:                           Open-time Flags.     (line  34)
 * O_EXCL:                                Open-time Flags.     (line  25)
-* O_EXEC:                                Access Modes.        (line  45)
+* O_EXEC:                                Access Modes.        (line  72)
 * O_EXLOCK:                              Open-time Flags.     (line 151)
 * O_FSYNC:                               Operating Modes.     (line  52)
 * O_IGNORE_CTTY:                         Open-time Flags.     (line 102)
@@ -3539,15 +3542,16 @@ Variable and Constant Macro Index
 * O_NONBLOCK:                            Open-time Flags.     (line  70)
 * O_NONBLOCK <1>:                        Operating Modes.     (line  23)
 * O_NOTRANS:                             Open-time Flags.     (line 115)
-* O_RDONLY:                              Access Modes.        (line  11)
-* O_RDWR:                                Access Modes.        (line  19)
-* O_READ:                                Access Modes.        (line  35)
+* O_PATH:                                Access Modes.        (line  22)
+* O_RDONLY:                              Access Modes.        (line  10)
+* O_RDWR:                                Access Modes.        (line  18)
+* O_READ:                                Access Modes.        (line  62)
 * O_SHLOCK:                              Open-time Flags.     (line 142)
 * O_SYNC:                                Operating Modes.     (line  60)
 * O_TMPFILE:                             Open-time Flags.     (line  46)
 * O_TRUNC:                               Open-time Flags.     (line 125)
-* O_WRITE:                               Access Modes.        (line  40)
-* O_WRONLY:                              Access Modes.        (line  15)
+* O_WRITE:                               Access Modes.        (line  67)
+* O_WRONLY:                              Access Modes.        (line  14)
 * PARENB:                                Control Modes.       (line  52)
 * PARMRK:                                Input Modes.         (line  39)
 * PARODD:                                Control Modes.       (line  62)
@@ -4110,7 +4114,7 @@ Program and File Index
 * printf.h <1>:                          Conversion Specifier Options.
                                                               (line  13)
 * pt_chown:                              Configuring and compiling.
-                                                              (line 178)
+                                                              (line 192)
 * pwd.h:                                 Reserved Names.      (line  90)
 * pwd.h <1>:                             User Data Structure. (line   7)
 * setjmp.h:                              Non-Local Details.   (line   8)
@@ -4266,7 +4270,6 @@ Program and File Index
                                                               (line  25)
 * sys/utsname.h:                         Platform Type.       (line   8)
 * sys/vlimit.h:                          Limits on Resources. (line 244)
-* sys/vtimes.h:                          Resource Usage.      (line 109)
 * sys/wait.h:                            Process Completion.  (line   8)
 * sys/wait.h <1>:                        Process Completion Status.
                                                               (line  10)

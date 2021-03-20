@@ -1,8 +1,8 @@
 This is libc.info, produced by makeinfo version 6.7 from libc.texinfo.
 
-This is ‘The GNU C Library Reference Manual’, for version 2.32.
+This is ‘The GNU C Library Reference Manual’, for version 2.33.
 
-   Copyright © 1993–2020 Free Software Foundation, Inc.
+   Copyright © 1993–2021 Free Software Foundation, Inc.
 
    Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -43,6 +43,7 @@ START-INFO-DIR-ENTRY
 * CLOCK_REALTIME: (libc)Getting the Time.
 * COLL_WEIGHTS_MAX: (libc)Utility Limits.
 * CPU_CLR: (libc)CPU Affinity.
+* CPU_FEATURE_USABLE: (libc)X86.
 * CPU_ISSET: (libc)CPU Affinity.
 * CPU_SET: (libc)CPU Affinity.
 * CPU_SETSIZE: (libc)CPU Affinity.
@@ -245,6 +246,7 @@ START-INFO-DIR-ENTRY
 * F_SETLK: (libc)File Locks.
 * F_SETLKW: (libc)File Locks.
 * F_SETOWN: (libc)Interrupt Input.
+* HAS_CPU_FEATURE: (libc)X86.
 * HUGE_VAL: (libc)Math Error Reporting.
 * HUGE_VALF: (libc)Math Error Reporting.
 * HUGE_VALL: (libc)Math Error Reporting.
@@ -321,6 +323,7 @@ START-INFO-DIR-ENTRY
 * O_NONBLOCK: (libc)Open-time Flags.
 * O_NONBLOCK: (libc)Operating Modes.
 * O_NOTRANS: (libc)Open-time Flags.
+* O_PATH: (libc)Access Modes.
 * O_RDONLY: (libc)Access Modes.
 * O_RDWR: (libc)Access Modes.
 * O_READ: (libc)Access Modes.
@@ -493,6 +496,7 @@ START-INFO-DIR-ENTRY
 * __ppc_yield: (libc)PowerPC.
 * __riscv_flush_icache: (libc)RISC-V.
 * __va_copy: (libc)Argument Macros.
+* __x86_get_cpuid_feature_leaf: (libc)X86.
 * _exit: (libc)Termination Internals.
 * _flushlbf: (libc)Flushing Buffers.
 * _tolower: (libc)Case Conversion.
@@ -1395,7 +1399,7 @@ START-INFO-DIR-ENTRY
 * lutimes: (libc)File Times.
 * madvise: (libc)Memory-mapped I/O.
 * makecontext: (libc)System V contexts.
-* mallinfo: (libc)Statistics of Malloc.
+* mallinfo2: (libc)Statistics of Malloc.
 * malloc: (libc)Basic Allocation.
 * mallopt: (libc)Malloc Tunable Parameters.
 * mblen: (libc)Non-reentrant Character Conversion.
@@ -2011,7 +2015,6 @@ START-INFO-DIR-ENTRY
 * vswprintf: (libc)Variable Arguments Output.
 * vswscanf: (libc)Variable Arguments Input.
 * vsyslog: (libc)syslog; vsyslog.
-* vtimes: (libc)Resource Usage.
 * vwarn: (libc)Error Messages.
 * vwarnx: (libc)Error Messages.
 * vwprintf: (libc)Variable Arguments Output.
@@ -5086,6 +5089,8 @@ explicit ‘clockid_t’ argument.
 
      Behaves like ‘pthread_timedjoin_np’ except that the absolute time
      in ABSTIME is measured against the clock specified by CLOCKID.
+     Currently, CLOCKID must be either ‘CLOCK_MONOTONIC’ or
+     ‘CLOCK_REALTIME’.
 
 
 File: libc.info,  Node: Single-Threaded,  Prev: Waiting with Explicit Clocks,  Up: Non-POSIX Extensions
@@ -5130,7 +5135,7 @@ reference count as ‘_Atomic’, and use the GCC ‘__atomic’ built-ins.
 looks like this:
 
      if (__libc_single_threaded)
-       ++refeference_count;
+       ++reference_count;
      else
        __atomic_fetch_add (&reference_count, 1, __ATOMIC_ACQ_REL);
 
@@ -5479,18 +5484,6 @@ mantissa.
      32.  Argument $ARG1 is the input to the function and $ARG2 is the
      computed result.
 
- -- Probe: slowasin (double $ARG1, double $ARG2)
-     This probe is triggered when the ‘asin’ function is called with an
-     input that results in multiple precision computation with precision
-     32.  Argument $ARG1 is the input to the function and $ARG2 is the
-     computed result.
-
- -- Probe: slowacos (double $ARG1, double $ARG2)
-     This probe is triggered when the ‘acos’ function is called with an
-     input that results in multiple precision computation with precision
-     32.  Argument $ARG1 is the input to the function and $ARG2 is the
-     computed result.
-
  -- Probe: slowsin (double $ARG1, double $ARG2)
      This probe is triggered when the ‘sin’ function is called with an
      input that results in multiple precision computation with precision
@@ -5582,6 +5575,42 @@ build time.
 as the tunables feature allows distributions to add their own tunables
 under their own namespace.
 
+   Passing ‘--list-tunables’ to the dynamic loader to print all tunables
+with minimum and maximum values:
+
+     $ /lib64/ld-linux-x86-64.so.2 --list-tunables
+     glibc.rtld.nns: 0x4 (min: 0x1, max: 0x10)
+     glibc.elision.skip_lock_after_retries: 3 (min: -2147483648, max: 2147483647)
+     glibc.malloc.trim_threshold: 0x0 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.malloc.perturb: 0 (min: 0, max: 255)
+     glibc.cpu.x86_shared_cache_size: 0x100000 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.mem.tagging: 0 (min: 0, max: 255)
+     glibc.elision.tries: 3 (min: -2147483648, max: 2147483647)
+     glibc.elision.enable: 0 (min: 0, max: 1)
+     glibc.cpu.x86_rep_movsb_threshold: 0x1000 (min: 0x100, max: 0xffffffffffffffff)
+     glibc.malloc.mxfast: 0x0 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.elision.skip_lock_busy: 3 (min: -2147483648, max: 2147483647)
+     glibc.malloc.top_pad: 0x0 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.cpu.x86_rep_stosb_threshold: 0x800 (min: 0x1, max: 0xffffffffffffffff)
+     glibc.cpu.x86_non_temporal_threshold: 0xc0000 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.cpu.x86_shstk:
+     glibc.cpu.hwcap_mask: 0x6 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.malloc.mmap_max: 0 (min: -2147483648, max: 2147483647)
+     glibc.elision.skip_trylock_internal_abort: 3 (min: -2147483648, max: 2147483647)
+     glibc.malloc.tcache_unsorted_limit: 0x0 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.cpu.x86_ibt:
+     glibc.cpu.hwcaps:
+     glibc.elision.skip_lock_internal_abort: 3 (min: -2147483648, max: 2147483647)
+     glibc.malloc.arena_max: 0x0 (min: 0x1, max: 0xffffffffffffffff)
+     glibc.malloc.mmap_threshold: 0x0 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.cpu.x86_data_cache_size: 0x8000 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.malloc.tcache_count: 0x0 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.malloc.arena_test: 0x0 (min: 0x1, max: 0xffffffffffffffff)
+     glibc.pthread.mutex_spin_count: 100 (min: 0, max: 32767)
+     glibc.rtld.optional_static_tls: 0x200 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.malloc.tcache_max: 0x0 (min: 0x0, max: 0xffffffffffffffff)
+     glibc.malloc.check: 0 (min: 0, max: 3)
+
 * Menu:
 
 * Tunable names::  The structure of a tunable name
@@ -5591,6 +5620,8 @@ under their own namespace.
 * POSIX Thread Tunables:: Tunables in the POSIX thread subsystem
 * Hardware Capability Tunables::  Tunables that modify the hardware
 				  capabilities seen by the GNU C Library
+* Memory Related Tunables::  Tunables that control the use of memory by
+			     the GNU C Library.
 
 
 File: libc.info,  Node: Tunable names,  Next: Memory Allocation Tunables,  Up: Tunables
@@ -5905,7 +5936,7 @@ File: libc.info,  Node: POSIX Thread Tunables,  Next: Hardware Capability Tunabl
      The default value of this tunable is ‘100’.
 
 
-File: libc.info,  Node: Hardware Capability Tunables,  Prev: POSIX Thread Tunables,  Up: Tunables
+File: libc.info,  Node: Hardware Capability Tunables,  Next: Memory Related Tunables,  Prev: POSIX Thread Tunables,  Up: Tunables
 
 37.6 Hardware Capability Tunables
 =================================
@@ -5963,7 +5994,11 @@ File: libc.info,  Node: Hardware Capability Tunables,  Prev: POSIX Thread Tunabl
 
  -- Tunable: glibc.cpu.x86_non_temporal_threshold
      The ‘glibc.cpu.x86_non_temporal_threshold’ tunable allows the user
-     to set threshold in bytes for non temporal store.
+     to set threshold in bytes for non temporal store.  Non temporal
+     stores give a hint to the hardware to move data directly to memory
+     without displacing other data from the cache.  This tunable is used
+     by some platforms to determine when to use non temporal stores in
+     operations like memmove and memcpy.
 
      This tunable is specific to i386 and x86-64.
 
@@ -6006,6 +6041,41 @@ File: libc.info,  Node: Hardware Capability Tunables,  Prev: POSIX Thread Tunabl
      ‘permissive’, it turns off SHSTK instead.
 
      This tunable is specific to i386 and x86-64.
+
+
+File: libc.info,  Node: Memory Related Tunables,  Prev: Hardware Capability Tunables,  Up: Tunables
+
+37.7 Memory Related Tunables
+============================
+
+ -- Tunable namespace: glibc.mem
+     This tunable namespace supports operations that affect the way the
+     GNU C Library and the process manage memory.
+
+ -- Tunable: glibc.mem.tagging
+     If the hardware supports memory tagging, this tunable can be used
+     to control the way the GNU C Library uses this feature.  At present
+     this is only supported on AArch64 systems with the MTE extention;
+     it is ignored for all other systems.
+
+     This tunable takes a value between 0 and 255 and acts as a bitmask
+     that enables various capabilities.
+
+     Bit 0 (the least significant bit) causes the malloc subsystem to
+     allocate tagged memory, with each allocation being assigned a
+     random tag.
+
+     Bit 1 enables precise faulting mode for tag violations on systems
+     that support deferred tag violation reporting.  This may cause
+     programs to run more slowly.
+
+     Other bits are currently reserved.
+
+     The GNU C Library startup code will automatically enable memory
+     tagging support in the kernel if this tunable has any non-zero
+     value.
+
+     The default value is ‘0’, which disables all memory tagging.
 
 
 File: libc.info,  Node: Language Features,  Next: Library Summary,  Prev: Tunables,  Up: Top
@@ -9109,6 +9179,10 @@ it.
 ‘int O_NOTRANS’
 
      ‘fcntl.h’ _optional_ (GNU): *note Open-time Flags::.
+
+‘int O_PATH’
+
+     ‘fcntl.h’ (Linux): *note Access Modes::.
 
 ‘int O_RDONLY’
 
@@ -15054,11 +15128,11 @@ it.
 
      ‘ucontext.h’ (SVID): *note System V contexts::.
 
-‘struct mallinfo’
+‘struct mallinfo2’
 
      ‘malloc.h’ (GNU): *note Statistics of Malloc::.
 
-‘struct mallinfo mallinfo (void)’
+‘struct mallinfo2 mallinfo2 (void)’
 
      ‘malloc.h’ (SVID): *note Statistics of Malloc::.
 
@@ -16563,7 +16637,7 @@ const void *NEEDLE, size_t NEEDLE-LEN)’
 
      ‘signal.h’ (ISO): *note Atomic Types::.
 
-‘void sigabbrev_np (int SIGNUM)’
+‘const char * sigabbrev_np (int SIGNUM)’
 
      ‘string.h’ (GNU): *note Signal Messages::.
 
@@ -16591,7 +16665,7 @@ const void *NEEDLE, size_t NEEDLE-LEN)’
 
      ‘signal.h’ (POSIX.1): *note Signal Sets::.
 
-‘void sigdescr_np (int SIGNUM)’
+‘const char * sigdescr_np (int SIGNUM)’
 
      ‘string.h’ (GNU): *note Signal Messages::.
 
@@ -16933,11 +17007,11 @@ const void *NEEDLE, size_t NEEDLE-LEN)’
 
      ‘string.h’ (GNU): *note Error Messages::.
 
-‘void strerrordesc_np (int ERRNUM)’
+‘const char * strerrordesc_np (int ERRNUM)’
 
      ‘string.h’ (GNU): *note Error Messages::.
 
-‘void strerrorname_np (int ERRNUM)’
+‘const char * strerrorname_np (int ERRNUM)’
 
      ‘string.h’ (GNU): *note Error Messages::.
 
@@ -17768,10 +17842,6 @@ const void *NEEDLE, size_t NEEDLE-LEN)’
 ‘void vsyslog (int FACILITY_PRIORITY, const char *FORMAT, va_list ARGLIST)’
 
      ‘syslog.h’ (BSD): *note syslog; vsyslog::.
-
-‘int vtimes (struct vtimes *CURRENT, struct vtimes *CHILD)’
-
-     ‘sys/vtimes.h’ (???): *note Resource Usage::.
 
 ‘void vwarn (const char *FORMAT, va_list AP)’
 

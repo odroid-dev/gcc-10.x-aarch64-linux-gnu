@@ -1,8 +1,8 @@
 This is libc.info, produced by makeinfo version 6.7 from libc.texinfo.
 
-This is ‘The GNU C Library Reference Manual’, for version 2.32.
+This is ‘The GNU C Library Reference Manual’, for version 2.33.
 
-   Copyright © 1993–2020 Free Software Foundation, Inc.
+   Copyright © 1993–2021 Free Software Foundation, Inc.
 
    Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -43,6 +43,7 @@ START-INFO-DIR-ENTRY
 * CLOCK_REALTIME: (libc)Getting the Time.
 * COLL_WEIGHTS_MAX: (libc)Utility Limits.
 * CPU_CLR: (libc)CPU Affinity.
+* CPU_FEATURE_USABLE: (libc)X86.
 * CPU_ISSET: (libc)CPU Affinity.
 * CPU_SET: (libc)CPU Affinity.
 * CPU_SETSIZE: (libc)CPU Affinity.
@@ -245,6 +246,7 @@ START-INFO-DIR-ENTRY
 * F_SETLK: (libc)File Locks.
 * F_SETLKW: (libc)File Locks.
 * F_SETOWN: (libc)Interrupt Input.
+* HAS_CPU_FEATURE: (libc)X86.
 * HUGE_VAL: (libc)Math Error Reporting.
 * HUGE_VALF: (libc)Math Error Reporting.
 * HUGE_VALL: (libc)Math Error Reporting.
@@ -321,6 +323,7 @@ START-INFO-DIR-ENTRY
 * O_NONBLOCK: (libc)Open-time Flags.
 * O_NONBLOCK: (libc)Operating Modes.
 * O_NOTRANS: (libc)Open-time Flags.
+* O_PATH: (libc)Access Modes.
 * O_RDONLY: (libc)Access Modes.
 * O_RDWR: (libc)Access Modes.
 * O_READ: (libc)Access Modes.
@@ -493,6 +496,7 @@ START-INFO-DIR-ENTRY
 * __ppc_yield: (libc)PowerPC.
 * __riscv_flush_icache: (libc)RISC-V.
 * __va_copy: (libc)Argument Macros.
+* __x86_get_cpuid_feature_leaf: (libc)X86.
 * _exit: (libc)Termination Internals.
 * _flushlbf: (libc)Flushing Buffers.
 * _tolower: (libc)Case Conversion.
@@ -1395,7 +1399,7 @@ START-INFO-DIR-ENTRY
 * lutimes: (libc)File Times.
 * madvise: (libc)Memory-mapped I/O.
 * makecontext: (libc)System V contexts.
-* mallinfo: (libc)Statistics of Malloc.
+* mallinfo2: (libc)Statistics of Malloc.
 * malloc: (libc)Basic Allocation.
 * mallopt: (libc)Malloc Tunable Parameters.
 * mblen: (libc)Non-reentrant Character Conversion.
@@ -2011,7 +2015,6 @@ START-INFO-DIR-ENTRY
 * vswprintf: (libc)Variable Arguments Output.
 * vswscanf: (libc)Variable Arguments Input.
 * vsyslog: (libc)syslog; vsyslog.
-* vtimes: (libc)Resource Usage.
 * vwarn: (libc)Error Messages.
 * vwarnx: (libc)Error Messages.
 * vwprintf: (libc)Variable Arguments Output.
@@ -2232,6 +2235,20 @@ if ‘CFLAGS’ is specified it must enable optimization.  For example:
      non-CET processors.  ‘--enable-cet’ has been tested for i686,
      x86_64 and x32 on CET processors.
 
+‘--enable-memory-tagging’
+     Enable memory tagging support if the architecture supports it.
+     When the GNU C Library is built with this option then the resulting
+     library will be able to control the use of tagged memory when
+     hardware support is present by use of the tunable
+     ‘glibc.mem.tagging’.  This includes the generation of tagged memory
+     when using the ‘malloc’ APIs.
+
+     At present only AArch64 platforms with MTE provide this
+     functionality, although the library will still operate (without
+     memory tagging) on older versions of the architecture.
+
+     The default is to disable support for memory tagging.
+
 ‘--disable-profile’
      Don’t build libraries with profiling information.  You may want to
      use this option if you don’t plan to do profiling.
@@ -2278,14 +2295,9 @@ if ‘CFLAGS’ is specified it must enable optimization.  For example:
 ‘--enable-pt_chown’
      The file ‘pt_chown’ is a helper binary for ‘grantpt’ (*note
      Pseudo-Terminals: Allocation.) that is installed setuid root to fix
-     up pseudo-terminal ownership.  It is not built by default because
-     systems using the Linux kernel are commonly built with the ‘devpts’
-     filesystem enabled and mounted at ‘/dev/pts’, which manages
-     pseudo-terminal ownership automatically.  By using
-     ‘--enable-pt_chown’, you may build ‘pt_chown’ and install it setuid
-     and owned by ‘root’.  The use of ‘pt_chown’ introduces additional
-     security risks to the system and you should enable it only if you
-     understand and accept those risks.
+     up pseudo-terminal ownership on GNU/Hurd.  It is not required on
+     GNU/Linux, and the GNU C Library will not use the installed
+     ‘pt_chown’ program when configured with ‘--enable-pt_chown’.
 
 ‘--disable-werror’
      By default, the GNU C Library is built with ‘-Werror’.  If you wish
@@ -2547,15 +2559,15 @@ build the GNU C Library:
 
    • GNU ‘make’ 4.0 or newer
 
-     As of relase time, GNU ‘make’ 4.2.1 is the newest verified to work
-     to build the GNU C Library.
+     As of relase time, GNU ‘make’ 4.3 is the newest verified to work to
+     build the GNU C Library.
 
    • GCC 6.2 or newer
 
      GCC 6.2 or higher is required.  In general it is recommended to use
      the newest version of the compiler that is known to work for
      building the GNU C Library, as newer compilers usually produce
-     better code.  As of release time, GCC 9.2.1 is the newest compiler
+     better code.  As of release time, GCC 10.2 is the newest compiler
      verified to work to build the GNU C Library.
 
      For PowerPC 64-bits little-endian (powerpc64le), a GCC version with
@@ -2567,6 +2579,9 @@ build the GNU C Library:
      building the GNU C Library with support for IEEE long double.
 
      For ARC architecture builds, GCC 8.3 or higher is needed.
+
+     For s390x architecture builds, GCC 7.1 or higher is needed (See gcc
+     Bug 98269).
 
      For multi-arch support it is recommended to use a GCC which has
      been built with support for GNU indirect functions.  This ensures
@@ -2587,7 +2602,7 @@ build the GNU C Library:
 
      You must use GNU ‘binutils’ (as and ld) to build the GNU C Library.
      No other assembler or linker has the necessary functionality at the
-     moment.  As of release time, GNU ‘binutils’ 2.32 is the newest
+     moment.  As of release time, GNU ‘binutils’ 2.35.1 is the newest
      verified to work to build the GNU C Library.
 
      For PowerPC 64-bits little-endian (powerpc64le), ‘objcopy’ is
@@ -2603,7 +2618,7 @@ build the GNU C Library:
      need this version of the ‘texinfo’ package.  Earlier versions do
      not understand all the tags used in the document, and the
      installation mechanism for the info files is not present or works
-     differently.  As of release time, ‘texinfo’ 6.6 is the newest
+     differently.  As of release time, ‘texinfo’ 6.7 is the newest
      verified to work to build the GNU C Library.
 
    • GNU ‘awk’ 3.1.2, or higher
@@ -2611,32 +2626,32 @@ build the GNU C Library:
      ‘awk’ is used in several places to generate files.  Some ‘gawk’
      extensions are used, including the ‘asorti’ function, which was
      introduced in version 3.1.2 of ‘gawk’.  As of release time, ‘gawk’
-     version 5.0.1 is the newest verified to work to build the GNU C
+     version 5.1 is the newest verified to work to build the GNU C
      Library.
 
    • GNU ‘bison’ 2.7 or later
 
      ‘bison’ is used to generate the ‘yacc’ parser code in the ‘intl’
-     subdirectory.  As of release time, ‘bison’ version 3.4.1 is the
+     subdirectory.  As of release time, ‘bison’ version 3.7.4 is the
      newest verified to work to build the GNU C Library.
 
    • Perl 5
 
      Perl is not required, but if present it is used in some tests and
      the ‘mtrace’ program, to build the GNU C Library manual.  As of
-     release time ‘perl’ version 5.30.1 is the newest verified to work
+     release time ‘perl’ version 5.32.0 is the newest verified to work
      to build the GNU C Library.
 
    • GNU ‘sed’ 3.02 or newer
 
      ‘Sed’ is used in several places to generate files.  Most scripts
      work with any version of ‘sed’.  As of release time, ‘sed’ version
-     4.5 is the newest verified to work to build the GNU C Library.
+     4.8 is the newest verified to work to build the GNU C Library.
 
    • Python 3.4 or later
 
      Python is required to build the GNU C Library.  As of release time,
-     Python 3.7.4 is the newest verified to work for building and
+     Python 3.8.6 is the newest verified to work for building and
      testing the GNU C Library.
 
    • PExpect 4.0
@@ -2644,7 +2659,7 @@ build the GNU C Library:
      The pretty printer tests drive GDB through test programs and
      compare its output to the printers’.  PExpect is used to capture
      the output of GDB, and should be compatible with the Python version
-     in your system.  As of release time PExpect 4.3 is the newest
+     in your system.  As of release time PExpect 4.8 is the newest
      verified to work to test the pretty printers.
 
    • GDB 7.8 or later with support for Python 2.7/3.4 or later
@@ -2653,7 +2668,7 @@ build the GNU C Library:
      use the pretty printers.  Notice that your system having Python
      available doesn’t imply that GDB supports it, nor that your
      system’s Python and GDB’s have the same version.  As of release
-     time GNU ‘debugger’ 8.3 is the newest verified to work to test the
+     time GNU ‘debugger’ 10.1 is the newest verified to work to test the
      pretty printers.
 
      Unless Python, PExpect and GDB with Python support are present, the
@@ -2669,7 +2684,7 @@ and if you change any of the message translation files you will need
 
    • GNU ‘gettext’ 0.10.36 or later
 
-     As of release time, GNU ‘gettext’ version 0.19.8.1 is the newest
+     As of release time, GNU ‘gettext’ version 0.21 is the newest
      version verified to work to build the GNU C Library.
 
 You may also need these packages if you upgrade your source tree using
@@ -3380,6 +3395,7 @@ The GNU C Library can provide machine-specific functionality.
 
 * PowerPC::           Facilities Specific to the PowerPC Architecture
 * RISC-V::            Facilities Specific to the RISC-V Architecture
+* X86::               Facilities Specific to the X86 Architecture
 
 
 File: libc.info,  Node: PowerPC,  Next: RISC-V,  Up: Platform
@@ -3500,7 +3516,7 @@ priority levels: very low and medium high.
      priority is set to medium.
 
 
-File: libc.info,  Node: RISC-V,  Prev: PowerPC,  Up: Platform
+File: libc.info,  Node: RISC-V,  Next: X86,  Prev: PowerPC,  Up: Platform
 
 E.2 RISC-V-specific Facilities
 ==============================
@@ -3521,6 +3537,385 @@ the Linux ABI are declared in ‘sys/cachectl.h’.
      the ‘SYS_RISCV_FLUSH_ICACHE_LOCAL’ bit allows users to indicate
      that enforcing ordering on only the current thread is necessary.
      All other flag bits are reserved.
+
+
+File: libc.info,  Node: X86,  Prev: RISC-V,  Up: Platform
+
+E.3 X86-specific Facilities
+===========================
+
+Facilities specific to X86 that are not specific to a particular
+operating system are declared in ‘sys/platform/x86.h’.
+
+ -- Function: const struct cpuid_feature * __x86_get_cpuid_feature_leaf
+          (unsigned int LEAF)
+     Preliminary: | MT-Safe | AS-Safe | AC-Safe | *Note POSIX Safety
+     Concepts::.
+
+     Return a pointer to x86 CPU feature structure used by query macros
+     for x86 CPU feature LEAF.
+
+ -- Macro: int HAS_CPU_FEATURE (NAME)
+     This macro returns a nonzero value (true) if the processor has the
+     feature NAME.
+
+ -- Macro: int CPU_FEATURE_USABLE (NAME)
+     This macro returns a nonzero value (true) if the processor has the
+     feature NAME and the feature is supported by the operating system.
+
+   The supported processor features are:
+
+   • ‘ACPI’ – Thermal Monitor and Software Controlled Clock Facilities.
+
+   • ‘ADX’ – ADX instruction extensions.
+
+   • ‘APIC’ – APIC On-Chip.
+
+   • ‘AES’ – The AES instruction extensions.
+
+   • ‘AESKLE’ – AES Key Locker instructions are enabled by OS.
+
+   • ‘AMX_BF16’ – Tile computational operations on bfloat16 numbers.
+
+   • ‘AMX_INT8’ – Tile computational operations on 8-bit numbers.
+
+   • ‘AMX_TILE’ – Tile architecture.
+
+   • ‘ARCH_CAPABILITIES’ – IA32_ARCH_CAPABILITIES MSR.
+
+   • ‘AVX’ – The AVX instruction extensions.
+
+   • ‘AVX2’ – The AVX2 instruction extensions.
+
+   • ‘AVX_VNNI’ – The AVX-VNNI instruction extensions.
+
+   • ‘AVX512_4FMAPS’ – The AVX512_4FMAPS instruction extensions.
+
+   • ‘AVX512_4VNNIW’ – The AVX512_4VNNIW instruction extensions.
+
+   • ‘AVX512_BF16’ – The AVX512_BF16 instruction extensions.
+
+   • ‘AVX512_BITALG’ – The AVX512_BITALG instruction extensions.
+
+   • ‘AVX512_FP16’ – The AVX512_FP16 instruction extensions.
+
+   • ‘AVX512_IFMA’ – The AVX512_IFMA instruction extensions.
+
+   • ‘AVX512_VBMI’ – The AVX512_VBMI instruction extensions.
+
+   • ‘AVX512_VBMI2’ – The AVX512_VBMI2 instruction extensions.
+
+   • ‘AVX512_VNNI’ – The AVX512_VNNI instruction extensions.
+
+   • ‘AVX512_VP2INTERSECT’ – The AVX512_VP2INTERSECT instruction
+     extensions.
+
+   • ‘AVX512_VPOPCNTDQ’ – The AVX512_VPOPCNTDQ instruction extensions.
+
+   • ‘AVX512BW’ – The AVX512BW instruction extensions.
+
+   • ‘AVX512CD’ – The AVX512CD instruction extensions.
+
+   • ‘AVX512ER’ – The AVX512ER instruction extensions.
+
+   • ‘AVX512DQ’ – The AVX512DQ instruction extensions.
+
+   • ‘AVX512F’ – The AVX512F instruction extensions.
+
+   • ‘AVX512PF’ – The AVX512PF instruction extensions.
+
+   • ‘AVX512VL’ – The AVX512VL instruction extensions.
+
+   • ‘BMI1’ – BMI1 instructions.
+
+   • ‘BMI2’ – BMI2 instructions.
+
+   • ‘CLDEMOTE’ – CLDEMOTE instruction.
+
+   • ‘CLFLUSHOPT’ – CLFLUSHOPT instruction.
+
+   • ‘CLFSH’ – CLFLUSH instruction.
+
+   • ‘CLWB’ – CLWB instruction.
+
+   • ‘CMOV’ – Conditional Move instructions.
+
+   • ‘CMPXCHG16B’ – CMPXCHG16B instruction.
+
+   • ‘CNXT_ID’ – L1 Context ID.
+
+   • ‘CORE_CAPABILITIES’ – IA32_CORE_CAPABILITIES MSR.
+
+   • ‘CX8’ – CMPXCHG8B instruction.
+
+   • ‘DCA’ – Data prefetch from a memory mapped device.
+
+   • ‘DE’ – Debugging Extensions.
+
+   • ‘DEPR_FPU_CS_DS’ – Deprecates FPU CS and FPU DS values.
+
+   • ‘DS’ – Debug Store.
+
+   • ‘DS_CPL’ – CPL Qualified Debug Store.
+
+   • ‘DTES64’ – 64-bit DS Area.
+
+   • ‘EIST’ – Enhanced Intel SpeedStep technology.
+
+   • ‘ENQCMD’ – Enqueue Stores instructions.
+
+   • ‘ERMS’ – Enhanced REP MOVSB/STOSB.
+
+   • ‘F16C’ – 16-bit floating-point conversion instructions.
+
+   • ‘FMA’ – FMA extensions using YMM state.
+
+   • ‘FMA4’ – FMA4 instruction extensions.
+
+   • ‘FPU’ – X87 Floating Point Unit On-Chip.
+
+   • ‘FSGSBASE’ – RDFSBASE/RDGSBASE/WRFSBASE/WRGSBASE instructions.
+
+   • ‘FSRCS’ – Fast Short REP CMP and SCA.
+
+   • ‘FSRM’ – Fast Short REP MOV.
+
+   • ‘FSRS’ – Fast Short REP STO.
+
+   • ‘FXSR’ – FXSAVE and FXRSTOR instructions.
+
+   • ‘FZLRM’ – Fast Zero-Length REP MOV.
+
+   • ‘GFNI’ – GFNI instruction extensions.
+
+   • ‘HLE’ – HLE instruction extensions.
+
+   • ‘HTT’ – Max APIC IDs reserved field is Valid.
+
+   • ‘HRESET’ – History reset.
+
+   • ‘HYBRID’ – Hybrid processor.
+
+   • ‘IBRS_IBPB’ – Indirect branch restricted speculation (IBRS) and the
+     indirect branch predictor barrier (IBPB).
+
+   • ‘IBT’ – Intel Indirect Branch Tracking instruction extensions.
+
+   • ‘INVARIANT_TSC’ – Invariant TSC.
+
+   • ‘INVPCID’ – INVPCID instruction.
+
+   • ‘KL’ – AES Key Locker instructions.
+
+   • ‘LAM’ – Linear Address Masking.
+
+   • ‘L1D_FLUSH’ – IA32_FLUSH_CMD MSR.
+
+   • ‘LAHF64_SAHF64’ – LAHF/SAHF available in 64-bit mode.
+
+   • ‘LM’ – Long mode.
+
+   • ‘LWP’ – Lightweight profiling.
+
+   • ‘LZCNT’ – LZCNT instruction.
+
+   • ‘MCA’ – Machine Check Architecture.
+
+   • ‘MCE’ – Machine Check Exception.
+
+   • ‘MD_CLEAR’ – MD_CLEAR.
+
+   • ‘MMX’ – Intel MMX Technology.
+
+   • ‘MONITOR’ – MONITOR/MWAIT instructions.
+
+   • ‘MOVBE’ – MOVBE instruction.
+
+   • ‘MOVDIRI’ – MOVDIRI instruction.
+
+   • ‘MOVDIR64B’ – MOVDIR64B instruction.
+
+   • ‘MPX’ – Intel Memory Protection Extensions.
+
+   • ‘MSR’ – Model Specific Registers RDMSR and WRMSR instructions.
+
+   • ‘MTRR’ – Memory Type Range Registers.
+
+   • ‘NX’ – No-execute page protection.
+
+   • ‘OSPKE’ – OS has set CR4.PKE to enable protection keys.
+
+   • ‘OSXSAVE’ – The OS has set CR4.OSXSAVE[bit 18] to enable
+     XSETBV/XGETBV instructions to access XCR0 and to support processor
+     extended state management using XSAVE/XRSTOR.
+
+   • ‘PAE’ – Physical Address Extension.
+
+   • ‘PAGE1GB’ – 1-GByte page.
+
+   • ‘PAT’ – Page Attribute Table.
+
+   • ‘PBE’ – Pending Break Enable.
+
+   • ‘PCID’ – Process-context identifiers.
+
+   • ‘PCLMULQDQ’ – PCLMULQDQ instruction.
+
+   • ‘PCONFIG’ – PCONFIG instruction.
+
+   • ‘PDCM’ – Perfmon and Debug Capability.
+
+   • ‘PGE’ – Page Global Bit.
+
+   • ‘PKS’ – Protection keys for supervisor-mode pages.
+
+   • ‘PKU’ – Protection keys for user-mode pages.
+
+   • ‘POPCNT’ – POPCNT instruction.
+
+   • ‘PREFETCHW’ – PREFETCHW instruction.
+
+   • ‘PREFETCHWT1’ – PREFETCHWT1 instruction.
+
+   • ‘PSE’ – Page Size Extension.
+
+   • ‘PSE_36’ – 36-Bit Page Size Extension.
+
+   • ‘PSN’ – Processor Serial Number.
+
+   • ‘RDPID’ – RDPID instruction.
+
+   • ‘RDRAND’ – RDRAND instruction.
+
+   • ‘RDSEED’ – RDSEED instruction.
+
+   • ‘RDT_A’ – Intel Resource Director Technology (Intel RDT) Allocation
+     capability.
+
+   • ‘RDT_M’ – Intel Resource Director Technology (Intel RDT) Monitoring
+     capability.
+
+   • ‘RDTSCP’ – RDTSCP instruction.
+
+   • ‘RTM’ – RTM instruction extensions.
+
+   • ‘SDBG’ – IA32_DEBUG_INTERFACE MSR for silicon debug.
+
+   • ‘SEP’ – SYSENTER and SYSEXIT instructions.
+
+   • ‘SERIALIZE’ – SERIALIZE instruction.
+
+   • ‘SGX’ – Intel Software Guard Extensions.
+
+   • ‘SGX_LC’ – SGX Launch Configuration.
+
+   • ‘SHA’ – SHA instruction extensions.
+
+   • ‘SHSTK’ – Intel Shadow Stack instruction extensions.
+
+   • ‘SMAP’ – Supervisor-Mode Access Prevention.
+
+   • ‘SMEP’ – Supervisor-Mode Execution Prevention.
+
+   • ‘SMX’ – Safer Mode Extensions.
+
+   • ‘SS’ – Self Snoop.
+
+   • ‘SSBD’ – Speculative Store Bypass Disable (SSBD).
+
+   • ‘SSE’ – Streaming SIMD Extensions.
+
+   • ‘SSE2’ – Streaming SIMD Extensions 2.
+
+   • ‘SSE3’ – Streaming SIMD Extensions 3.
+
+   • ‘SSE4_1’ – Streaming SIMD Extensions 4.1.
+
+   • ‘SSE4_2’ – Streaming SIMD Extensions 4.2.
+
+   • ‘SSE4A’ – SSE4A instruction extensions.
+
+   • ‘SSSE3’ – Supplemental Streaming SIMD Extensions 3.
+
+   • ‘STIBP’ – Single thread indirect branch predictors (STIBP).
+
+   • ‘SVM’ – Secure Virtual Machine.
+
+   • ‘SYSCALL_SYSRET’ – SYSCALL/SYSRET instructions.
+
+   • ‘TBM’ – Trailing bit manipulation instructions.
+
+   • ‘TM’ – Thermal Monitor.
+
+   • ‘TM2’ – Thermal Monitor 2.
+
+   • ‘TRACE’ – Intel Processor Trace.
+
+   • ‘TSC’ – Time Stamp Counter.  RDTSC instruction.
+
+   • ‘TSC_ADJUST’ – IA32_TSC_ADJUST MSR.
+
+   • ‘TSC_DEADLINE’ – Local APIC timer supports one-shot operation using
+     a TSC deadline value.
+
+   • ‘TSXLDTRK’ – TSXLDTRK instructions.
+
+   • ‘UINTR’ – User interrupts.
+
+   • ‘UMIP’ – User-mode instruction prevention.
+
+   • ‘VAES’ – VAES instruction extensions.
+
+   • ‘VME’ – Virtual 8086 Mode Enhancements.
+
+   • ‘VMX’ – Virtual Machine Extensions.
+
+   • ‘VPCLMULQDQ’ – VPCLMULQDQ instruction.
+
+   • ‘WAITPKG’ – WAITPKG instruction extensions.
+
+   • ‘WBNOINVD’ – WBINVD/WBNOINVD instructions.
+
+   • ‘WIDE_KL’ – AES wide Key Locker instructions.
+
+   • ‘X2APIC’ – x2APIC.
+
+   • ‘XFD’ – Extended Feature Disable (XFD).
+
+   • ‘XGETBV_ECX_1’ – XGETBV with ECX = 1.
+
+   • ‘XOP’ – XOP instruction extensions.
+
+   • ‘XSAVE’ – The XSAVE/XRSTOR processor extended states feature, the
+     XSETBV/XGETBV instructions, and XCR0.
+
+   • ‘XSAVEC’ – XSAVEC instruction.
+
+   • ‘XSAVEOPT’ – XSAVEOPT instruction.
+
+   • ‘XSAVES’ – XSAVES/XRSTORS instructions.
+
+   • ‘XTPRUPDCTRL’ – xTPR Update Control.
+
+   You could query if a processor supports ‘AVX’ with:
+
+     #include <sys/platform/x86.h>
+
+     int
+     support_avx (void)
+     {
+       return HAS_CPU_FEATURE (AVX);
+     }
+
+   and if ‘AVX’ is usable with:
+
+     #include <sys/platform/x86.h>
+
+     int
+     usable_avx (void)
+     {
+       return CPU_FEATURE_USABLE (AVX);
+     }
 
 
 File: libc.info,  Node: Contributors,  Next: Free Manuals,  Prev: Platform,  Up: Top
@@ -4577,7 +4972,7 @@ Appendix I GNU Free Documentation License
                      Version 1.3, 3 November 2008
 
      Copyright © 2000, 2001, 2002, 2007, 2008 Free Software Foundation, Inc.
-     <http://fsf.org/>
+     <https://fsf.org/>
 
      Everyone is permitted to copy and distribute verbatim copies
      of this license document, but changing it is not allowed.
@@ -4974,7 +5369,7 @@ Appendix I GNU Free Documentation License
      the GNU Free Documentation License from time to time.  Such new
      versions will be similar in spirit to the present version, but may
      differ in detail to address new problems or concerns.  See
-     <http://www.gnu.org/copyleft/>.
+     <https://www.gnu.org/licenses/>.
 
      Each version of the License is given a distinguishing version
      number.  If the Document specifies that a particular numbered
@@ -5981,6 +6376,8 @@ Concept Index
 * Memory page has hardware error:        Error Codes.         (line 818)
 * memory protection:                     Memory Protection.   (line   6)
 * memory protection key:                 Memory Protection.   (line 123)
+* memory related tunables:               Memory Related Tunables.
+                                                              (line   6)
 * merging of signals:                    Merged Signals.      (line   6)
 * Message too long:                      Error Codes.         (line 283)
 * MIN termios slot:                      Noncanonical Input.  (line  27)

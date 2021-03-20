@@ -1,8 +1,8 @@
 This is libc.info, produced by makeinfo version 6.7 from libc.texinfo.
 
-This is ‘The GNU C Library Reference Manual’, for version 2.32.
+This is ‘The GNU C Library Reference Manual’, for version 2.33.
 
-   Copyright © 1993–2020 Free Software Foundation, Inc.
+   Copyright © 1993–2021 Free Software Foundation, Inc.
 
    Permission is granted to copy, distribute and/or modify this document
 under the terms of the GNU Free Documentation License, Version 1.3 or
@@ -43,6 +43,7 @@ START-INFO-DIR-ENTRY
 * CLOCK_REALTIME: (libc)Getting the Time.
 * COLL_WEIGHTS_MAX: (libc)Utility Limits.
 * CPU_CLR: (libc)CPU Affinity.
+* CPU_FEATURE_USABLE: (libc)X86.
 * CPU_ISSET: (libc)CPU Affinity.
 * CPU_SET: (libc)CPU Affinity.
 * CPU_SETSIZE: (libc)CPU Affinity.
@@ -245,6 +246,7 @@ START-INFO-DIR-ENTRY
 * F_SETLK: (libc)File Locks.
 * F_SETLKW: (libc)File Locks.
 * F_SETOWN: (libc)Interrupt Input.
+* HAS_CPU_FEATURE: (libc)X86.
 * HUGE_VAL: (libc)Math Error Reporting.
 * HUGE_VALF: (libc)Math Error Reporting.
 * HUGE_VALL: (libc)Math Error Reporting.
@@ -321,6 +323,7 @@ START-INFO-DIR-ENTRY
 * O_NONBLOCK: (libc)Open-time Flags.
 * O_NONBLOCK: (libc)Operating Modes.
 * O_NOTRANS: (libc)Open-time Flags.
+* O_PATH: (libc)Access Modes.
 * O_RDONLY: (libc)Access Modes.
 * O_RDWR: (libc)Access Modes.
 * O_READ: (libc)Access Modes.
@@ -493,6 +496,7 @@ START-INFO-DIR-ENTRY
 * __ppc_yield: (libc)PowerPC.
 * __riscv_flush_icache: (libc)RISC-V.
 * __va_copy: (libc)Argument Macros.
+* __x86_get_cpuid_feature_leaf: (libc)X86.
 * _exit: (libc)Termination Internals.
 * _flushlbf: (libc)Flushing Buffers.
 * _tolower: (libc)Case Conversion.
@@ -1395,7 +1399,7 @@ START-INFO-DIR-ENTRY
 * lutimes: (libc)File Times.
 * madvise: (libc)Memory-mapped I/O.
 * makecontext: (libc)System V contexts.
-* mallinfo: (libc)Statistics of Malloc.
+* mallinfo2: (libc)Statistics of Malloc.
 * malloc: (libc)Basic Allocation.
 * mallopt: (libc)Malloc Tunable Parameters.
 * mblen: (libc)Non-reentrant Character Conversion.
@@ -2011,7 +2015,6 @@ START-INFO-DIR-ENTRY
 * vswprintf: (libc)Variable Arguments Output.
 * vswscanf: (libc)Variable Arguments Input.
 * vsyslog: (libc)syslog; vsyslog.
-* vtimes: (libc)Resource Usage.
 * vwarn: (libc)Error Messages.
 * vwarnx: (libc)Error Messages.
 * vwprintf: (libc)Variable Arguments Output.
@@ -2096,54 +2099,6 @@ START-INFO-DIR-ENTRY
 * ynfNx: (libc)Special Functions.
 * ynl: (libc)Special Functions.
 END-INFO-DIR-ENTRY
-
-
-File: libc.info,  Node: Defining Handlers,  Next: Interrupted Primitives,  Prev: Signal Actions,  Up: Signal Handling
-
-24.4 Defining Signal Handlers
-=============================
-
-This section describes how to write a signal handler function that can
-be established with the ‘signal’ or ‘sigaction’ functions.
-
-   A signal handler is just a function that you compile together with
-the rest of the program.  Instead of directly invoking the function, you
-use ‘signal’ or ‘sigaction’ to tell the operating system to call it when
-a signal arrives.  This is known as “establishing” the handler.  *Note
-Signal Actions::.
-
-   There are two basic strategies you can use in signal handler
-functions:
-
-   • You can have the handler function note that the signal arrived by
-     tweaking some global data structures, and then return normally.
-
-   • You can have the handler function terminate the program or transfer
-     control to a point where it can recover from the situation that
-     caused the signal.
-
-   You need to take special care in writing handler functions because
-they can be called asynchronously.  That is, a handler might be called
-at any point in the program, unpredictably.  If two signals arrive
-during a very short interval, one handler can run within another.  This
-section describes what your handler should do, and what you should
-avoid.
-
-* Menu:
-
-* Handler Returns::             Handlers that return normally, and what
-                                 this means.
-* Termination in Handler::      How handler functions terminate a program.
-* Longjmp in Handler::          Nonlocal transfer of control out of a
-                                 signal handler.
-* Signals in Handler::          What happens when signals arrive while
-                                 the handler is already occupied.
-* Merged Signals::		When a second signal arrives before the
-				 first is handled.
-* Nonreentrancy::               Do not call any functions unless you know they
-                                 are reentrant with respect to signals.
-* Atomic Data Access::          A single handler can run in the middle of
-                                 reading or writing a single object.
 
 
 File: libc.info,  Node: Handler Returns,  Next: Termination in Handler,  Up: Defining Handlers
@@ -4126,7 +4081,7 @@ implement them.
    • Option names are single alphanumeric characters (as for ‘isalnum’;
      *note Classification of Characters::).
 
-   • Certain options require an argument.  For example, the ‘-o’ command
+   • Certain options require an argument.  For example, the ‘-o’ option
      of the ‘ld’ command requires an argument—an output file name.
 
    • An option and its argument may or may not appear as separate
